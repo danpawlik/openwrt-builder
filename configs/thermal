@@ -1,0 +1,9 @@
+collectd
+zlib
+libltdl7
+collectd-mod-sensors
+libsysfs2
+sysfsutils
+libsensors5
+lm-sensors
+collectd-mod-thermal
