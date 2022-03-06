@@ -1,8 +1,8 @@
-CONFIG_TARGET_ath79=y
-CONFIG_TARGET_ath79_mikrotik=y
+CONFIG_TARGET_lantiq=y
+CONFIG_TARGET_lantiq_xrx200=y
 CONFIG_TARGET_MULTI_PROFILE=y
-CONFIG_TARGET_DEVICE_ath79_mikrotik_DEVICE_mikrotik_routerboard-962uigs-5hact2hnt=y
-CONFIG_TARGET_DEVICE_PACKAGES_ath79_mikrotik_DEVICE_mikrotik_routerboard-962uigs-5hact2hnt=""
+CONFIG_TARGET_DEVICE_lantiq_xrx200_DEVICE_tplink_tdw8970=y
+CONFIG_TARGET_DEVICE_PACKAGES_lantiq_xrx200_DEVICE_tplink_tdw8970=""
 CONFIG_ALL_KMODS=y
 CONFIG_ALL_NONSHARED=y
 CONFIG_DEVEL=y
@@ -64,26 +64,19 @@ CONFIG_SDK=y
 CONFIG_SDK_LLVM_BPF=y
 CONFIG_TARGET_ALL_PROFILES=y
 CONFIG_USE_LLVM_BUILD=y
-
 # additional packages
 CONFIG_PACKAGE_bmon=y
 CONFIG_PACKAGE_htop=y
 CONFIG_PACKAGE_iperf3=y
 CONFIG_PACKAGE_curl=y
 CONFIG_PACKAGE_wavemon=y
-
 # additional kmods required by basic packages
 CONFIG_PACKAGE_kmod-nf-ipt=y
 CONFIG_PACKAGE_kmod-ipt-core=y
 CONFIG_PACKAGE_kmod-ipt-conntrack=y
 CONFIG_PACKAGE_kmod-ipt-nat=y
-
 # collectd
-# CONFIG_PACKAGE_collectd=y
-# CONFIG_PACKAGE_collectd-mod-sensors=y
-# CONFIG_PACKAGE_collectd-mod-ping=y
-# CONFIG_PACKAGE_luci-app-statistics=y
-# CONFIG_ATH10K_THERMAL=y
-
-# language packages
-# CONFIG_PACKAGE_luci-i18n-base-pl=y
+CONFIG_PACKAGE_collectd=y
+CONFIG_PACKAGE_collectd-mod-sensors=y
+CONFIG_PACKAGE_collectd-mod-ping=y
+CONFIG_PACKAGE_luci-app-statistics=y
