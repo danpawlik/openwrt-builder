@@ -7,7 +7,7 @@ RUN dnf -y groupinstall 'Development Tools'
 RUN dnf -y install bash-completion bzip2 gcc gcc-c++ git make ncurses-devel patch \
     rsync tar unzip wget which diffutils python2 python3 perl-base \
     perl-Data-Dumper perl-File-Compare perl-File-Copy perl-FindBin \
-    perl-Thread-Queue vim && \
+    perl-Thread-Queue vim hostname && \
     yum clean all
 
 RUN useradd -m user && \
