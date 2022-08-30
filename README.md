@@ -18,7 +18,7 @@ podman build -t openwrt-builder -f Dockerfile
 how to use:
 ```
 mkdir -p openwrt-builder
-podman run -it -u user -v $(pwd)/openwrt-builder/:/home/user:z,rw quay.io/dpawlik/openwrt:fedora35 /bin/bash
+podman run -it -u user -v $(pwd)/openwrt-builder/:/home/user:z,rw quay.io/dpawlik/openwrt:f37 /bin/bash
 ```
 
 Then inside the container (from https://openwrt.org/docs/guide-developer/toolchain/use-buildsystem):
