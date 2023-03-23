@@ -1,24 +1,8 @@
-CONFIG_TARGET_mediatek=y
-CONFIG_TARGET_mediatek_mt7622=y
-CONFIG_TARGET_DEVICE_mediatek_mt7622_DEVICE_xiaomi_redmi-router-ax6s=y
-CONFIG_TARGET_DEVICE_PACKAGES_mediatek_mt7622_DEVICE_xiaomi_redmi-router-ax6s=y
-CONFIG_ALL_KMODS=y
-CONFIG_ALL_NONSHARED=y
-CONFIG_DEVEL=y
-CONFIG_TARGET_PER_DEVICE_ROOTFS=y
-CONFIG_AUTOREMOVE=y
-CONFIG_BPF_TOOLCHAIN_BUILD_LLVM=y
-# CONFIG_BPF_TOOLCHAIN_NONE is not set
-CONFIG_BUILDBOT=y
-CONFIG_COLLECT_KERNEL_DEBUG=y
-CONFIG_HAS_BPF_TOOLCHAIN=y
-CONFIG_IB=y
-CONFIG_IMAGEOPT=y
-CONFIG_KERNEL_BUILD_DOMAIN="buildhost"
-CONFIG_KERNEL_BUILD_USER="builder"
-CONFIG_MAKE_TOOLCHAIN=y
-CONFIG_PACKAGE_libbpf=m
-CONFIG_PACKAGE_libelf=m
+# NOTE: Take the snapshot configuration file and attach the content to it.
+# STEPS:
+# curl -SL https://downloads.openwrt.org/snapshots/targets/mediatek/mt7622/config.buildinfo > .config
+# curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/xiaomi/ax3200/extended >> .config
+
 # LuCI
 CONFIG_PACKAGE_cgi-io=y
 CONFIG_PACKAGE_libiwinfo-lua=y
@@ -43,37 +27,37 @@ CONFIG_PACKAGE_luci-proto-ipv6=y
 CONFIG_PACKAGE_luci-proto-ppp=y
 CONFIG_PACKAGE_luci-ssl=y
 CONFIG_PACKAGE_luci-theme-bootstrap=y
-CONFIG_PACKAGE_px5g-wolfssl=y
-CONFIG_PACKAGE_qosify=m
-CONFIG_PACKAGE_rpcd=y
-CONFIG_PACKAGE_rpcd-mod-file=y
-CONFIG_PACKAGE_rpcd-mod-iwinfo=y
-CONFIG_PACKAGE_rpcd-mod-luci=y
-CONFIG_PACKAGE_rpcd-mod-rrdns=y
-CONFIG_PACKAGE_tc-full=m
-CONFIG_PACKAGE_tc-mod-iptables=m
-CONFIG_PACKAGE_uhttpd=y
-CONFIG_PACKAGE_uhttpd-mod-ubus=y
-CONFIG_PACKAGE_zlib=m
-#
-CONFIG_REPRODUCIBLE_DEBUG_INFO=y
-CONFIG_SDK=y
-CONFIG_SDK_LLVM_BPF=y
-CONFIG_TARGET_ALL_PROFILES=y
-CONFIG_USE_LLVM_BUILD=y
 
 # additional packages
+CONFIG_PACKAGE_vim=y
 CONFIG_PACKAGE_bmon=y
 CONFIG_PACKAGE_htop=y
 CONFIG_PACKAGE_iperf3=y
 CONFIG_PACKAGE_curl=y
 CONFIG_PACKAGE_wavemon=y
 
-# additional kmods required by basic packages
+# additional kmods required by basic packages (also required by collecd)
 CONFIG_PACKAGE_kmod-nf-ipt=y
 CONFIG_PACKAGE_kmod-ipt-core=y
 CONFIG_PACKAGE_kmod-ipt-conntrack=y
 CONFIG_PACKAGE_kmod-ipt-nat=y
 
+# attendedsysupgrade
+CONFIG_PACKAGE_luci-app-attendedsysupgrade=y
+CONFIG_PACKAGE_attendedsysupgrade-common=y
+CONFIG_PACKAGE_auc=y
+
 # use experimental kernel
 CONFIG_TESTING_KERNEL=y
+
+# wireguard
+CONFIG_PACKAGE_kmod-wireguard=y
+CONFIG_PACKAGE_wireguard-tools=y
+CONFIG_PACKAGE_luci-proto-wireguard=y
+
+# https dns
+CONFIG_PACKAGE_https-dns-proxy=y
+CONFIG_PACKAGE_luci-app-https-dns-proxy=y
+
+# collecd
+# CONFIG_PACKAGE_collectd=y

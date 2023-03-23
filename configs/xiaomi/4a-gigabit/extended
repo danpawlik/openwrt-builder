@@ -1,8 +1,7 @@
-
 # NOTE: Take the snapshot configuration file and attach the content to it.
 # STEPS:
 # curl -SL https://downloads.openwrt.org/snapshots/targets/ramips/mt7621/config.buildinfo > .config
-# curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/ubiquiti/u6lite/extended >> .config
+# curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/xiaomi/4a-gigabit/extended >> .config
 
 # LuCI
 CONFIG_PACKAGE_cgi-io=y

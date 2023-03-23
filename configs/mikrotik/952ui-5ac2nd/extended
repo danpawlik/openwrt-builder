@@ -1,8 +1,7 @@
-
 # NOTE: Take the snapshot configuration file and attach the content to it.
 # STEPS:
-# curl -SL https://downloads.openwrt.org/snapshots/targets/ramips/mt7621/config.buildinfo > .config
-# curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/ubiquiti/u6lite/extended >> .config
+# curl -SL https://downloads.openwrt.org/snapshots/targets/ath79/mikrotik/config.buildinfo > .config
+# curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/mikrotik/952ui-5ac2nd/extended >> .config
 
 # LuCI
 CONFIG_PACKAGE_cgi-io=y
@@ -50,6 +49,8 @@ CONFIG_PACKAGE_auc=y
 
 # use experimental kernel
 CONFIG_TESTING_KERNEL=y
+CONFIG_PACKAGE_kmod-fs-antfs=n
+CONFIG_PACKAGE_kmod-usb-serial-xr_usb_serial_common=n
 
 ## wireguard
 # CONFIG_PACKAGE_kmod-wireguard=y
