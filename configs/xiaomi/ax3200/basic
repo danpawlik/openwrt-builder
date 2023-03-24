@@ -1,7 +1,12 @@
+
 # NOTE: Take the snapshot configuration file and attach the content to it.
 # STEPS:
 # curl -SL https://downloads.openwrt.org/snapshots/targets/mediatek/mt7622/config.buildinfo > .config
+# sed -i '/CONFIG_TARGET_DEVICE_/d' .config
 # curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/xiaomi/ax3200/extended >> .config
+
+CONFIG_TARGET_DEVICE_mediatek_mt7622_DEVICE_xiaomi_redmi-router-ax6s=y
+CONFIG_TARGET_DEVICE_PACKAGES_mediatek_mt7622_DEVICE_xiaomi_redmi-router-ax6s=""
 
 # LuCI
 CONFIG_PACKAGE_cgi-io=y

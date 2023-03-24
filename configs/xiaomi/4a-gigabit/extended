@@ -1,7 +1,12 @@
+
 # NOTE: Take the snapshot configuration file and attach the content to it.
 # STEPS:
 # curl -SL https://downloads.openwrt.org/snapshots/targets/ramips/mt7621/config.buildinfo > .config
+# sed -i '/CONFIG_TARGET_DEVICE_/d' .config
 # curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/xiaomi/4a-gigabit/extended >> .config
+
+CONFIG_TARGET_DEVICE_ramips_mt7621_DEVICE_xiaomi_mi-router-4a-gigabit=y
+CONFIG_TARGET_DEVICE_PACKAGES_ramips_mt7621_DEVICE_xiaomi_mi-router-4a-gigabit=""
 
 # LuCI
 CONFIG_PACKAGE_cgi-io=y
