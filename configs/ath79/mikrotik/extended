@@ -2,8 +2,8 @@
 # NOTE: Take the snapshot configuration file and attach the content to it.
 # STEPS:
 # curl -SL https://downloads.openwrt.org/snapshots/targets/ath79/mikrotik/config.buildinfo > .config
-# sed -i '/CONFIG_TARGET_DEVICE_/d' .config
-# curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/mikrotik/952ui-5ac2nd/extended >> .config
+# sed -i '/CONFIG_TARGET_DEVICE_/d' .config; sed -i 's/CONFIG_TARGET_MULTI_PROFILE=y/CONFIG_TARGET_MULTI_PROFILE=n/g' .config
+# curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/ath79/mikrotik/extended >> .config
 
 CONFIG_TARGET_DEVICE_ath79_mikrotik_DEVICE_mikrotik_routerboard-962uigs-5hact2hnt=y
 CONFIG_TARGET_DEVICE_PACKAGES_ath79_mikrotik_DEVICE_mikrotik_routerboard-962uigs-5hact2hnt=""

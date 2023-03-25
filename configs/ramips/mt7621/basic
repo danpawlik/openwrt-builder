@@ -2,8 +2,8 @@
 # NOTE: Take the snapshot configuration file and attach the content to it.
 # STEPS:
 # curl -SL https://downloads.openwrt.org/snapshots/targets/ramips/mt7621/config.buildinfo > .config
-# sed -i '/CONFIG_TARGET_DEVICE_/d' .config
-# curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/ubiquiti/u6lite/extended >> .config
+# sed -i '/CONFIG_TARGET_DEVICE_/d' .config; sed -i 's/CONFIG_TARGET_MULTI_PROFILE=y/CONFIG_TARGET_MULTI_PROFILE=n/g' .config
+# curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/ramips/mt7621/basic >> .config
 
 CONFIG_TARGET_DEVICE_ramips_mt7621_DEVICE_ubnt_unifi-6-lite=y
 CONFIG_TARGET_DEVICE_PACKAGES_ramips_mt7621_DEVICE_ubnt_unifi-6-lite=""

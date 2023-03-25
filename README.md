@@ -16,7 +16,8 @@ podman build -t openwrt-builder -f Dockerfile
 ## Example
 
 how to use:
-```
+
+```shell
 mkdir -p openwrt-builder
 podman run -it -u user -v $(pwd)/openwrt-builder/:/home/user:z,rw quay.io/dpawlik/openwrt:f37 /bin/bash
 ```
@@ -67,4 +68,24 @@ Build the firmware image:
 
 ```shell
 make -j $(nproc) defconfig download clean world
+```
+
+## With Ansible
+
+* Install Ansible:
+
+```sh
+sudo dnf install -y ansible-core git
+```
+
+* Clone builder project
+
+```sh
+git clone https://github.com/danpawlik/openwrt-builder && cd openwrt-builder
+```
+
+* Run Ansible playbook
+
+```sh
+ansible-playbook -i ansible/inventory.yaml ansible/openwrt-build.yaml
 ```

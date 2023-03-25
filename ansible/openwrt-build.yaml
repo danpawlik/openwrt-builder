@@ -1,0 +1,105 @@
+---
+- name: Build OpenWRT
+  hosts: openwrt.dev
+  gather_facts: no
+  vars:
+    # available targets:
+    # ath79/generic    -> TP-Link mr3420v3
+    # ath79/mikrotik   -> Mikrotik 962uigs-5hact2hnt - hAP AC
+    # lantiq/xrx200    -> TP-Link TD-W8970
+    # ramips/mt7621    -> Ubiquiti U6Lite / Xiaomi 4A Gigabit version
+    # mediatek/mt7622  -> Xiaomi AX3200 / Redmi AX6S
+    target: mediatek/mt7622
+    config_version: extended
+    build_path: /mnt/build
+    container_uid: 1000
+    container_gid: 1000
+  tasks:
+    - name: Install required packages
+      become: true
+      yum:
+        name:
+          - vim
+          - podman
+
+    - name: Create build dir
+      become: true
+      file:
+        path: "{{ build_path }}"
+        state: directory
+        mode: "0777"
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+        setype: container_file_t
+        selevel: s0
+
+    - name: Ensure file exists
+      become: true
+      file:
+        path: "{{ build_path }}/openwrt-config"
+        state: touch
+        mode: "0777"
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+
+    - name: Download snapshot config file
+      shell: |
+        curl -SL https://downloads.openwrt.org/snapshots/targets/{{ target }}/config.buildinfo > {{ build_path }}/openwrt-config
+
+    - name: Execude sed
+      shell: |
+        sed -i '/CONFIG_TARGET_DEVICE_/d' {{ build_path }}/openwrt-config
+        sed -i 's/CONFIG_TARGET_MULTI_PROFILE=y/CONFIG_TARGET_MULTI_PROFILE=n/g' {{ build_path }}/openwrt-config
+
+    - name: Add custom config
+      shell: |
+        curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/{{ target }}/{{ config_version }} >> {{ build_path }}/openwrt-config
+
+    - name: Create podman container
+      shell: >
+        podman create
+        --name openwrt-build
+        --network host
+        --uidmap {{ container_uid }}:1000:1
+        --gidmap {{ container_gid }}:1000:1
+        --uidmap 0:4000:999
+        --gidmap 0:4000:999
+        -v {{ build_path }}:/home/user/:rw
+        quay.io/dpawlik/openwrt:f38
+        /usr/bin/sleep 10000000000
+      ignore_errors: true
+
+    - name: Start podman container
+      shell: |
+        podman start openwrt-build
+      ignore_errors: true
+
+    - name: Clone OpenWRT project
+      shell: >
+        podman exec -it openwrt-build
+        /bin/bash -c 'if ! [ -d openwrt ]; then git clone https://git.openwrt.org/openwrt/openwrt.git; fi'
+
+    - name: Copy openwrt-config to build
+      shell: |
+        podman exec -it openwrt-build /bin/bash -c "cp openwrt-config openwrt/.config"
+
+    - name: Run feeds update
+      shell: |
+        podman exec -it openwrt-build /bin/bash -c "cd openwrt && ./scripts/feeds update -a"
+
+    - name: Run feeds install
+      shell: |
+        podman exec -it openwrt-build /bin/bash -c "cd openwrt && ./scripts/feeds install -a"
+
+    # FIXME: Change commands
+    - name: Run make menuconfig
+      shell: |
+        podman exec -it openwrt-build /bin/bash -c "cd openwrt && make menuconfig"
+
+    - name: Run kernel_menuconfig
+      shell: |
+        podman exec -it openwrt-build /bin/bash -c "cd openwrt && make -j $(nproc) kernel_menuconfig"
+
+    - name: Run build
+      shell: |
+        podman exec -it openwrt-build /bin/bash -c "cd openwrt && make -j $(nproc) defconfig download clean world"

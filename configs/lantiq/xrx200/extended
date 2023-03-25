@@ -2,8 +2,8 @@
 # NOTE: Take the snapshot configuration file and attach the content to it.
 # STEPS:
 # curl -SL https://downloads.openwrt.org/snapshots/targets/lantiq/xrx200/config.buildinfo > .config
-# sed -i '/CONFIG_TARGET_DEVICE_/d' .config
-# curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/tp-link/w8970/extended >> .config
+# sed -i '/CONFIG_TARGET_DEVICE_/d' .config; sed -i 's/CONFIG_TARGET_MULTI_PROFILE=y/CONFIG_TARGET_MULTI_PROFILE=n/g' .config
+# curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/lantiq/xrx200/extended >> .config
 
 CONFIG_TARGET_DEVICE_lantiq_xrx200_DEVICE_tplink_tdw8970=y
 CONFIG_TARGET_DEVICE_PACKAGES_lantiq_xrx200_DEVICE_tplink_tdw8970=""

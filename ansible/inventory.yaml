@@ -1,0 +1,6 @@
+all:
+  hosts:
+    openwrt.dev:
+      ansible_port: 22
+      ansible_host: localhost
+      ansible_user: fedora
