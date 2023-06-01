@@ -9,14 +9,17 @@ Whats working:
 
 Known issues:
 
-- slow speed on Samsung Smart TV on 5GHZ network (MyNetwork SSID)
+- Samsung Smart TV on 5GHZ network (MyNetwork SSID) is connecting correctly,
+  but still bandwidth is not fine as expected.
 
-Changes comparing to simple:
+Changes comparing o stable:
 
-- enable 802.11v
-- enabled 802.11k
-- set 802.11w as optional
-- set dtim_period to '3' [base on Unifi settings](https://evanmccann.net/blog/2021/11/unifi-advanced-wi-fi-settings)
+- changed FT over DS to F over the AIR
+- removed MyNetwork_tv network
+- disassoc_low_ack set to 0
+- disable fast roaming for MyNetwork_2G
+- created 5GHz nework with SSID: MyNetwork_iot
+- disable fast roaming and other features on MyNetwork_iot and set encryption to TKIP.
 
 Scheme:
 
@@ -68,11 +71,6 @@ config wifi-iface 'default_radio0'
 	option ssid 'MyNetwork_2G'
 	option encryption 'psk2'
 	option key 'mypassword1234'
-	option ieee80211r '1'
-	option nasid 'main-2'
-	option mobility_domain 'abab'
-	option ft_over_ds '1'
-	option ft_psk_generate_local '1'
 
 config wifi-device 'radio1'
 	option type 'mac80211'
@@ -94,31 +92,25 @@ config wifi-iface 'default_radio1'
 	option ieee80211r '1'
 	option nasid 'main-5'
 	option mobility_domain 'abab'
-	option ft_over_ds '1'
+	option ft_over_ds '0'
 	option ft_psk_generate_local '1'
 	option ieee80211k '1'
 	option ieee80211v '1'
 	option bss_transition '1'
 	option wnm_sleep_mode '1'
 	option ieee80211w '1'
-
-config wifi-iface 'wifinet2'
-	option device 'radio0'
-	option mode 'ap'
-	option ssid 'MyNetwork_tv'
-	option encryption 'psk2+tkip'
-	option key 'somepass2022!'
-	option disabled '1'
-	option network 'lan'
+	option dtim_period '3'
+	option disassoc_low_ack '0'
 
 config wifi-iface 'wifinet3'
 	option device 'radio1'
 	option mode 'ap'
-	option ssid 'MyNetwork_AX3200'
-	option encryption 'sae-mixed'
+	option ssid 'MyNetwork_iot'
+	option encryption 'psk2+tkip'
 	option key 'mypassword1234'
 	option network 'lan'
-	option hidden '1'
+	option dtim_period '3'
+	option disassoc_low_ack '0'
 ```
 
 
@@ -145,11 +137,6 @@ config wifi-iface 'default_radio0'
 	option ssid 'MyNetwork_2G'
 	option encryption 'psk2'
 	option key 'mypassword1234'
-	option ieee80211r '1'
-	option nasid '4a-2'
-	option mobility_domain 'abab'
-	option ft_over_ds '1'
-	option ft_psk_generate_local '1'
 
 config wifi-device 'radio1'
 	option type 'mac80211'
@@ -171,28 +158,23 @@ config wifi-iface 'default_radio1'
 	option ieee80211r '1'
 	option nasid '4a-5'
 	option mobility_domain 'abab'
-	option ft_over_ds '1'
+	option ft_over_ds '0'
 	option ft_psk_generate_local '1'
 	option ieee80211k '1'
 	option ieee80211v '1'
 	option bss_transition '1'
 	option wnm_sleep_mode '1'
 	option ieee80211w '1'
-
-config wifi-iface 'wifinet2'
-	option device 'radio0'
-	option mode 'ap'
-	option ssid 'MyNetwork_tv'
-	option encryption 'psk2+tkip'
-	option key 'somepass2022!'
-	option network 'lan'
+	option dtim_period '3'
+	option disassoc_low_ack '0'
 
 config wifi-iface 'wifinet3'
 	option device 'radio1'
 	option mode 'ap'
-	option ssid 'MyNetwork_4A'
-	option encryption 'sae-mixed'
+	option ssid 'MyNetwork_iot'
+	option encryption 'psk2+tkip'
 	option key 'mypassword1234'
 	option network 'lan'
 	option dtim_period '3'
+	option disassoc_low_ack '0'
 ```
