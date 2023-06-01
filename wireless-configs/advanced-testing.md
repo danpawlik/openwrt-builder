@@ -9,17 +9,23 @@ Whats working:
 
 Known issues:
 
-- Samsung Smart TV on 5GHZ network (MyNetwork SSID) is connecting correctly,
-  but still bandwidth is not fine as expected.
+- Samsung Smart TV on 5GHZ network (MyNetwork SSID) is connecting correctly.
+  NOTE: To enable wnm_sleep_mode and bss_transition, it requires to switch package
+  from: wpad-basic-mbedtls to wpad-mbedtls (in snapshot release or 23.05)
+
+## WARNING
+
+- If Samsung Smart TV reject connecting to the SSID, unplug and plug the power to the TV. (yes, it is XXI century and Samsung TV still got such errors)
+- NOTE: IT IS IMPORTANT THAT THE SSID ON WHICH THE TV CONNECTS, IS ONLY BROADCASTED ON *ONE* ACCESS POINT!
 
 Changes comparing o stable:
 
-- changed FT over DS to F over the AIR
+- changed FT over DS to FT over the AIR
 - removed MyNetwork_tv network
 - disassoc_low_ack set to 0
 - disable fast roaming for MyNetwork_2G
 - created 5GHz nework with SSID: MyNetwork_iot
-- disable fast roaming and other features on MyNetwork_iot and set encryption to TKIP.
+- disable fast roaming and other features on MyNetwork_iot and set wnm_sleep_mode and bss_transition.
 
 Scheme:
 
@@ -81,6 +87,7 @@ config wifi-device 'radio1'
 	option country 'PL'
 	option txpower '20'
 	option cell_density '0'
+	option log_level '2'
 
 config wifi-iface 'default_radio1'
 	option device 'radio1'
@@ -106,13 +113,15 @@ config wifi-iface 'wifinet3'
 	option device 'radio1'
 	option mode 'ap'
 	option ssid 'MyNetwork_iot'
-	option encryption 'psk2+tkip'
+	option encryption 'psk2'
 	option key 'mypassword1234'
 	option network 'lan'
-	option dtim_period '3'
 	option disassoc_low_ack '0'
+	option ieee80211w '1'
+	option wnm_sleep_mode '1'
+	option bss_transition '1'
+	option disabled '1'
 ```
-
 
 ##################################
 #### AP1 /etc/config/wireless ####
@@ -147,6 +156,7 @@ config wifi-device 'radio1'
 	option country 'PL'
 	option txpower '18'
 	option cell_density '0'
+	option log_level '1'
 
 config wifi-iface 'default_radio1'
 	option device 'radio1'
@@ -172,9 +182,11 @@ config wifi-iface 'wifinet3'
 	option device 'radio1'
 	option mode 'ap'
 	option ssid 'MyNetwork_iot'
-	option encryption 'psk2+tkip'
+	option encryption 'psk2'
 	option key 'mypassword1234'
 	option network 'lan'
-	option dtim_period '3'
 	option disassoc_low_ack '0'
+	option ieee80211w '1'
+	option wnm_sleep_mode '1'
+	option bss_transition '1'
 ```
