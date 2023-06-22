@@ -1,0 +1,18 @@
+
+config queue 'eth1'
+	option enabled '1'
+	option interface 'wan'
+	option download '880000'
+	option upload '880000'
+	option qdisc 'cake'
+	option script 'simplest_tbf.qos'
+	option linklayer 'ethernet'
+	option debug_logging '1'
+	option verbosity '5'
+	option overhead '44'
+	option linklayer_advanced '1'
+	option tcMTU '2047'
+	option tcTSIZE '128'
+	option tcMPU '84'
+	option linklayer_adaptation_mechanism 'default'
+
