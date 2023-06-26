@@ -19,7 +19,8 @@ how to use:
 
 ```shell
 mkdir -p openwrt-builder
-podman run -it -u user -v $(pwd)/openwrt-builder/:/home/user:z,rw quay.io/dpawlik/openwrt:f37 /bin/bash
+chmod 0777 openwrt-builder
+podman run -it -u user -v $(pwd)/openwrt-builder/:/home/user:z,rw quay.io/dpawlik/openwrt:f38 /bin/bash
 ```
 
 Then inside the container (from https://openwrt.org/docs/guide-developer/toolchain/use-buildsystem):
@@ -35,7 +36,7 @@ Select a specific code revision:
 ```shell
 git branch -a
 git tag
-git checkout v21.02.1
+git checkout v23.05.0-rc1
 ```
 
 Update the feeds:
