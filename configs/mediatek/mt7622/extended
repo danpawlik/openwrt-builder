@@ -5,6 +5,8 @@
 # sed -i '/CONFIG_TARGET_DEVICE_/d' .config; sed -i 's/CONFIG_TARGET_MULTI_PROFILE=y/CONFIG_TARGET_MULTI_PROFILE=n/g' .config
 # curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/mediatek/mt7622/extended >> .config
 
+CONFIG_TARGET_mediatek=y
+CONFIG_TARGET_mediatek_mt7622=y
 CONFIG_TARGET_DEVICE_mediatek_mt7622_DEVICE_xiaomi_redmi-router-ax6s=y
 CONFIG_TARGET_DEVICE_PACKAGES_mediatek_mt7622_DEVICE_xiaomi_redmi-router-ax6s=""
 

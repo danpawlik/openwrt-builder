@@ -13,7 +13,7 @@ RUN dnf -y install vim bash-completion bzip2 gcc gcc-c++ git make ncurses-devel 
 
 RUN useradd -m user && \
     echo 'user ALL=NOPASSWD: ALL' > /etc/sudoers.d/user ; \
-    echo 'export PS1="[\u@\h \W]\$"' >> .bashrc
+    echo 'export PS1="[\u@\h \W]\$ "' >> .bashrc
 
 USER user
 WORKDIR /home/user
@@ -21,4 +21,4 @@ WORKDIR /home/user
 # set dummy git config
 RUN /usr/bin/git config --global user.email "you@example.com" ; \
     /usr/bin/git config --global user.name "Your Name" ; \
-    echo 'export PS1="[\u@\h \W]\$"' >> .bashrc
+    echo 'export PS1="[\u@\h \W]\$ "' >> .bashrc
