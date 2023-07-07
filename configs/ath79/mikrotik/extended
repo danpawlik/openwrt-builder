@@ -66,5 +66,47 @@ CONFIG_PACKAGE_kmod-usb-serial-xr_usb_serial_common=n
 # CONFIG_PACKAGE_https-dns-proxy=y
 # CONFIG_PACKAGE_luci-app-https-dns-proxy=y
 
+# wpad full
+CONFIG_DEFAULT_libustream-mbedtls=y
+CONFIG_DEFAULT_wpad-basic-mbedtls=y
+CONFIG_PACKAGE_libmbedtls=y
+CONFIG_PACKAGE_libustream-mbedtls=y
+CONFIG_PACKAGE_wpad-mbedtls=y
+
 # collecd
 # CONFIG_PACKAGE_collectd=y
+
+# Dependency kmods - use it when kernel version is not available in mirror
+#CONFIG_PACKAGE_kmod-crypto-crc32c=y
+#CONFIG_PACKAGE_kmod-crypto-hash=y
+#CONFIG_PACKAGE_kmod-crypto-kpp=y
+#CONFIG_PACKAGE_kmod-crypto-lib-chacha20=y
+#CONFIG_PACKAGE_kmod-crypto-lib-chacha20poly1305=y
+#CONFIG_PACKAGE_kmod-crypto-lib-curve25519=y
+#CONFIG_PACKAGE_kmod-crypto-lib-poly1305=y
+#CONFIG_PACKAGE_kmod-ifb=y
+#CONFIG_PACKAGE_kmod-ipt-conntrack=y
+#CONFIG_PACKAGE_kmod-ipt-core=y
+#CONFIG_PACKAGE_kmod-ipt-ipopt=y
+#CONFIG_PACKAGE_kmod-ipt-nat=y
+#CONFIG_PACKAGE_kmod-lib-crc32c=y
+#CONFIG_PACKAGE_kmod-nf-conntrack=y
+#CONFIG_PACKAGE_kmod-nf-conntrack6=y
+#CONFIG_PACKAGE_kmod-nf-flow=y
+#CONFIG_PACKAGE_kmod-nf-ipt=y
+#CONFIG_PACKAGE_kmod-nf-log=y
+#CONFIG_PACKAGE_kmod-nf-log6=y
+#CONFIG_PACKAGE_kmod-nf-nat=y
+#CONFIG_PACKAGE_kmod-nfnetlink=y
+#CONFIG_PACKAGE_kmod-nf-reject=y
+#CONFIG_PACKAGE_kmod-nf-reject6=y
+#CONFIG_PACKAGE_kmod-nft-compat=y
+#CONFIG_PACKAGE_kmod-nft-core=y
+#CONFIG_PACKAGE_kmod-nft-fib=y
+#CONFIG_PACKAGE_kmod-nft-nat=y
+#CONFIG_PACKAGE_kmod-nft-offload=y
+#CONFIG_PACKAGE_kmod-sched-cake=y
+#CONFIG_PACKAGE_kmod-sched-core=y
+#CONFIG_PACKAGE_kmod-udptunnel4=y
+#CONFIG_PACKAGE_kmod-udptunnel6=y
+#CONFIG_PACKAGE_kmod-wireguard=y
