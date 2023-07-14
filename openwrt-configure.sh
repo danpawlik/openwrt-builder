@@ -14,8 +14,9 @@ fi
 COMMAND="$COMMAND; opkg install collectd collectd-mod-sensors \
 collectd-mod-thermal luci-app-statistics collectd-mod-irq \
 luci luci-ssl luci-i18n-base-pl vim htop \
-curl iperf3 irqbalance luci-app-attendedsysupgrade \
+curl iperf3 luci-app-attendedsysupgrade \
 auc bmon"
+
 
 # additional packages
 if [[ "$DEVICE" =~ Main|main ]]; then
@@ -43,7 +44,7 @@ esac
 # For https://firmware-selector.openwrt.org/
 # Add packages. NOTE: To install wpad-wolfssl, just replace the package name with wpad-basic-wolfssl
 ### basic
-# (...) collectd collectd-mod-sensors collectd-mod-thermal luci-app-statistics luci luci-ssl luci-i18n-base-pl vim htop curl iperf3 irqbalance luci-app-attendedsysupgrade auc bmon
+# (...) collectd collectd-mod-sensors collectd-mod-thermal luci-app-statistics luci luci-ssl luci-i18n-base-pl vim htop curl iperf3 luci-app-attendedsysupgrade auc bmon opkg remove irqbalance
 
 ### wireguard
 #       luci-app-wireguard luci-proto-wireguard kmod-wireguard wireguard-tools qrencode
