@@ -4,17 +4,18 @@
 DEVICE="${DEVICE:-$1}"
 FULL_WPAD="${FULL_WPAD:-'yes'}"
 INSTALL_BRIDGER=${INSTALL_BRIDGER:-'true'}
+CRYPTO_LIB=${CRYPTO_LIB:-'openssl'}
 
 COMMAND="opkg update"
 if [[ "$FULL_WPAD" =~ yes|Yes ]]; then
   COMMAND="$COMMAND; opkg remove wpad-basic-wolfssl;"
-  COMMAND="$COMMAND; opkg remove wpad-basic-mbedtls; opkg install wpad-mbedtls"
+  COMMAND="$COMMAND; opkg remove wpad-basic-mbedtls; opkg install wpad-$CRYPTO_LIB"
 fi
 
 # basic packages
-COMMAND="$COMMAND; opkg install collectd collectd-mod-sensors \
-collectd-mod-thermal luci-app-statistics collectd-mod-irq \
-luci luci-ssl luci-i18n-base-pl vim htop \
+COMMAND="$COMMAND; opkg install collectd collectd-mod-sensors collectd-mod-thermal \
+luci-app-statistics collectd-mod-irq collectd-mod-dns collectd-mod-wireless \
+luci luci-i18n-base-pl vim htop \
 curl iperf3 luci-app-attendedsysupgrade \
 auc bmon"
 
@@ -49,7 +50,8 @@ esac
 # For https://firmware-selector.openwrt.org/
 # Add packages. NOTE: To install wpad-wolfssl, just replace the package name with wpad-basic-wolfssl
 ### basic
-# (...) collectd collectd-mod-sensors collectd-mod-thermal luci-app-statistics luci luci-ssl luci-i18n-base-pl vim htop curl iperf3 luci-app-attendedsysupgrade auc bmon opkg remove irqbalance
+#       opkg update; opkg remove irqbalance
+#       opkg install collectd collectd-mod-sensors collectd-mod-thermal luci-app-statistics collectd-mod-irq collectd-mod-dns collectd-mod-wireless luci luci-i18n-base-pl vim htop curl iperf3 luci-app-attendedsysupgrade auc bmon
 
 ### wireguard
 #       luci-app-wireguard luci-proto-wireguard kmod-wireguard wireguard-tools qrencode
