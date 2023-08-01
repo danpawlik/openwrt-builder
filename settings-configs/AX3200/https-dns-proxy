@@ -9,7 +9,7 @@ config main 'config'
 config https-dns-proxy
 	option resolver_url 'https://cloudflare-dns.com/dns-query'
 	option listen_addr '127.0.0.1'
-	option listen_port '5054'
+	option listen_port '5053'
 	option user 'nobody'
 	option group 'nogroup'
 	option bootstrap_dns '1.1.1.1,1.0.0.1,2606:4700:4700::1111,2606:4700:4700::1001'
@@ -17,7 +17,7 @@ config https-dns-proxy
 config https-dns-proxy
 	option resolver_url 'https://dns.google/dns-query'
 	option listen_addr '127.0.0.1'
-	option listen_port '5053'
+	option listen_port '5054'
 	option user 'nobody'
 	option group 'nogroup'
 	option bootstrap_dns '8.8.8.8,8.8.4.4,2001:4860:4860::8888,2001:4860:4860::8844'
