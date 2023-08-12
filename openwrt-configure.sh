@@ -25,7 +25,7 @@ if [[ "$DEVICE" =~ Main|main ]]; then
     COMMAND="$COMMAND collectd-mod-dhcpleases collectd-mod-thermal"
     COMMAND="$COMMAND luci-app-wireguard luci-proto-wireguard kmod-wireguard wireguard-tools qrencode"
     COMMAND="$COMMAND https-dns-proxy luci-app-https-dns-proxy luci-i18n-https-dns-proxy-pl"
-    COMMAND="$COMMAND luci-app-sqm luci-i18n-sqm-pl collectd-mod-sqm"
+    COMMAND="$COMMAND luci-app-sqm luci-i18n-sqm-pl collectd-mod-sqm sqm-scripts-extra"
 fi
 
 if ! [[ "$DEVICE" =~ Main|main ]] && [[ "$INSTALL_BRIDGER" =~ True|true ]]; then
