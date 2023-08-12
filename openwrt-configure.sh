@@ -13,16 +13,16 @@ if [[ "$FULL_WPAD" =~ yes|Yes ]]; then
 fi
 
 # basic packages
-COMMAND="$COMMAND; opkg install collectd collectd-mod-sensors collectd-mod-thermal \
-luci-app-statistics collectd-mod-irq collectd-mod-dns collectd-mod-wireless \
-collectd-mod-unixsock luci luci-i18n-base-pl vim htop \
+COMMAND="$COMMAND; opkg install collectd collectd-mod-sensors collectd-mod-irq \
+collectd-mod-dns collectd-mod-wireless collectd-mod-unixsock \
+luci-app-statistics luci luci-i18n-base-pl vim htop \
 curl iperf3 luci-app-attendedsysupgrade \
 auc bmon"
 
 
 # additional packages
 if [[ "$DEVICE" =~ Main|main ]]; then
-    COMMAND="$COMMAND collectd-mod-dhcpleases"
+    COMMAND="$COMMAND collectd-mod-dhcpleases collectd-mod-thermal"
     COMMAND="$COMMAND luci-app-wireguard luci-proto-wireguard kmod-wireguard wireguard-tools qrencode"
     COMMAND="$COMMAND https-dns-proxy luci-app-https-dns-proxy luci-i18n-https-dns-proxy-pl"
     COMMAND="$COMMAND luci-app-sqm luci-i18n-sqm-pl collectd-mod-sqm"
