@@ -7,10 +7,9 @@ INSTALL_BRIDGER=${INSTALL_BRIDGER:-'true'}
 CRYPTO_LIB=${CRYPTO_LIB:-'openssl'}
 
 COMMAND="opkg update"
-if [[ "$FULL_WPAD" =~ yes|Yes ]]; then
-  COMMAND="$COMMAND; opkg remove wpad-basic-wolfssl"
-  COMMAND="$COMMAND; opkg remove wpad-basic-mbedtls; opkg install wpad-$CRYPTO_LIB"
-fi
+#if [[ "$FULL_WPAD" =~ yes|Yes ]]; then
+#  COMMAND="$COMMAND; opkg remove wpad-basic-mbedtls; opkg install wpad-$CRYPTO_LIB"
+#fi
 
 # basic packages
 COMMAND="$COMMAND; opkg install collectd collectd-mod-sensors collectd-mod-irq \
