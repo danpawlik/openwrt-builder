@@ -9,8 +9,8 @@ RUN dnf -y install vim bash-completion bzip2 gcc gcc-c++ git make ncurses-devel 
     dnf install -y clang llvm gcc libbpf-devel libxdp-devel xdp-tools \
     bpftool kernel-headers elfutils-libelf-devel zlib-devel libpcap-devel \
     m4 wireshark-cli python3-netifaces python3-unidecode \
-    python3-sqlparse python3-aiosignal python3-charset-normalizer python3-frozenlist && \
-    dnf clean all
+    python3-sqlparse python3-aiosignal python3-charset-normalizer python3-frozenlist \
+    python3-networkx luajit2.1-luv luajit2.1-luv-devel && dnf clean all
 
 RUN useradd -m user && \
     echo 'user ALL=NOPASSWD: ALL' > /etc/sudoers.d/user ; \
