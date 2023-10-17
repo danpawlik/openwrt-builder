@@ -10,11 +10,12 @@ RUN dnf -y install vim bash-completion bzip2 gcc gcc-c++ git make ncurses-devel 
     bpftool kernel-headers elfutils-libelf-devel zlib-devel libpcap-devel \
     m4 wireshark-cli python3-netifaces python3-unidecode \
     python3-sqlparse python3-aiosignal python3-charset-normalizer python3-frozenlist \
-    python3-networkx luajit2.1-luv luajit2.1-luv-devel && dnf clean all
+    python3-networkx luajit2.1-luv libnghttp2-devel \
+    perl-Time-Piece perl-Test-CPAN-Meta-JSON && dnf clean all
 
-RUN useradd -m user && \
-    echo 'user ALL=NOPASSWD: ALL' > /etc/sudoers.d/user ; \
-    echo 'export PS1="[\u@\h \W]\$ "' >> .bashrc
+RUN echo 'export PS1="[\u@\h \W]\$ "' >> /etc/skel/.bashrc ; \
+    useradd -rm -d /home/user -s /bin/bash -k /etc/skel user ; \
+    echo 'user ALL=NOPASSWD: ALL' > /etc/sudoers.d/user ;
 
 USER user
 WORKDIR /home/user
@@ -22,4 +23,4 @@ WORKDIR /home/user
 # set dummy git config
 RUN /usr/bin/git config --global user.email "you@example.com" ; \
     /usr/bin/git config --global user.name "Your Name" ; \
-    echo 'export PS1="[\u@\h \W]\$ "' >> .bashrc
+    /usr/bin/git config --global pull.rebase true
