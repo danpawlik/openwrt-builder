@@ -26,7 +26,7 @@ COMMAND="$COMMAND; opkg install collectd collectd-mod-sensors collectd-mod-irq \
 collectd-mod-dns collectd-mod-wireless \
 luci-app-statistics luci vim htop \
 curl iperf3 luci-app-attendedsysupgrade \
-auc bmon irqbalance rsync"
+auc bmon irqbalance rsync usteer"
 
 # additional packages
 if [[ "$DEVICE" =~ Main|main ]]; then
@@ -62,7 +62,7 @@ esac
 # Add packages. NOTE: To install wpad-wolfssl, just replace the package name with wpad-basic-wolfssl
 ### basic
 #       opkg update;
-#       opkg install collectd collectd-mod-sensors collectd-mod-irq collectd-mod-dns collectd-mod-wireless luci-app-statistics luci luci-i18n-base-pl vim htop curl iperf3 luci-app-attendedsysupgrade auc bmon irqbalance rsync
+#       opkg install collectd collectd-mod-sensors collectd-mod-irq collectd-mod-dns collectd-mod-wireless luci-app-statistics luci luci-i18n-base-pl vim htop curl iperf3 luci-app-attendedsysupgrade auc bmon irqbalance rsync usteer
 
 ### wireguard
 #       luci-app-wireguard luci-proto-wireguard kmod-wireguard wireguard-tools qrencode
@@ -75,6 +75,11 @@ esac
 
 ### Bufferbloat - install SQM - https://openwrt.org/docs/guide-user/network/traffic-shaping/sqm
 #       luci-app-sqm luci-i18n-sqm-pl collectd-mod-sqm sqm-scripts-extra
+
+### Better roaming
+#       usteer luci-app-usteer
+# OR
+#       dawn luci-app-dawn
 
 ### Others
 #       collectd-mod-dhcpleases collectd-mod-thermal
