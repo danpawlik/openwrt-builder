@@ -41,6 +41,17 @@ bananapi,bpi-r3)
 		;;
 	esac
 	;;
+bananapi,bpi-r4)
+	rootdisk="$(cat /sys/firmware/devicetree/base/chosen/rootdisk)"
+	rootdisk_nand="$(cat /sys/firmware/devicetree/base/chosen/rootdisk-spim-nand)"
+	if [ "$rootdisk" = "$rootdisk_nand" ]; then
+		ubootenv_add_ubi_default
+	else
+		local envdev=$(find_mmc_part "ubootenv" $rootdev)
+		ubootenv_add_uci_config "$envdev" "0x0" "0x40000" "0x40000" "1"
+		ubootenv_add_uci_config "$envdev" "0x40000" "0x40000" "0x40000" "1"
+	fi
+	;;
 cmcc,rax3000m)
 	case "$(cmdline_get_var root)" in
 	/dev/mmc*)
