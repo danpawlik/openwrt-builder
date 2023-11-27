@@ -11,6 +11,15 @@ touch /etc/config/ubootenv
 
 board=$(board_name)
 
+ubootenv_add_ubi_default() {
+	. /lib/upgrade/nand.sh
+	local envubi=$(nand_find_ubi ubi)
+	local envdev=/dev/$(nand_find_volume $envubi ubootenv)
+	local envdev2=/dev/$(nand_find_volume $envubi ubootenv2)
+	ubootenv_add_uci_config "$envdev" "0x0" "0x1f000" "0x1f000" "1"
+	ubootenv_add_uci_config "$envdev2" "0x0" "0x1f000" "0x1f000" "1"
+}
+
 case "$board" in
 bananapi,bpi-r3)
 	rootdev="$(cmdline_get_var root)"
@@ -28,12 +37,7 @@ bananapi,bpi-r3)
 		ubootenv_add_uci_config "$envdev" "0x20000" "0x20000" "0x20000" "1"
 		;;
 	ubi*)
-		. /lib/upgrade/nand.sh
-		local envubi=$(nand_find_ubi ubi)
-		local envdev=/dev/$(nand_find_volume $envubi ubootenv)
-		local envdev2=/dev/$(nand_find_volume $envubi ubootenv2)
-		ubootenv_add_uci_config "$envdev" "0x0" "0x1f000" "0x1f000" "1"
-		ubootenv_add_uci_config "$envdev2" "0x0" "0x1f000" "0x1f000" "1"
+		ubootenv_add_ubi_default
 		;;
 	esac
 	;;
@@ -45,12 +49,7 @@ cmcc,rax3000m)
 		ubootenv_add_uci_config "$envdev" "0x40000" "0x40000" "0x40000" "1"
 		;;
 	*)
-		. /lib/upgrade/nand.sh
-		local envubi=$(nand_find_ubi ubi)
-		local envdev=/dev/$(nand_find_volume $envubi ubootenv)
-		local envdev2=/dev/$(nand_find_volume $envubi ubootenv2)
-		ubootenv_add_uci_config "$envdev" "0x0" "0x1f000" "0x1f000" "1"
-		ubootenv_add_uci_config "$envdev2" "0x0" "0x1f000" "0x1f000" "1"
+		ubootenv_add_ubi_default
 		;;
 	esac
 	;;
@@ -66,13 +65,9 @@ tplink,tl-xdr4288|\
 tplink,tl-xdr6086|\
 tplink,tl-xdr6088|\
 xiaomi,mi-router-wr30u-ubootmod|\
-xiaomi,redmi-router-ax6000-ubootmod)
-	. /lib/upgrade/nand.sh
-	local envubi=$(nand_find_ubi ubi)
-	local envdev=/dev/$(nand_find_volume $envubi ubootenv)
-	local envdev2=/dev/$(nand_find_volume $envubi ubootenv2)
-	ubootenv_add_uci_config "$envdev" "0x0" "0x1f000" "0x20000" "1"
-	ubootenv_add_uci_config "$envdev2" "0x0" "0x1f000" "0x20000" "1"
+xiaomi,redmi-router-ax6000-ubootmod|\
+zyxel,ex5601-t0-ubootmod)
+	ubootenv_add_ubi_default
 	;;
 glinet,gl-mt2500|\
 glinet,gl-mt6000)
@@ -99,14 +94,6 @@ zyxel,ex5601-t0)
 	local envdev=/dev/mtd$(find_mtd_index "u-boot-env")
 	ubootenv_add_uci_config "$envdev" "0x0" "0x20000" "0x40000" "2"
 	;;
-zyxel,ex5601-t0-ubootmod)
-        . /lib/upgrade/nand.sh
-        local envubi=$(nand_find_ubi ubi)
-        local envdev=/dev/$(nand_find_volume $envubi ubootenv)
-        local envdev2=/dev/$(nand_find_volume $envubi ubootenv2)
-        ubootenv_add_uci_config "$envdev" "0x0" "0x1f000" "0x20000" "1"
-        ubootenv_add_uci_config "$envdev2" "0x0" "0x1f000" "0x20000" "1"
-        ;;
 zyxel,ex5700-telenor)
 	ubootenv_add_uci_config "/dev/ubootenv" "0x0" "0x4000" "0x4000" "1"
 	;;
