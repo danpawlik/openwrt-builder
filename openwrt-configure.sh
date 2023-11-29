@@ -22,18 +22,17 @@ COMMAND="opkg update"
 #fi
 
 # basic packages
-COMMAND="$COMMAND; opkg install collectd collectd-mod-sensors collectd-mod-irq \
+COMMAND="$COMMAND; opkg install collectd collectd-mod-sensors \
 collectd-mod-dns collectd-mod-wireless \
-luci-app-statistics luci vim htop \
+luci-app-statistics luci luci-i18n-base-pl vim htop \
 curl iperf3 luci-app-attendedsysupgrade \
 auc bmon irqbalance rsync usteer"
 
 # additional packages
 if [[ "$DEVICE" =~ Main|main ]]; then
-    COMMAND="$COMMAND collectd-mod-dhcpleases collectd-mod-thermal"
     COMMAND="$COMMAND luci-app-wireguard luci-proto-wireguard kmod-wireguard wireguard-tools qrencode"
     COMMAND="$COMMAND https-dns-proxy luci-app-https-dns-proxy luci-i18n-https-dns-proxy-pl libcurl4 libnghttp3 libngtcp2"
-    COMMAND="$COMMAND luci-app-sqm collectd-mod-sqm"
+    COMMAND="$COMMAND luci-app-sqm"
     COMMAND="$COMMAND ddns-scripts luci-app-ddns bind-host"
 fi
 
@@ -62,7 +61,7 @@ esac
 # Add packages. NOTE: To install wpad-wolfssl, just replace the package name with wpad-basic-wolfssl
 ### basic
 #       opkg update;
-#       opkg install collectd collectd-mod-sensors collectd-mod-irq collectd-mod-dns collectd-mod-wireless luci-app-statistics luci luci-i18n-base-pl vim htop curl iperf3 luci-app-attendedsysupgrade auc bmon irqbalance rsync usteer
+#       opkg install collectd collectd-mod-sensors collectd-mod-dns collectd-mod-wireless luci-app-statistics luci luci-i18n-base-pl vim htop curl iperf3 luci-app-attendedsysupgrade auc bmon irqbalance rsync usteer
 
 ### wireguard
 #       luci-app-wireguard luci-proto-wireguard kmod-wireguard wireguard-tools qrencode
@@ -74,15 +73,12 @@ esac
 #       ddns-scripts luci-app-ddns bind-host
 
 ### Bufferbloat - install SQM - https://openwrt.org/docs/guide-user/network/traffic-shaping/sqm
-#       luci-app-sqm luci-i18n-sqm-pl collectd-mod-sqm sqm-scripts-extra
+#       luci-app-sqm luci-i18n-sqm-pl sqm-scripts-extra
 
 ### Better roaming
 #       usteer luci-app-usteer
 # OR
 #       dawn luci-app-dawn
-
-### Others
-#       collectd-mod-dhcpleases collectd-mod-thermal
 
 ### to use mbedtls, replace:
 # libustream-wolfssl and wpad-basic-wolfssl *WITH* libustream-mbedtls and wpad-basic-mbedtls.
