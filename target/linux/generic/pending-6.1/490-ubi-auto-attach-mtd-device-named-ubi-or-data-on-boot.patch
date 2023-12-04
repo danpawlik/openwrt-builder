@@ -8,9 +8,9 @@ Signed-off-by: Daniel Golle <daniel@makrotopia.org>
 
 --- a/drivers/mtd/ubi/build.c
 +++ b/drivers/mtd/ubi/build.c
-@@ -1212,6 +1212,73 @@ static struct mtd_info * __init open_mtd
- 	return mtd;
- }
+@@ -1328,6 +1328,73 @@ out_detach:
+ late_initcall(ubi_init_attach);
+ #endif
  
 +/*
 + * This function tries attaching mtd partitions named either "ubi" or "data"
@@ -81,10 +81,10 @@ Signed-off-by: Daniel Golle <daniel@makrotopia.org>
 +
  static int __init ubi_init(void)
  {
- 	int err, i, k;
-@@ -1296,6 +1363,12 @@ static int __init ubi_init(void)
- 		}
- 	}
+ 	int err;
+@@ -1365,6 +1432,12 @@ static int __init ubi_init(void)
+ 	if (err)
+ 		goto out_slab;
  
 +	/* auto-attach mtd devices only if built-in to the kernel and no ubi.mtd
 +	 * parameter was given */
