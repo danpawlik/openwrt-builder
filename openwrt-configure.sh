@@ -26,7 +26,7 @@ COMMAND="$COMMAND; opkg install collectd collectd-mod-sensors \
 collectd-mod-dns collectd-mod-wireless \
 luci-app-statistics luci luci-i18n-base-pl vim htop \
 curl iperf3 luci-app-attendedsysupgrade \
-auc bmon irqbalance rsync usteer"
+auc bmon irqbalance rsync dawn luci-app-dawn"
 
 # additional packages
 if [[ "$DEVICE" =~ Main|main ]]; then
@@ -61,7 +61,7 @@ esac
 # Add packages. NOTE: To install wpad-wolfssl, just replace the package name with wpad-basic-wolfssl
 ### basic
 #       opkg update;
-#       opkg install collectd collectd-mod-sensors collectd-mod-dns collectd-mod-wireless luci-app-statistics luci luci-i18n-base-pl vim htop curl iperf3 luci-app-attendedsysupgrade auc bmon irqbalance rsync usteer
+#       opkg install collectd collectd-mod-sensors collectd-mod-dns collectd-mod-wireless luci-app-statistics luci luci-i18n-base-pl vim htop curl iperf3 luci-app-attendedsysupgrade auc bmon irqbalance rsync dawn luci-app-dawn
 
 ### wireguard
 #       luci-app-wireguard luci-proto-wireguard kmod-wireguard wireguard-tools qrencode
