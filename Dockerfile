@@ -13,6 +13,9 @@ RUN dnf -y install vim bash-completion bzip2 gcc gcc-c++ git make ncurses-devel 
     python3-networkx luajit2.1-luv libnghttp2-devel \
     perl-Time-Piece perl-Test-CPAN-Meta-JSON && dnf clean all
 
+RUN ln -s /usr/lib64/$(ls /usr/lib64/ | grep libbz2 | sort -r | head -n1) /usr/lib64/libbz2.so.1.0 && \
+    ln -s /usr/lib64/$(ls /usr/lib64/ | grep libbz2 | sort -r | head -n1) /usr/lib64/libbz2.so.1
+
 RUN echo 'export PS1="[\u@\h \W]\$ "' >> /etc/skel/.bashrc ; \
     useradd -rm -d /home/user -s /bin/bash -k /etc/skel user ; \
     echo 'user ALL=NOPASSWD: ALL' > /etc/sudoers.d/user ;
