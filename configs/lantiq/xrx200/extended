@@ -62,6 +62,7 @@ CONFIG_DEFAULT_wpad-basic-mbedtls=y
 CONFIG_PACKAGE_libmbedtls=y
 CONFIG_PACKAGE_libustream-mbedtls=y
 CONFIG_PACKAGE_wpad-mbedtls=y
+CONFIG_PACKAGE_wpad-basic-mbedtls=m
 
 # collecd
 # CONFIG_PACKAGE_collectd=y
