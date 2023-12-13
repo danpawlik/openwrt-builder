@@ -10,7 +10,7 @@ RUN dnf -y install vim bash-completion bzip2 gcc gcc-c++ git make ncurses-devel 
     bpftool kernel-headers elfutils-libelf-devel zlib-devel libpcap-devel \
     m4 wireshark-cli python3-netifaces python3-unidecode \
     python3-sqlparse python3-aiosignal python3-charset-normalizer python3-frozenlist \
-    python3-networkx luajit2.1-luv libnghttp2-devel \
+    python3-networkx python3-setuptools luajit2.1-luv libnghttp2-devel \
     perl-Time-Piece perl-Test-CPAN-Meta-JSON && dnf clean all
 
 RUN ln -s /usr/lib64/$(ls /usr/lib64/ | grep libbz2 | sort -r | head -n1) /usr/lib64/libbz2.so.1.0 && \
