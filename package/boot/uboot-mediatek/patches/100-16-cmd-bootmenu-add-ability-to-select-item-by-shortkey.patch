@@ -301,7 +301,7 @@ Signed-off-by: Weijie Gao <weijie.gao@mediatek.com>
  
  		switch (key) {
  		case BKEY_UP:
-@@ -1937,7 +1937,7 @@ char *eficonfig_choice_change_boot_order
+@@ -1835,7 +1835,7 @@ char *eficonfig_choice_change_boot_order
  
  	cli_ch_init(cch);
  	while (1) {
@@ -312,7 +312,7 @@ Signed-off-by: Weijie Gao <weijie.gao@mediatek.com>
  		case BKEY_PLUS:
 --- a/boot/bootflow_menu.c
 +++ b/boot/bootflow_menu.c
-@@ -231,7 +231,7 @@ int bootflow_menu_run(struct bootstd_pri
+@@ -235,7 +235,7 @@ int bootflow_menu_run(struct bootstd_pri
  
  		key = 0;
  		if (ichar) {
