@@ -114,5 +114,11 @@ CONFIG_LUCI_LANG_pl=y
 CONFIG_PACKAGE_kmod-mt7921-common=y
 CONFIG_PACKAGE_kmod-mt7921-firmware=y
 CONFIG_PACKAGE_kmod-mt7921e=y
-CONFIG_PACKAGE_kmod-mt7921s=y
-CONFIG_PACKAGE_kmod-mt7921u=y
+# CONFIG_PACKAGE_kmod-mt7921s=y
+# CONFIG_PACKAGE_kmod-mt7921u=y
+
+## debuging
+CONFIG_PACKAGE_block-mount=m
+CONFIG_PACKAGE_blockd=m
+CONFIG_PACKAGE_mtdev=m
+CONFIG_PACKAGE_kmod-mtd-rw=y
