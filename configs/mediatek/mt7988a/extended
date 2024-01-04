@@ -45,6 +45,7 @@ CONFIG_PACKAGE_iperf3=y
 CONFIG_PACKAGE_curl=y
 CONFIG_PACKAGE_rsync=y
 CONFIG_PACKAGE_irqbalance=y
+CONFIG_PACKAGE_luci-app-irqbalance=y
 
 # additional kmods required by basic packages (also required by collecd)
 CONFIG_PACKAGE_kmod-nf-ipt=y
@@ -118,7 +119,7 @@ CONFIG_PACKAGE_kmod-mt7921e=y
 # CONFIG_PACKAGE_kmod-mt7921u=y
 
 ## debuging
-CONFIG_PACKAGE_block-mount=m
+CONFIG_PACKAGE_block-mount=y
 CONFIG_PACKAGE_blockd=m
 CONFIG_PACKAGE_mtdev=m
 CONFIG_PACKAGE_kmod-mtd-rw=y
