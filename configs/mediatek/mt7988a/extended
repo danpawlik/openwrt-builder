@@ -95,9 +95,9 @@ CONFIG_PACKAGE_collectd-mod-sensors=y
 CONFIG_PACKAGE_collectd-mod-wireless=y
 CONFIG_PACKAGE_collectd-mod-dns=y
 
-# dawn
-CONFIG_PACKAGE_dawn=y
-CONFIG_PACKAGE_luci-app-dawn=y
+## dawn
+# CONFIG_PACKAGE_dawn=y
+# CONFIG_PACKAGE_luci-app-dawn=y
 
 # sqm
 CONFIG_PACKAGE_luci-app-sqm=y
@@ -124,3 +124,8 @@ CONFIG_PACKAGE_blockd=m
 CONFIG_PACKAGE_mtdev=m
 CONFIG_PACKAGE_kmod-mtd-rw=y
 CONFIG_PACKAGE_tcpdump=y
+
+# pre-init configuration
+CONFIG_TARGET_PREINIT_IP="192.168.88.1"
+CONFIG_TARGET_PREINIT_NETMASK="255.255.255.0"
+CONFIG_TARGET_PREINIT_BROADCAST="192.168.88.255"
