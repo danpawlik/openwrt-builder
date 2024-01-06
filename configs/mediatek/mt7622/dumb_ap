@@ -1,16 +1,13 @@
 
-# NOTE: Below steps will not work until https://github.com/openwrt/openwrt/pull/14140
-# is not merged!
-#
 # NOTE: Take the snapshot configuration file and attach the content to it.
 # STEPS:
-# curl -SL https://downloads.openwrt.org/snapshots/targets/mediatek/mt7988a/config.buildinfo > .config
+# curl -SL https://downloads.openwrt.org/snapshots/targets/mediatek/mt7622/config.buildinfo > .config
 # sed -i '/CONFIG_TARGET_DEVICE_/d' .config; sed -i 's/CONFIG_TARGET_MULTI_PROFILE=y/CONFIG_TARGET_MULTI_PROFILE=n/g' .config
-# curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/mediatek/mt7988a/extended >> .config
+# curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/mediatek/mt7622/extended >> .config
 
 CONFIG_TARGET_mediatek=y
-CONFIG_TARGET_mediatek_filogic=y
-CONFIG_TARGET_mediatek_filogic_DEVICE_bananapi_bpi-r4=y
+CONFIG_TARGET_mediatek_mt7622=y
+CONFIG_TARGET_mediatek_mt7622_DEVICE_xiaomi_redmi-router-ax6s=y
 
 # LuCI
 CONFIG_PACKAGE_cgi-io=y
@@ -45,8 +42,8 @@ CONFIG_PACKAGE_iperf3=y
 CONFIG_PACKAGE_curl=y
 CONFIG_PACKAGE_rsync=y
 CONFIG_PACKAGE_tcpdump=y
-# CONFIG_PACKAGE_irqbalance=y
-# CONFIG_PACKAGE_luci-app-irqbalance=y
+CONFIG_PACKAGE_irqbalance=y
+CONFIG_PACKAGE_luci-app-irqbalance=y
 
 # additional kmods required by basic packages (also required by collecd)
 CONFIG_PACKAGE_kmod-nf-ipt=y
@@ -62,17 +59,17 @@ CONFIG_PACKAGE_auc=y
 # use experimental kernel
 CONFIG_TESTING_KERNEL=y
 
-# wireguard
-CONFIG_PACKAGE_kmod-wireguard=y
-CONFIG_PACKAGE_wireguard-tools=y
-CONFIG_PACKAGE_luci-proto-wireguard=y
-CONFIG_PACKAGE_qrencode=y
+## wireguard
+#CONFIG_PACKAGE_kmod-wireguard=y
+#CONFIG_PACKAGE_wireguard-tools=y
+#CONFIG_PACKAGE_luci-proto-wireguard=y
+#CONFIG_PACKAGE_qrencode=y
 
-# https dns
-CONFIG_PACKAGE_https-dns-proxy=y
-CONFIG_PACKAGE_luci-app-https-dns-proxy=y
-CONFIG_PACKAGE_libnghttp3=y
-CONFIG_PACKAGE_libngtcp2=y
+## https dns
+#CONFIG_PACKAGE_https-dns-proxy=y
+#CONFIG_PACKAGE_luci-app-https-dns-proxy=y
+#CONFIG_PACKAGE_libnghttp3=y
+#CONFIG_PACKAGE_libngtcp2=y
 
 # wpad full
 CONFIG_DEFAULT_libustream-mbedtls=y
@@ -100,32 +97,14 @@ CONFIG_PACKAGE_collectd-mod-dns=y
 CONFIG_PACKAGE_dawn=y
 CONFIG_PACKAGE_luci-app-dawn=y
 
-# sqm
-CONFIG_PACKAGE_luci-app-sqm=y
-CONFIG_PACKAGE_sqm-scripts=y
+## sqm
+#CONFIG_PACKAGE_luci-app-sqm=y
+#CONFIG_PACKAGE_sqm-scripts=y
 
-# ddns
-CONFIG_PACKAGE_luci-app-ddns=y
-CONFIG_PACKAGE_ddns-scripts=y
-CONFIG_PACKAGE_bind-host=y
+## ddns
+#CONFIG_PACKAGE_luci-app-ddns=y
+#CONFIG_PACKAGE_ddns-scripts=y
+#CONFIG_PACKAGE_bind-host=y
 
 # language
 CONFIG_LUCI_LANG_pl=y
-
-# MT7921
-CONFIG_PACKAGE_kmod-mt7921-common=y
-CONFIG_PACKAGE_kmod-mt7921-firmware=y
-CONFIG_PACKAGE_kmod-mt7921e=y
-# CONFIG_PACKAGE_kmod-mt7921s=y
-# CONFIG_PACKAGE_kmod-mt7921u=y
-
-## debuging
-CONFIG_PACKAGE_block-mount=y
-CONFIG_PACKAGE_blockd=m
-CONFIG_PACKAGE_mtdev=m
-CONFIG_PACKAGE_kmod-mtd-rw=y
-
-# pre-init configuration
-CONFIG_TARGET_PREINIT_IP="192.168.88.1"
-CONFIG_TARGET_PREINIT_NETMASK="255.255.255.0"
-CONFIG_TARGET_PREINIT_BROADCAST="192.168.88.255"
