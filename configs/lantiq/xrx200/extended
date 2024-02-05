@@ -59,3 +59,6 @@ CONFIG_PACKAGE_wpad-basic-mbedtls=m
 
 # collecd
 # CONFIG_PACKAGE_collectd=y
+
+# some other network stats
+# CONFIG_PACKAGE_luci-app-vnstat2=y
