@@ -113,3 +113,7 @@ CONFIG_PACKAGE_bind-host=y
 
 # language
 CONFIG_LUCI_LANG_pl=y
+
+# Disable CONFIG_ALL_KMODS
+# More: https://github.com/openwrt/openwrt/commit/dadad6bb731ff1025125c619da7ccc196ad6ea01
+CONFIG_ALL_KMODS=n
