@@ -27,7 +27,8 @@ COMMAND="$COMMAND; opkg install collectd collectd-mod-sensors \
 collectd-mod-dns collectd-mod-wireless \
 luci-app-statistics luci luci-i18n-base-pl vim htop \
 curl iperf3 luci-app-attendedsysupgrade \
-auc bmon irqbalance luci-app-irqbalance rsync"
+auc bmon irqbalance luci-app-irqbalance rsync \
+bind-dig ethtool-full pciutils tcpdump"
 
 if [[ "$INSTALL_DAWN" =~ True|true ]]; then
     COMMAND="$COMMAND dawn luci-app-dawn"
@@ -38,6 +39,7 @@ fi
 if [[ "$DEVICE" =~ Main|main ]]; then
     COMMAND="$COMMAND luci-app-wireguard luci-proto-wireguard kmod-wireguard wireguard-tools qrencode"
     COMMAND="$COMMAND https-dns-proxy luci-app-https-dns-proxy luci-i18n-https-dns-proxy-pl libcurl4 libnghttp3 libngtcp2"
+    COMMAND="$COMMAND luci-app-vnstat2"
     COMMAND="$COMMAND luci-app-sqm"
     COMMAND="$COMMAND ddns-scripts luci-app-ddns bind-host"
 fi
@@ -68,6 +70,9 @@ esac
 ### basic
 #       opkg update;
 #       opkg install collectd collectd-mod-sensors collectd-mod-dns collectd-mod-wireless luci-app-statistics luci luci-i18n-base-pl vim htop curl iperf3 luci-app-attendedsysupgrade auc bmon irqbalance luci-app-irqbalance rsync
+#
+### additional
+#       opkg install bind-dig ethtool-full pciutils tcpdump luci-app-vnstat2
 
 ### wireguard
 #       luci-app-wireguard luci-proto-wireguard kmod-wireguard wireguard-tools qrencode
