@@ -33,7 +33,6 @@ CONFIG_PACKAGE_luci-mod-status=y
 CONFIG_PACKAGE_luci-mod-system=y
 CONFIG_PACKAGE_luci-proto-ipv6=y
 CONFIG_PACKAGE_luci-proto-ppp=y
-CONFIG_PACKAGE_luci-ssl=y
 CONFIG_PACKAGE_luci-theme-bootstrap=y
 
 # additional packages
@@ -117,3 +116,21 @@ CONFIG_PACKAGE_bind-host=y
 
 # language
 CONFIG_LUCI_LANG_pl=y
+
+##### REPLACE CRYPTOLIB #####
+# mbedtls - comment it when openssl or wolfssl enabled!
+CONFIG_PACKAGE_luci-ssl=y
+
+## replace mbedtls with openssl - remember to leave commented "is not set" !
+#CONFIG_PACKAGE_luci-ssl-openssl=y
+#CONFIG_PACKAGE_wpad-openssl=y
+## CONFIG_PACKAGE_wpad-mbedtls is not set
+## CONFIG_PACKAGE_wpad-basic-mbedtls is not set
+## CONFIG_PACKAGE_wpad-basic-openssl is not set
+
+## replace mbedtls with wolfssl - remember to leave commented "is not set" !
+# CONFIG_PACKAGE_luci-ssl-wolfssl=y
+# CONFIG_PACKAGE_wpad-wolfssl=y
+## CONFIG_PACKAGE_wpad-mbedtls is not set
+## CONFIG_PACKAGE_wpad-basic-mbedtls is not set
+## CONFIG_PACKAGE_wpad-basic-openssl is not set

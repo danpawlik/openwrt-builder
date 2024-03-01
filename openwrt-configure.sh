@@ -10,7 +10,13 @@ DEVICE="${DEVICE:-$2}"
 FULL_WPAD="${FULL_WPAD:-'yes'}"
 INSTALL_BRIDGER=${INSTALL_BRIDGER:-'true'}
 INSTALL_DAWN=${INSTALL_DAWN:-'false'}
-CRYPTO_LIB=${CRYPTO_LIB:-'openssl'}
+CRYPTO_LIB=${CRYPTO_LIB:-''} # wolfssl or openssl
+
+# To replace mbedtls with openssl via firmware-selector, just add:
+# -wpad-basic-mbedtls -libustream-mbedtls -libmbedtls libustream-openssl wpad-openssl luci-ssl-openssl
+#
+# To replace mbedtls with wolfssl via firmware-selector, just add:
+# -wpad-basic-mbedtls -libustream-mbedtls -libmbedtls libustream-wolfssl wpad-wolfssl luci-ssl-wolfssl
 
 if [ -z "$ROUTER_IP" ]; then
     echo "Please provide router ip like: 192.168.1.1"
@@ -18,9 +24,10 @@ if [ -z "$ROUTER_IP" ]; then
 fi
 
 COMMAND="opkg update"
-#if [[ "$FULL_WPAD" =~ yes|Yes ]]; then
-#  COMMAND="$COMMAND; opkg remove wpad-basic-mbedtls; opkg install wpad-$CRYPTO_LIB"
-#fi
+
+if [ -n "$CRYPTO_LIB" ]; then
+  COMMAND="$COMMAND; opkg install --force-depends wpad-$CRYPTO_LIB luci-ssl-$CRYPTO_LIB"
+fi
 
 # basic packages
 COMMAND="$COMMAND; opkg install collectd collectd-mod-sensors \
