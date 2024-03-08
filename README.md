@@ -13,7 +13,7 @@ cd openwrt-builder
 podman build -t openwrt-builder -f Dockerfile
 ```
 
-## Example
+## Example config
 
 How to use:
 
@@ -45,6 +45,8 @@ curl -SL https://downloads.openwrt.org/snapshots/targets/mediatek/mt7622/config.
 curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/ramips/mt7621/extended-full > ~/openwrt-builder/openwrt/.config
 curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/qualcommax/ax3600/extended-full > ~/openwrt-builder/openwrt/.config
 ```
+
+## Build
 
 Configure the firmware image and the kernel:
 
