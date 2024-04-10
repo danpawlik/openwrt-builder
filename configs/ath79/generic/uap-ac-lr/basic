@@ -2,28 +2,14 @@
 # STEPS:
 # curl -SL https://downloads.openwrt.org/snapshots/targets/ath79/generic/config.buildinfo > .config
 # sed -i '/CONFIG_TARGET_DEVICE_/d' .config; sed -i 's/CONFIG_TARGET_MULTI_PROFILE=y/CONFIG_TARGET_MULTI_PROFILE=n/g' .config
-# curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/ath79/generic/uap-ac-lr/extended  >> .config
+# curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/ath79/generic/uap-ac-lr/basic  >> .config
 CONFIG_TARGET_ath79=y
 CONFIG_TARGET_ath79_generic=y
 CONFIG_TARGET_ath79_generic_DEVICE_ubnt_unifiac-lr=y
-CONFIG_ALL_KMODS=y
-CONFIG_ALL_NONSHARED=y
 CONFIG_DEVEL=y
 CONFIG_TARGET_PER_DEVICE_ROOTFS=y
 CONFIG_AUTOREMOVE=y
-CONFIG_BPF_TOOLCHAIN_BUILD_LLVM=y
-# CONFIG_BPF_TOOLCHAIN_NONE is not set
-CONFIG_BUILDBOT=y
-CONFIG_COLLECT_KERNEL_DEBUG=y
-CONFIG_HAS_BPF_TOOLCHAIN=y
-CONFIG_IB=y
-CONFIG_JSON_CYCLONEDX_SBOM=y
 CONFIG_KERNEL_WERROR=y
-CONFIG_MAKE_TOOLCHAIN=y
-CONFIG_REPRODUCIBLE_DEBUG_INFO=y
-CONFIG_SDK=y
-CONFIG_SDK_LLVM_BPF=y
-CONFIG_USE_LLVM_BUILD=y
 
 # LuCI
 CONFIG_PACKAGE_cgi-io=y
