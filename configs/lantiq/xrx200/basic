@@ -5,8 +5,10 @@
 # sed -i '/CONFIG_TARGET_DEVICE_/d' .config; sed -i 's/CONFIG_TARGET_MULTI_PROFILE=y/CONFIG_TARGET_MULTI_PROFILE=n/g' .config
 # curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/lantiq/xrx200/basic >> .config
 
-CONFIG_TARGET_DEVICE_lantiq_xrx200_DEVICE_tplink_tdw8970=y
-CONFIG_TARGET_DEVICE_PACKAGES_lantiq_xrx200_DEVICE_tplink_tdw8970=""
+CONFIG_TARGET_lantiq=y
+CONFIG_TARGET_lantiq_xrx200=y
+CONFIG_TARGET_lantiq_xrx200_DEVICE_tplink_tdw8970=y
+CONFIG_TARGET_PROFILE="DEVICE_tplink_tdw8970"
 
 # LuCI
 CONFIG_PACKAGE_cgi-io=y
