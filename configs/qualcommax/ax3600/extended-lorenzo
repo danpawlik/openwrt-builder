@@ -211,4 +211,4 @@ CONFIG_PACKAGE_mhz=y
 CONFIG_PACKAGE_nss-eip-firmware=y
 CONFIG_PACKAGE_nss-firmware-default=y
 CONFIG_PACKAGE_nss-firmware-ipq8074=y
-CONFIG_PACKAGE_qca-ssdk-shell=y
+# CONFIG_PACKAGE_qca-ssdk-shell is not set
