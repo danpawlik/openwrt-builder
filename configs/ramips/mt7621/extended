@@ -109,22 +109,9 @@ CONFIG_PACKAGE_bind-host=y
 # language
 CONFIG_LUCI_LANG_pl=y
 
-##### REPLACE CRYPTOLIB #####
-# mbedtls - comment it when openssl or wolfssl enabled!
+####### REPLACE CRYPTOLIB #####
+# Remove section and copy from config/common/ a cryptolib section that you need.
 CONFIG_PACKAGE_luci-ssl=y
 CONFIG_PACKAGE_wpad-mbedtls=y
 CONFIG_PACKAGE_wpad-basic-mbedtls=m
-
-## replace mbedtls with openssl - remember to leave commented "is not set" !
-#CONFIG_PACKAGE_luci-ssl-openssl=y
-#CONFIG_PACKAGE_wpad-openssl=y
-## CONFIG_PACKAGE_wpad-mbedtls is not set
-## CONFIG_PACKAGE_wpad-basic-mbedtls is not set
-## CONFIG_PACKAGE_wpad-basic-openssl is not set
-
-## replace mbedtls with wolfssl - remember to leave commented "is not set" !
-# CONFIG_PACKAGE_luci-ssl-wolfssl=y
-# CONFIG_PACKAGE_wpad-wolfssl=y
-## CONFIG_PACKAGE_wpad-mbedtls is not set
-## CONFIG_PACKAGE_wpad-basic-mbedtls is not set
-## CONFIG_PACKAGE_wpad-basic-openssl is not set
+#######
