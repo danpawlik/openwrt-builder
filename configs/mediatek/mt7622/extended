@@ -90,8 +90,8 @@ CONFIG_PACKAGE_luci-app-vnstat2=y
 #CONFIG_PACKAGE_luci-app-dawn=y
 
 ### usteer
-#CONFIG_PACKAGE_usteer=y
-#CONFIG_PACKAGE_luci-app-usteer=y
+# CONFIG_PACKAGE_usteer=y
+# CONFIG_PACKAGE_luci-app-usteer=y
 
 # sqm
 CONFIG_PACKAGE_luci-app-sqm=y
@@ -107,24 +107,24 @@ CONFIG_PACKAGE_bind-host=y
 CONFIG_LUCI_LANG_pl=y
 
 ##### REPLACE CRYPTOLIB #####
-# mbedtls - comment it when openssl or wolfssl enabled!
+### mbedtls - comment it when openssl or wolfssl enabled!
 CONFIG_PACKAGE_luci-ssl=y
 CONFIG_PACKAGE_wpad-mbedtls=y
 CONFIG_PACKAGE_wpad-basic-mbedtls=m
 
-## replace mbedtls with openssl - remember to leave commented "is not set" !
-#CONFIG_PACKAGE_luci-ssl-openssl=y
-#CONFIG_PACKAGE_wpad-openssl=y
-## CONFIG_PACKAGE_wpad-mbedtls is not set
-## CONFIG_PACKAGE_wpad-basic-mbedtls is not set
-## CONFIG_PACKAGE_wpad-basic-openssl is not set
+#### replace mbedtls with openssl - remember to leave commented "is not set" !
+# CONFIG_PACKAGE_luci-ssl-openssl=y
+# CONFIG_PACKAGE_wpad-openssl=y
+# CONFIG_PACKAGE_wpad-mbedtls is not set
+# CONFIG_PACKAGE_wpad-basic-mbedtls is not set
+# CONFIG_PACKAGE_wpad-basic-openssl is not set
 
-## replace mbedtls with wolfssl - remember to leave commented "is not set" !
+#### replace mbedtls with wolfssl - remember to leave commented "is not set" !
 # CONFIG_PACKAGE_luci-ssl-wolfssl=y
 # CONFIG_PACKAGE_wpad-wolfssl=y
-## CONFIG_PACKAGE_wpad-mbedtls is not set
-## CONFIG_PACKAGE_wpad-basic-mbedtls is not set
-## CONFIG_PACKAGE_wpad-basic-openssl is not set
+# CONFIG_PACKAGE_wpad-mbedtls is not set
+# CONFIG_PACKAGE_wpad-basic-mbedtls is not set
+# CONFIG_PACKAGE_wpad-basic-openssl is not set
 
 # temporary workaround for kernel 6.6
 # CONFIG_PACKAGE_kmod-usb-serial-dmx_usb_module is not set
@@ -133,3 +133,9 @@ CONFIG_PACKAGE_wpad-basic-mbedtls=m
 # CONFIG_PACKAGE_kmod-usb-serial-xr_usb_serial_common is not set
 # CONFIG_PACKAGE_kmod-mlx5-core is not set
 # CONFIG_PACKAGE_kmod-leds-ubnt-ledbar is not set
+
+# Checking - net.ipv4.tcp_congestion_control.
+# According to the NSS thread - https://forum.openwrt.org/t/ipq807x-nss-build/148529
+# it might be faster. Remember to change the algorithm:
+# echo 'net.ipv4.tcp_congestion_control=bbr' >> /etc/sysctl.conf
+# CONFIG_PACKAGE_kmod-tcp-bbr=y

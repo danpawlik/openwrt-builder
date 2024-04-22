@@ -79,3 +79,6 @@ CONFIG_PACKAGE_wpad-mbedtls=y
 ## usteer
 # CONFIG_PACKAGE_usteer is not set
 # CONFIG_PACKAGE_luci-app-usteer is not set
+
+# language - luci-i18n-base-pl
+CONFIG_LUCI_LANG_pl=y
