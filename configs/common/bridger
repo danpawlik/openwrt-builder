@@ -1,0 +1,7 @@
+### deps for bridger package
+CONFIG_PACKAGE_kmod-sched-core=y
+CONFIG_PACKAGE_kmod-sched-flower=y
+CONFIG_PACKAGE_kmod-sched-bpf=y
+CONFIG_PACKAGE_kmod-sched-act-vlan=y
+CONFIG_PACKAGE_libelf=y
+CONFIG_PACKAGE_libbpf=y
