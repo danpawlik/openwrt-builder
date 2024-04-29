@@ -15,8 +15,8 @@ RUN dnf -y install vim bash-completion bzip2 gcc gcc-c++ git make ncurses-devel 
     e2fsprogs-libs && dnf clean all
 
 # To build BPI-R4-MT76-OPENWRT-V21.02
-RUN dnf install -y lsusb bison flex openssl-devel \
-    libjsoncpp-dev jsoncpp-devel json-devel cjson-devel && dnf clean all
+RUN dnf install -y usbutils bison flex openssl-devel \
+    jsoncpp-devel json-devel cjson-devel && dnf clean all
 
 RUN ln -s /usr/lib64/$(ls /usr/lib64/ | grep libbz2 | sort -r | head -n1) /usr/lib64/libbz2.so.1.0 || true ; \
     ln -s /usr/lib64/$(ls /usr/lib64/ | grep libbz2 | sort -r | head -n1) /usr/lib64/libbz2.so.1 || true
