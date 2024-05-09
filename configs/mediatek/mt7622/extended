@@ -128,3 +128,6 @@ CONFIG_PACKAGE_wpad-mbedtls=y
 # it might be faster. Remember to change the algorithm:
 # echo 'net.ipv4.tcp_congestion_control=bbr' >> /etc/sysctl.conf
 # CONFIG_PACKAGE_kmod-tcp-bbr=y
+
+# Debugging
+CONFIG_PACKAGE_kmod-veth=y
