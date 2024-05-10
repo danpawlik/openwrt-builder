@@ -1,0 +1,6 @@
+
+config vnstat
+	list interface 'br-lan'
+	list interface 'br-wan'
+	list interface 'wg_lan'
+
