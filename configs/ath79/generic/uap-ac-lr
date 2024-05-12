@@ -1,0 +1,7 @@
+#
+#   curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/ath79/generic/uap-ac-lr > .config
+#   curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/common/dumb_ap >> .config
+#
+CONFIG_TARGET_ath79=y
+CONFIG_TARGET_ath79_generic=y
+CONFIG_TARGET_ath79_generic_DEVICE_ubnt_unifiac-lr=y

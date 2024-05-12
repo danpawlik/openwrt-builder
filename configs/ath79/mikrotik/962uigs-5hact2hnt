@@ -1,0 +1,8 @@
+#
+# curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/ath79/mikrotik/962uigs-5hact2hnt > .config
+# curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/common/dumb_ap >> .config
+#
+
+CONFIG_TARGET_ath79=y
+CONFIG_TARGET_ath79_mikrotik=y
+CONFIG_TARGET_ath79_mikrotik_DEVICE_mikrotik_routerboard-962uigs-5hact2hnt=y

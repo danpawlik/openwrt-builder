@@ -1,0 +1,10 @@
+#
+# curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/mediatek/mt7621/u6-lite > .config
+# later, eg.:
+# curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/common/dumb_ap >> .config
+#
+
+CONFIG_TARGET_ramips=y
+CONFIG_TARGET_ramips_mt7621=y
+CONFIG_TARGET_ramips_mt7621_DEVICE_ubnt_unifi-6-lite=y
+CONFIG_TARGET_PACKAGES_ramips_mt7621_DEVICE_ubnt_unifi-6-lite=""

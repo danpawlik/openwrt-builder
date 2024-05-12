@@ -19,7 +19,7 @@ How to use:
 
 ```shell
 mkdir -p openwrt-builder && chmod 0777 openwrt-builder
-podman run --name openwrt -it -u user -v $(pwd)/openwrt-builder:/home/user/openwrt-builder:z,rw quay.io/dpawlik/openwrt:f38 bash
+podman run --name openwrt -it -u user -v $(pwd)/openwrt-builder:/home/user/openwrt-builder:z,rw quay.io/dpawlik/openwrt:f40 bash
 ```
 
 Then inside the container (from https://openwrt.org/docs/guide-developer/toolchain/use-buildsystem):
@@ -28,7 +28,7 @@ Then inside the container (from https://openwrt.org/docs/guide-developer/toolcha
 git clone https://git.openwrt.org/openwrt/openwrt.git ~/openwrt-builder/openwrt && cd ~/openwrt-builder/openwrt
 ```
 
-Optionally add MediaTek feed:
+Optionally add MediaTek feed (onlt for 21.02):
 
 ```shell
 cat << EOF >> feeds.conf.default
@@ -43,21 +43,65 @@ Update the feeds:
 ./scripts/feeds update -a && ./scripts/feeds install -a
 ```
 
-If you have own config file, replace it. For example:
+Use device config:
 
 ```shell
-# for BPI-R4
-curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/mediatek/mt7988a/extended > ~/openwrt-builder/openwrt/.config
-# for AX3200
-curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/mediatek/mt7622/extended > ~/openwrt-builder/openwrt/.config
-# or official
-curl -SL https://downloads.openwrt.org/snapshots/targets/mediatek/mt7622/config.buildinfo > ~/openwrt-builder/openwrt/.config
+# BPI-R4
+curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/mediatek/mt7988a/bpi-r4 > ~/openwrt-builder/openwrt/.config
 
-### alternative configs ###
-# Xiaomi 4A Giga Edition
-curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/ramips/mt7621/extended > ~/openwrt-builder/openwrt/.config
+# AX3200
+curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/mediatek/mt7622/ax3200 > ~/openwrt-builder/openwrt/.config
+
 # AX3600
-curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/qualcommax/ax3600/extended > ~/openwrt-builder/openwrt/.config
+curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/qualcommax/ax3600 > ~/openwrt-builder/openwrt/.config
+
+# Xiaomi 4A Giga Edition
+curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/ramips/mt7621/4a-giga > ~/openwrt-builder/openwrt/.config
+
+# Ubiquiti U6 Lite
+curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/ramips/mt7621/u6-lite > ~/openwrt-builder/openwrt/.config
+
+# Ubuquti UAP-AC-LR
+curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/ath79/generic/uap-ac-lr > ~/openwrt-builder/openwrt/.config
+
+# Mikrotik hAP AC
+curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/ath79/mikrotik/962uigs-5hact2hnt > ~/openwrt-builder/openwrt/.config
+```
+
+NOTE: If device got additional hardware installed, for example: Banana Pi R4 got wireless card,
+it is also included in the config file.
+
+then add the required packages that I use for the router/AP function:
+
+* Main router:
+```shell
+curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/common/extended >> ~/openwrt-builder/openwrt/.config
+```
+
+* Dumb AP:
+
+```shell
+curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/common/dumb_ap >> ~/openwrt-builder/openwrt/.config
+```
+
+* Basic config
+
+```shell
+curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/common/basic >> ~/openwrt-builder/openwrt/.config
+```
+
+Example:
+
+```shell
+# Banana Pi R4 as main router
+curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/mediatek/mt7988a/bpi-r4 > ~/openwrt-builder/openwrt/.config
+curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/common/extended >> ~/openwrt-builder/openwrt/.config
+
+# AX3200 as dumb AP
+curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/mediatek/mt7622/ax3200 > ~/openwrt-builder/openwrt/.config
+curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/common/dumb_ap >> ~/openwrt-builder/openwrt/.config
+
+# etc.
 ```
 
 ## Build
@@ -86,7 +130,7 @@ To get more verbosity:
 make -j1 V=s defconfig download clean world
 ```
 
-## With Ansible - WIP
+## With Ansible - WIP (Work In Progress)
 
 * Install Ansible:
 
