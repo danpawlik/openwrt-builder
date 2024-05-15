@@ -1,7 +1,7 @@
 #
 # curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/qualcommax/ax3600 > .config
 # later, eg.:
-# curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/common/extended >> .config
+# curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/common/main-router >> .config
 #
 
 CONFIG_TARGET_qualcommax=y
