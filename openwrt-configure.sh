@@ -7,10 +7,12 @@
 ROUTER_IP="${ROUTER_IP=$1}"
 # DEVICE can be main or <nothing>
 DEVICE="${DEVICE:-$2}"
-FULL_WPAD="${FULL_WPAD:-'yes'}"
+FULL_WPAD="${FULL_WPAD:-'true'}"
 INSTALL_BRIDGER=${INSTALL_BRIDGER:-'true'}
 INSTALL_DAWN=${INSTALL_DAWN:-'false'}
+INSTALL_USTEER=${INSTALL_USTEER:-'true'}
 CRYPTO_LIB=${CRYPTO_LIB:-''} # wolfssl or openssl
+ADDITIONAL_DRIVERS=${ADDITIONAL_DRIVERS:-'kmod-mt7921e kmod-mt7921-common kmod-mt7921-firmware'}
 
 # To replace mbedtls with openssl via firmware-selector, just add:
 # -wpad-basic-mbedtls -libustream-mbedtls -libmbedtls libustream-openssl wpad-openssl luci-ssl-openssl
@@ -25,12 +27,27 @@ fi
 
 COMMAND="opkg update"
 
+if [[ "$FULL_WPAD" =~ True|true ]]; then
+    FS_FULL_WPAD_PACKAGES="-wpad-basic-mbedtls"
+fi
+
+if [ -z "$CRYPTO_LIB" ]; then
+    FS_FULL_WPAD_PACKAGES="$FS_FULL_WPAD_PACKAGES wpad-mbedtls"
+    COMMAND="$COMMAND; opkg install --force-depends wpad-mbedtls"
+fi
+
 if [ -n "$CRYPTO_LIB" ]; then
   COMMAND="$COMMAND; opkg install --force-depends wpad-$CRYPTO_LIB luci-ssl-$CRYPTO_LIB"
+
+  if [[ "$CRYPTO_LIB" =~ ^(Wolfssl|wolfssl)$ ]]; then
+    FS_FULL_WPAD_PACKAGES="$FS_FULL_WPAD_PACKAGES -libustream-mbedtls -libmbedtls libustream-wolfssl wpad-wolfssl luci-ssl-wolfssl"
+  elif [[ "$CRYPTO_LIB" =~ ^(Openssl|openssl)$ ]]; then
+    FS_FULL_WPAD_PACKAGES="$FS_FULL_WPAD_PACKAGES -libustream-mbedtls -libmbedtls libustream-openssl wpad-openssl luci-ssl-openssl"
+  fi
 fi
 
 # basic packages
-COMMAND="$COMMAND; opkg install collectd collectd-mod-sensors \
+PACKAGES="collectd collectd-mod-sensors \
 collectd-mod-dns collectd-mod-wireless \
 luci-app-statistics luci luci-i18n-base-pl vim htop \
 curl iperf3 luci-app-attendedsysupgrade \
@@ -38,30 +55,33 @@ auc bmon irqbalance luci-app-irqbalance rsync \
 bind-dig ethtool-full pciutils tcpdump"
 
 if [[ "$INSTALL_DAWN" =~ True|true ]]; then
-    COMMAND="$COMMAND dawn luci-app-dawn"
+    PACKAGES="$PACKAGES dawn luci-app-dawn"
+fi
 
+if [[ "$INSTALL_USTEER" =~ True|true ]]; then
+    PACKAGES="$PACKAGES usteer luci-app-usteer"
 fi
 
 # additional packages
 if [[ "$DEVICE" =~ Main|main ]]; then
-    COMMAND="$COMMAND luci-app-wireguard luci-proto-wireguard kmod-wireguard wireguard-tools qrencode"
-    COMMAND="$COMMAND https-dns-proxy luci-app-https-dns-proxy luci-i18n-https-dns-proxy-pl libcurl4 libnghttp3 libngtcp2"
-    COMMAND="$COMMAND luci-app-vnstat2"
-    COMMAND="$COMMAND luci-app-sqm"
-    COMMAND="$COMMAND ddns-scripts luci-app-ddns bind-host"
+    PACKAGES="$PACKAGES luci-proto-wireguard kmod-wireguard wireguard-tools qrencode"
+    PACKAGES="$PACKAGES https-dns-proxy luci-app-https-dns-proxy luci-i18n-https-dns-proxy-pl libcurl4 libnghttp3 libngtcp2"
+    PACKAGES="$PACKAGES luci-app-vnstat2"
+    PACKAGES="$PACKAGES luci-app-sqm"
+    PACKAGES="$PACKAGES ddns-scripts luci-app-ddns bind-host"
 fi
 
 if ! [[ "$DEVICE" =~ Main|main ]] && [[ "$INSTALL_BRIDGER" =~ True|true ]]; then
-    COMMAND="$COMMAND bridger"
+    PACKAGES="$PACKAGES bridger"
 fi
 
-COMMAND="$COMMAND; /etc/init.d/uhttpd start ; /etc/init.d/uhttpd enable;"
+COMMAND="$COMMAND; opkg install $PACKAGES ; /etc/init.d/uhttpd start ; /etc/init.d/uhttpd enable;"
 
 read -n 1 -r -p "Should I execute command: $COMMAND on root@$ROUTER_IP? " yn
 case $yn in
-    [Yy]* ) ssh "root@$ROUTER_IP" "$COMMAND";;
-    [Nn]* ) exit;;
-    * ) echo "Please answer yes or no.";;
+    [Yy]* ) ssh "root@$ROUTER_IP" "$COMMAND $PACKAGES";;
+    [Nn]* ) echo -e "\n\nFor firmware-selector.org: \n\n$PACKAGES $FS_FULL_WPAD_PACKAGES $ADDITIONAL_DRIVERS" ; exit 0;;
+    * ) echo "Please answer yes or no. If no, will show you packages for firmware-selector ;)";;
 esac
 
 echo -e "\n\nPackage installation completed!\n\n"
@@ -82,7 +102,7 @@ esac
 #       opkg install bind-dig ethtool-full pciutils tcpdump luci-app-vnstat2
 
 ### wireguard
-#       luci-app-wireguard luci-proto-wireguard kmod-wireguard wireguard-tools qrencode
+#       luci-proto-wireguard kmod-wireguard wireguard-tools qrencode
 
 ### DNS over HTTPS
 #       https-dns-proxy luci-app-https-dns-proxy luci-i18n-https-dns-proxy-pl libcurl4 libnghttp3 libngtcp2
