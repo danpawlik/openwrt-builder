@@ -59,6 +59,7 @@ CONFIG_PACKAGE_https-dns-proxy=y
 CONFIG_PACKAGE_luci-app-https-dns-proxy=y
 CONFIG_PACKAGE_libnghttp3=y
 CONFIG_PACKAGE_libngtcp2=y
+CONFIG_PACKAGE_dnsmasq-full=y
 
 # collecd
 CONFIG_PACKAGE_luci-app-statistics=y
