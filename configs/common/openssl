@@ -1,6 +1,8 @@
 #### replace mbedtls with openssl - remember to leave commented "is not set" !
+CONFIG_PACKAGE_libustream-openssl=y
 CONFIG_PACKAGE_luci-ssl-openssl=y
 CONFIG_PACKAGE_wpad-openssl=y
 # CONFIG_PACKAGE_wpad-mbedtls is not set
 # CONFIG_PACKAGE_wpad-basic-mbedtls is not set
 # CONFIG_PACKAGE_wpad-basic-openssl is not set
+# CONFIG_PACKAGE_libustream-mbedtls is not set
