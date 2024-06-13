@@ -101,7 +101,6 @@ CONFIG_LUCI_LANG_pl=y
 
 ####### REPLACE CRYPTOLIB #####
 # Remove section and copy from config/common/ a cryptolib section that you need.
-CONFIG_PACKAGE_luci-ssl=y
 CONFIG_PACKAGE_wpad-basic-mbedtls=m
 CONFIG_PACKAGE_wpad-mbedtls=y
 #######
