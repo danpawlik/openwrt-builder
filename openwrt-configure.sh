@@ -33,11 +33,11 @@ fi
 
 if [ -z "$CRYPTO_LIB" ]; then
     FS_FULL_WPAD_PACKAGES="$FS_FULL_WPAD_PACKAGES wpad-mbedtls"
-    COMMAND="$COMMAND; opkg install --force-depends wpad-mbedtls"
+    COMMAND="$COMMAND; opkg remove wpad-basic-mbedtls; opkg install wpad-mbedtls"
 fi
 
 if [ -n "$CRYPTO_LIB" ]; then
-  COMMAND="$COMMAND; opkg install --force-depends wpad-$CRYPTO_LIB luci-ssl-$CRYPTO_LIB"
+  COMMAND="$COMMAND; opkg remove wpad-basic-mbedtls; opkg install wpad-$CRYPTO_LIB luci-ssl-$CRYPTO_LIB"
 
   if [[ "$CRYPTO_LIB" =~ ^(Wolfssl|wolfssl)$ ]]; then
     FS_FULL_WPAD_PACKAGES="$FS_FULL_WPAD_PACKAGES -libustream-mbedtls -libmbedtls libustream-wolfssl wpad-wolfssl luci-ssl-wolfssl"
