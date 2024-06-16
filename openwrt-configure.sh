@@ -75,7 +75,7 @@ if ! [[ "$DEVICE" =~ Main|main ]] && [[ "$INSTALL_BRIDGER" =~ True|true ]]; then
     PACKAGES="$PACKAGES bridger"
 fi
 
-COMMAND="$COMMAND; opkg install $PACKAGES ; /etc/init.d/uhttpd start ; /etc/init.d/uhttpd enable;"
+COMMAND="$COMMAND; opkg install $PACKAGES $ADDITIONAL_DRIVERS; /etc/init.d/uhttpd start ; /etc/init.d/uhttpd enable;"
 
 read -n 1 -r -p "Should I execute command: $COMMAND on root@$ROUTER_IP? " yn
 case $yn in
