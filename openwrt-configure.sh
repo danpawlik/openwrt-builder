@@ -11,6 +11,8 @@ FULL_WPAD="${FULL_WPAD:-'true'}"
 INSTALL_BRIDGER=${INSTALL_BRIDGER:-'true'}
 INSTALL_DAWN=${INSTALL_DAWN:-'false'}
 INSTALL_USTEER=${INSTALL_USTEER:-'true'}
+INSTALL_HTTPS_DNS_PROXY=${INSTALL_HTTPS_DNS_PROXY:-'false'}
+INSTALL_DNSCRYPT_PROXY2=${INSTALL_DNSCRYPT_PROXY2:-'true'}
 CRYPTO_LIB=${CRYPTO_LIB:-''} # wolfssl or openssl
 ADDITIONAL_DRIVERS=${ADDITIONAL_DRIVERS:-'kmod-mt7921e kmod-mt7921-common kmod-mt7921-firmware'}
 
@@ -65,10 +67,15 @@ fi
 # additional packages
 if [[ "$DEVICE" =~ Main|main ]]; then
     PACKAGES="$PACKAGES luci-proto-wireguard kmod-wireguard wireguard-tools qrencode"
-    PACKAGES="$PACKAGES https-dns-proxy luci-app-https-dns-proxy luci-i18n-https-dns-proxy-pl libcurl4 libnghttp3 libngtcp2"
     PACKAGES="$PACKAGES luci-app-vnstat2"
     PACKAGES="$PACKAGES luci-app-sqm"
     PACKAGES="$PACKAGES ddns-scripts luci-app-ddns bind-host"
+    if [[ "$INSTALL_HTTPS_DNS_PROXY" =~ True|true ]]; then
+        PACKAGES="$PACKAGES https-dns-proxy luci-app-https-dns-proxy luci-i18n-https-dns-proxy-pl libcurl4 libnghttp3 libngtcp2"
+    fi
+    if [[ "$INSTALL_DNSCRYPT_PROXY2" =~ True|true ]]; then
+        PACKAGES="$PACKAGES dnscrypt-proxy2"
+    fi
 fi
 
 if ! [[ "$DEVICE" =~ Main|main ]] && [[ "$INSTALL_BRIDGER" =~ True|true ]]; then
