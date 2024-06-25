@@ -112,6 +112,12 @@ Configure the firmware image and the kernel:
 make menuconfig
 ```
 
+Optional: comment modules:
+
+```shell
+for m in $(grep "=m" .config | grep -v 'CONFIG_PACKAGE_libustream-mbedtls=m'); do module=$(echo $m| cut -f1 -d'='); sed -i "s/$m/\# $module is not set/g" .config; done
+```
+
 Then:
 
 ```shell
