@@ -1,0 +1,9 @@
+# based on https://github.com/glassd00r/Openwrt_Builder/blob/main/bpi-r4.config
+CONFIG_USE_LTO=y
+CONFIG_TARGET_OPTIMIZATION="-O3 -pipe -mcpu=cortex-a73+crc+crypto+rdma"
+CONFIG_TARGET_OPTIONS=y
+CONFIG_KERNEL_CC_STACKPROTECTOR_STRONG=y
+CONFIG_USE_GCC_GGV=y
+CONFIG_GCC_USE_GRAPHITE=y
+CONFIG_USE_PREFETCH=y
+CONFIG_USE_MOLD=y
