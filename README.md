@@ -75,7 +75,7 @@ then add the required packages that I use for the router/AP function:
 
 * Main router:
 ```shell
-curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/common/extended >> ~/openwrt-builder/openwrt/.config
+curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/common/main-router >> ~/openwrt-builder/openwrt/.config
 ```
 
 * Dumb AP:
@@ -95,11 +95,16 @@ Example:
 ```shell
 # Banana Pi R4 as main router
 curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/mediatek/mt7988a/bpi-r4 > ~/openwrt-builder/openwrt/.config
-curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/common/extended >> ~/openwrt-builder/openwrt/.config
+curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/common/main-router >> ~/openwrt-builder/openwrt/.config
+# optional configs
+curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/common/optimize >> ~/openwrt-builder/openwrt/.config
+for m in $(grep "=m" ~/openwrt-builder/openwrt/.config | grep -v 'CONFIG_PACKAGE_libustream-mbedtls=m'); do module=$(echo $m| cut -f1 -d'=');  sed -i "s/$m/\# $module is not set/g" ~/openwrt-builder/openwrt/.config;  done
 
 # AX3200 as dumb AP
 curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/mediatek/mt7622/ax3200 > ~/openwrt-builder/openwrt/.config
 curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/common/dumb_ap >> ~/openwrt-builder/openwrt/.config
+# optional configs
+curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/common/optimize >> ~/openwrt-builder/openwrt/.config
 
 # etc.
 ```

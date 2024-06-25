@@ -20,8 +20,5 @@ CONFIG_PACKAGE_mtdev=m
 CONFIG_PACKAGE_kmod-mtd-rw=y
 # CONFIG_PACKAGE_kmod-veth is not set
 
-# temporary workaround for kernel 6.6
-# CONFIG_PACKAGE_kmod-usb-serial-dmx_usb_module is not set
-# CONFIG_PACKAGE_kmod-pf-ring is not set
-# CONFIG_PACKAGE_kmod-ovpn-dco-v2 is not set
-# CONFIG_PACKAGE_kmod-usb-serial-xr_usb_serial_common is not set
+CONFIG_TARGET_OPTIONS=y
+CONFIG_TARGET_OPTIMIZATION="-O3 -pipe -mcpu=cortex-a73+crc+crypto+rdma"
