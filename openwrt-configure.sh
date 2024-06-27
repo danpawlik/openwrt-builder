@@ -53,7 +53,7 @@ PACKAGES="collectd collectd-mod-sensors \
 collectd-mod-dns collectd-mod-wireless \
 luci-app-statistics luci luci-i18n-base-pl vim htop \
 curl iperf3 luci-app-attendedsysupgrade \
-auc bmon irqbalance luci-app-irqbalance rsync \
+owut bmon irqbalance luci-app-irqbalance rsync \
 bind-dig ethtool-full pciutils tcpdump"
 
 if [[ "$INSTALL_DAWN" =~ True|true ]]; then
