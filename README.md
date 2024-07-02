@@ -108,6 +108,8 @@ Optional: comment modules:
 
 ```shell
 for m in $(grep "=m" .config | grep -v 'CONFIG_PACKAGE_libustream-mbedtls=m'); do module=$(echo $m| cut -f1 -d'='); sed -i "s/$m/\# $module is not set/g" .config; done
+# or
+grep "=m" .config | grep -v 'CONFIG_PACKAGE_libustream-mbedtls=m' | while read -r line; do module=$(echo "$line" | cut -f1 -d'='); sed -i "s/^$line$/# $module is not set/" .config; done
 ```
 
 Then:
