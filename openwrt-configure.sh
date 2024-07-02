@@ -15,6 +15,7 @@ INSTALL_HTTPS_DNS_PROXY=${INSTALL_HTTPS_DNS_PROXY:-'false'}
 INSTALL_DNSCRYPT_PROXY2=${INSTALL_DNSCRYPT_PROXY2:-'true'}
 CRYPTO_LIB=${CRYPTO_LIB:-''} # wolfssl or openssl
 ADDITIONAL_DRIVERS=${ADDITIONAL_DRIVERS:-'kmod-mt7921e kmod-mt7921-common kmod-mt7921-firmware'}
+INSTALL_LANG_PACKAGES=${INSTALL_LANG_PACKAGES:-'true'}
 
 # To replace mbedtls with openssl via firmware-selector, just add:
 # -wpad-basic-mbedtls -libustream-mbedtls -libmbedtls libustream-openssl wpad-openssl luci-ssl-openssl
@@ -51,9 +52,9 @@ fi
 # basic packages
 PACKAGES="collectd collectd-mod-sensors \
 collectd-mod-dns collectd-mod-wireless \
-luci-app-statistics luci luci-i18n-base-pl vim htop \
-curl iperf3 luci-app-attendedsysupgrade \
-owut bmon irqbalance luci-app-irqbalance rsync \
+luci-app-statistics luci vim htop \
+curl iperf3 owut bmon \
+irqbalance luci-app-irqbalance rsync \
 bind-dig ethtool-full pciutils tcpdump"
 
 if [[ "$INSTALL_DAWN" =~ True|true ]]; then
@@ -80,6 +81,10 @@ fi
 
 if ! [[ "$DEVICE" =~ Main|main ]] && [[ "$INSTALL_BRIDGER" =~ True|true ]]; then
     PACKAGES="$PACKAGES bridger"
+fi
+
+if [[ "$INSTALL_LANG_PACKAGES" =~ True|true ]]; then
+    PACKAGES="$PACKAGES luci-i18n-firewall-pl luci-i18n-irqbalance-pl luci-i18n-opkg-pl luci-i18n-statistics-pl luci-i18n-usteer-pl luci-i18n-base-pl"
 fi
 
 COMMAND="$COMMAND; opkg install $PACKAGES $ADDITIONAL_DRIVERS; /etc/init.d/uhttpd start ; /etc/init.d/uhttpd enable;"
