@@ -31,10 +31,8 @@ CONFIG_PACKAGE_pciutils=y
 CONFIG_PACKAGE_irqbalance=y
 CONFIG_PACKAGE_luci-app-irqbalance=y
 
-# attendedsysupgrade
-CONFIG_PACKAGE_luci-app-attendedsysupgrade=y
-CONFIG_PACKAGE_attendedsysupgrade-common=y
-CONFIG_PACKAGE_auc=y
+# attendedsysupgrade / owut
+CONFIG_PACKAGE_owut=y
 
 # use experimental kernel
 CONFIG_TESTING_KERNEL=y

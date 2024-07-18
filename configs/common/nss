@@ -37,9 +37,7 @@ CONFIG_PACKAGE_tc-full=y
 
 # attendedsysupgrade
 # NOTE: There is no sense to add auc package due it uses different repo.
-# CONFIG_PACKAGE_luci-app-attendedsysupgrade is not set
-# CONFIG_PACKAGE_attendedsysupgrade-common is not nset
-# CONFIG_PACKAGE_auc is not set
+# CONFIG_PACKAGE_owut is not set
 
 # use experimental kernel
 CONFIG_TESTING_KERNEL=y
