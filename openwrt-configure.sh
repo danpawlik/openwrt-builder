@@ -18,10 +18,10 @@ ADDITIONAL_DRIVERS=${ADDITIONAL_DRIVERS:-'kmod-mt7921e kmod-mt7921-common kmod-m
 INSTALL_LANG_PACKAGES=${INSTALL_LANG_PACKAGES:-'true'}
 
 # To replace mbedtls with openssl via firmware-selector, just add:
-# -wpad-basic-mbedtls -libustream-mbedtls -libmbedtls libustream-openssl wpad-openssl luci-ssl-openssl
+# -wpad-basic-mbedtls -libustream-mbedtls -libmbedtls libustream-openssl wpad-openssl
 #
 # To replace mbedtls with wolfssl via firmware-selector, just add:
-# -wpad-basic-mbedtls -libustream-mbedtls -libmbedtls libustream-wolfssl wpad-wolfssl luci-ssl-wolfssl
+# -wpad-basic-mbedtls -libustream-mbedtls -libmbedtls libustream-wolfssl wpad-wolfssl
 
 if [ -z "$ROUTER_IP" ]; then
     echo "Please provide router ip like: 192.168.1.1"
@@ -40,12 +40,12 @@ if [ -z "$CRYPTO_LIB" ]; then
 fi
 
 if [ -n "$CRYPTO_LIB" ]; then
-  COMMAND="$COMMAND; opkg remove wpad-basic-mbedtls; opkg install wpad-$CRYPTO_LIB luci-ssl-$CRYPTO_LIB"
+  COMMAND="$COMMAND; opkg remove wpad-basic-mbedtls; opkg install wpad-$CRYPTO_LIB"
 
   if [[ "$CRYPTO_LIB" =~ ^(Wolfssl|wolfssl)$ ]]; then
-    FS_FULL_WPAD_PACKAGES="$FS_FULL_WPAD_PACKAGES -libustream-mbedtls -libmbedtls libustream-wolfssl wpad-wolfssl luci-ssl-wolfssl"
+    FS_FULL_WPAD_PACKAGES="$FS_FULL_WPAD_PACKAGES -libustream-mbedtls -libmbedtls libustream-wolfssl wpad-wolfssl"
   elif [[ "$CRYPTO_LIB" =~ ^(Openssl|openssl)$ ]]; then
-    FS_FULL_WPAD_PACKAGES="$FS_FULL_WPAD_PACKAGES -libustream-mbedtls -libmbedtls libustream-openssl wpad-openssl luci-ssl-openssl"
+    FS_FULL_WPAD_PACKAGES="$FS_FULL_WPAD_PACKAGES -libustream-mbedtls -libmbedtls libustream-openssl wpad-openssl"
   fi
 fi
 
