@@ -3,6 +3,9 @@
 # later, eg.:
 # curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/common/main-router >> .config
 #
+# Optional: to use nss build
+# curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/common/nss >> .config
+#
 
 CONFIG_TARGET_qualcommax=y
 CONFIG_TARGET_qualcommax_ipq807x=y

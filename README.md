@@ -136,22 +136,28 @@ make -j1 V=s defconfig download clean world
 # Banana Pi R4 as main router
 curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/mediatek/mt7988a/bpi-r4 > ~/openwrt-builder/openwrt/.config
 curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/common/main-router >> ~/openwrt-builder/openwrt/.config
-curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/common/optimize >> ~/openwrt-builder/openwrt/.config
 ./scripts/diffconfig.sh > diffconfig
 cp diffconfig .config
 make defconfig
-for m in $(grep "=m" ~/openwrt-builder/openwrt/.config | grep -v 'CONFIG_PACKAGE_libustream-mbedtls=m'); do module=$(echo $m| cut -f1 -d'=');  sed -i "s/$m/\# $module is not set/g" ~/openwrt-builder/openwrt/.config;  done
 make -j$(nproc) kernel_menuconfig
 make -j $(nproc) defconfig download clean world
 
 # AX3200 as dumb AP
 curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/mediatek/mt7622/ax3200 > ~/openwrt-builder/openwrt/.config
 curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/common/dumb_ap >> ~/openwrt-builder/openwrt/.config
-curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/common/optimize >> ~/openwrt-builder/openwrt/.config
 ./scripts/diffconfig.sh > diffconfig
 cp diffconfig .config
 make defconfig
-for m in $(grep "=m" ~/openwrt-builder/openwrt/.config | grep -v 'CONFIG_PACKAGE_libustream-mbedtls=m'); do module=$(echo $m| cut -f1 -d'=');  sed -i "s/$m/\# $module is not set/g" ~/openwrt-builder/openwrt/.config;  done
+make -j$(nproc) kernel_menuconfig
+make -j $(nproc) defconfig download clean world
+
+# AX3600 as main router with Qualcomm NSS framework
+curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/qualcommax/ax3600 > ~/openwrt-builder/openwrt/.config
+curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/common/main-router >> ~/openwrt-builder/openwrt/.config
+curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/common/nss >> ~/openwrt-builder/openwrt/.config
+./scripts/diffconfig.sh > diffconfig
+cp diffconfig .config
+make defconfig
 make -j$(nproc) kernel_menuconfig
 make -j $(nproc) defconfig download clean world
 ```
