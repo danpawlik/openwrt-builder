@@ -49,6 +49,10 @@ jobs:
           cat custom_repo/${{ env.ROLE_CONFIG }} >> .config
           make defconfig
 
+      - name: Remove packages that are marked as modules
+        run: |
+          grep "=m" .config | grep -v 'CONFIG_PACKAGE_libustream-mbedtls=m' | while read -r line; do module=$(echo "$line" | cut -f1 -d'='); sed -i "s/^$line$/# $module is not set/" .config; done
+
       - name: Download dependencies
         run: make -j $(nproc) download
 
@@ -77,6 +81,9 @@ jobs:
       - name: Extract artifacts
         run: tar xf ax_3200-images.tar
 
+      - name: Get version
+        run: echo "VERSION_INFO=$(cat version.buildinfo)" >> $GITHUB_ENV
+
       - name: Get current date
         run: echo "RELEASE_DATE=$(date +%F)" >> $GITHUB_ENV
 
@@ -84,10 +91,10 @@ jobs:
         uses: softprops/action-gh-release@master
         with:
           files: bin/targets/mediatek/mt7622/*
-          tag_name: ${{ env.RELEASE_PREFIX }}-${{ env.RELEASE_DATE }}
-          name: Openwrt AX3200 ${{ env.RELEASE_DATE }}
+          tag_name: ${{ env.RELEASE_PREFIX }}-${{ env.RELEASE_DATE }}-${{ env.VERSION_INFO }}
+          name: OpenWRT AX3200 ${{ env.RELEASE_DATE }}-${{ env.VERSION_INFO }}
           body: |
-            Updated prebuilt images for ${{ env.RELEASE_DATE }}
+            Updated prebuilt images for ${{ env.RELEASE_DATE }} based on ${{ env.VERSION_INFO }}
             Build Commit: ${{ needs.check_commits.outputs.latest_commit_sha }}
 
       - name: Clean up old releases
