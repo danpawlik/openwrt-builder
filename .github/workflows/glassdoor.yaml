@@ -1,0 +1,95 @@
+name: OpenWrt for Mediatek_mt7988a_bpi-r4 and release
+
+on:
+  workflow_dispatch:
+
+env:
+  REMOTE_REPOSITORY: glassd00r/openwrt
+  REMOTE_BRANCH: main
+  CONFIG_FILE: bpi-r4.config
+  MTK_PPE_ENTRIES_SHIFT_PATCH: 001-32k_ppe.patch
+  PREFETCH_PATCH: 002-prefetch.patch
+  CUSTOM_FILES_PATH: files/
+  RELEASE_PREFIX: Mediatek_mt7988a_bpi-r4
+
+jobs:  
+  build:
+    name: Build OpenWrt
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Install dependencies
+        run: |
+          sudo apt update
+          sudo apt install -y \
+            build-essential clang flex bison g++ gawk \
+            gcc-multilib g++-multilib gettext git libncurses5-dev libssl-dev \
+            python3-setuptools rsync swig unzip zlib1g-dev file wget
+          sudo apt full-upgrade -y
+      - name: Checkout remote repository
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ env.REMOTE_REPOSITORY }}
+          ref: ${{ env.REMOTE_BRANCH }}
+      - name: Checkout current repository
+        uses: actions/checkout@v4
+        with:
+          path: "custom_repo"
+      - name: Update and install feeds
+        run: |
+          ./scripts/feeds update -a
+          ./scripts/feeds install -a
+      - name: Apply 32K PPE Patch
+        run: |
+          mv custom_repo/patches/BPI-r4/${{ env.MTK_PPE_ENTRIES_SHIFT_PATCH }} target/linux/mediatek/patches-6.6/${{ env.MTK_PPE_ENTRIES_SHIFT_PATCH }}
+          cd target/linux/mediatek/patches-6.6
+          git apply ${{ env.MTK_PPE_ENTRIES_SHIFT_PATCH }}
+      - name: Configure firmware image
+        run: |
+          mv custom_repo/${{ env.CONFIG_FILE }} .config
+          make defconfig
+      - name: Include custom files
+        run: |
+          mkdir -p ${{ env.CUSTOM_FILES_PATH }}
+          mv custom_repo/BPI-r4/${{ env.CUSTOM_FILES_PATH }}* ${{ env.CUSTOM_FILES_PATH }}
+      - name: Download dependencies
+        run: make -j $(($(nproc)+1)) download
+      - name: Build the firmware image
+        run: make -j $(($(nproc)+1)) world
+      - name: Package output
+        run: tar -cvf bpi_r4-images.tar bin/targets/mediatek/filogic
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: bpi_r4-images
+          path: bpi_r4-images.tar
+
+  release:
+    name: Create release
+    needs: [build]
+    if: needs.build.result == 'success'
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: bpi_r4-images
+      - name: Extract artifacts
+        run: tar xf bpi_r4-images.tar
+      - name: Get current date
+        run: echo "RELEASE_DATE=$(date +%F)" >> $GITHUB_ENV
+      - name: Create release
+        uses: softprops/action-gh-release@master
+        with:
+          files: bin/targets/mediatek/filogic/*
+          tag_name: ${{ env.RELEASE_PREFIX }}-${{ env.RELEASE_DATE }}
+          name: Openwrt BPI-r4 ${{ env.RELEASE_DATE }}
+          body: |
+            Updated prebuilt images for ${{ env.RELEASE_DATE }}
+            Build Commit: ${{ needs.check_commits.outputs.latest_commit_sha }}
+      - name: Clean up old releases
+        uses: dev-drprasad/delete-older-releases@master
+        with:
+          keep_latest: 5
+          delete_tags: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
