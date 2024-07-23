@@ -1,0 +1,61 @@
+From 0e70d96d40206ca1c6705fd8ced2eb3dc3e95293 Mon Sep 17 00:00:00 2001
+From: Daniel Pawlik <pawlik.dan@gmail.com>
+Date: Mon, 15 Jul 2024 12:14:10 +0200
+Subject: [PATCH] Add mt7925-firmware rule
+
+It seems that the OpenWRT does not add the firmware for the MT7925
+device.
+This patch includes rules that was suggested on the OpenWRT forum [1],
+where the target rules are defined here [2].
+
+[1] https://forum.openwrt.org/t/banana-bpi-r4-wifi7-status/201051/
+[2] https://github.com/drozdi70/bananapi_bpir4/blob/main/Makefile.mt76
+
+(cherry picked from commit a7653b8bb96d4c7bad4d278d5e75484709ba205b)
+---
+ package/kernel/mt76/Makefile | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
+
+diff --git a/package/kernel/mt76/Makefile b/package/kernel/mt76/Makefile
+index f71070dbb9..c4421c0b23 100644
+--- a/package/kernel/mt76/Makefile
++++ b/package/kernel/mt76/Makefile
+@@ -231,6 +231,12 @@ define KernelPackage/mt7915-firmware
+   DEPENDS+=+kmod-mt7915e
+ endef
+ 
++define KernelPackage/mt7925-firmware
++  $(KernelPackage/mt76-default)
++  TITLE:=MediaTek MT7925 firmware
++  DEPENDS+=+kmod-mt7925e
++endef
++
+ define KernelPackage/mt7915e
+   $(KernelPackage/mt76-default)
+   TITLE:=MediaTek MT7915e wireless driver
+@@ -616,6 +622,14 @@ define KernelPackage/mt7922-firmware/install
+ 		$(1)/lib/firmware/mediatek
+ endef
+ 
++define KernelPackage/mt7925-firmware/install
++        $(INSTALL_DIR) $(1)/lib/firmware/mediatek/mt7925
++	cp \
++		$(PKG_BUILD_DIR)/firmware/mt7925/WIFI_MT7925_PATCH_MCU_1_1_hdr.bin \
++		$(PKG_BUILD_DIR)/firmware/mt7925/WIFI_RAM_CODE_MT7925_1_1.bin \
++		$(1)/lib/firmware/mediatek/mt7925
++endef
++
+ define KernelPackage/mt7996-firmware/install
+ 	$(INSTALL_DIR) $(1)/lib/firmware/mediatek/mt7996
+ 	cp \
+@@ -666,6 +680,7 @@ $(eval $(call KernelPackage,mt7981-firmware))
+ $(eval $(call KernelPackage,mt7986-firmware))
+ $(eval $(call KernelPackage,mt7921-firmware))
+ $(eval $(call KernelPackage,mt7922-firmware))
++$(eval $(call KernelPackage,mt7925-firmware))
+ $(eval $(call KernelPackage,mt792x-common))
+ $(eval $(call KernelPackage,mt792x-usb))
+ $(eval $(call KernelPackage,mt7921-common))
+-- 
+2.45.2
+
