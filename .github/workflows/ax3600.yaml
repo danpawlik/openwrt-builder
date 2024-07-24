@@ -54,9 +54,9 @@ jobs:
           curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/common/nss >> .config
           make defconfig
 
-      - name: Remove packages that are marked as modules
-        run: |
-          grep "=m" .config | grep -v 'CONFIG_PACKAGE_libustream-mbedtls=m' | while read -r line; do module=$(echo "$line" | cut -f1 -d'='); sed -i "s/^$line$/# $module is not set/" .config; done
+#      - name: Remove packages that are marked as modules
+#        run: |
+#          grep "=m" .config | grep -v 'CONFIG_PACKAGE_libustream-mbedtls=m' | while read -r line; do module=$(echo "$line" | cut -f1 -d'='); sed -i "s/^$line$/# $module is not set/" .config; done
 
       - name: Download dependencies
         run: make -j $(nproc) download
