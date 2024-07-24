@@ -1,7 +1,7 @@
-From e65bd02a561d7c6625f6f5ec98473ba52acb9ef9 Mon Sep 17 00:00:00 2001
+From 62829bec03171257f590055b23fd97fe28afb728 Mon Sep 17 00:00:00 2001
 From: Daniel Pawlik <pawlik.dan@gmail.com>
-Date: Mon, 15 Jul 2024 09:05:36 +0000
-Subject: [PATCH] Add kmod-thermal for BPI-R4
+Date: Wed, 24 Jul 2024 09:17:44 +0000
+Subject: [PATCH] Add kmod-thermal for bpi-r4
 
 ---
  target/linux/mediatek/image/filogic.mk | 2 +-
@@ -17,7 +17,7 @@ index 74eaf06ea9..6e79832623 100644
    DEVICE_DTC_FLAGS := --pad 4096
 -  DEVICE_PACKAGES := kmod-hwmon-pwmfan kmod-i2c-mux-pca954x kmod-eeprom-at24 kmod-mt7996-firmware \
 +  DEVICE_PACKAGES := kmod-hwmon-pwmfan kmod-thermal kmod-i2c-mux-pca954x kmod-eeprom-at24 kmod-mt7996-firmware \
- 		     kmod-rtc-pcf8563 kmod-sfp kmod-usb3 e2fsprogs f2fsck mkf2fs
+      kmod-rtc-pcf8563 kmod-sfp kmod-usb3 e2fsprogs f2fsck mkf2fs
    IMAGES := sysupgrade.itb
    KERNEL_LOADADDR := 0x46000000
 -- 

@@ -33,11 +33,6 @@ jobs:
           repository: ${{ env.REMOTE_REPOSITORY }}
           ref: ${{ env.REMOTE_BRANCH }}
 
-      - name: Checkout current repository
-        uses: actions/checkout@v4
-        with:
-          path: "custom_repo"
-
       - name: Update and install feeds
         run: |
           ./scripts/feeds update -a
@@ -45,8 +40,8 @@ jobs:
 
       - name: Configure firmware image
         run: |
-          cp custom_repo/${{ env.DEVICE_CONFIG }} .config
-          cat custom_repo/${{ env.ROLE_CONFIG }} >> .config
+          curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/mediatek/mt7622/ax3200 > .config
+          curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/common/dumb_ap >> .config
           make defconfig
 
       - name: Remove packages that are marked as modules

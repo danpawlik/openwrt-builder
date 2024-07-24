@@ -49,9 +49,9 @@ jobs:
 
       - name: Configure firmware image
         run: |
-          cp custom_repo/${{ env.DEVICE_CONFIG }} .config
-          cat custom_repo/${{ env.ROLE_CONFIG }} >> .config
-          cat custom_repo/${{ env.NSS_CONFIG }} >> .config
+          curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/qualcommax/ax3600 > .config
+          curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/common/main-router >> .config
+          curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/common/nss >> .config
           make defconfig
 
       - name: Remove packages that are marked as modules

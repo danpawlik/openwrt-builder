@@ -1,9 +1,9 @@
 # Include Qualcomm NSS
 
 # Disable QCA9887 radio
-# CONFIG_PACKAGE_ath10k-firmware-qca9887-ct is not set
-# CONFIG_PACKAGE_kmod-ath10k-ct-smallbuffers is not set
-#
+CONFIG_PACKAGE_ath10k-firmware-qca9887-ct=n
+CONFIG_PACKAGE_kmod-ath10k-ct-smallbuffers=n
+
 # NSS Offloading
 CONFIG_ATH11K_NSS_SUPPORT=y
 CONFIG_PACKAGE_MAC80211_NSS_SUPPORT=y
@@ -21,9 +21,10 @@ CONFIG_NSS_MEM_PROFILE_HIGH=y
 CONFIG_ATH11K_MEM_PROFILE_1G=y
 
 # Reduce kernel module size
-# CONFIG_ATH11K_DEBUGFS_HTT_STATS is not set
-# CONFIG_ATH11K_DEBUGFS_STA is not set
-# CONFIG_ATH11K_THERMAL is not set
+CONFIG_ATH11K_DEBUGFS_HTT_STATS=n
+CONFIG_ATH11K_DEBUGFS_STA=n
+CONFIG_ATH11K_THERMAL=n
 
-# CONFIG_FEED_nss is not set
-# CONFIG_FEED_sqm_scripts_nss is not set
+# Prevent opkg from adding custom feeds to /etc/opkg/distfeeds.conf
+CONFIG_FEED_nss=n
+CONFIG_FEED_sqm_scripts_nss=n

@@ -13,7 +13,6 @@ env:
   # REMOTE_BRANCH: bpi-r4
   # MTK_PPE_ENTRIES_SHIFT_PATCH: 001-32k_ppe.patch
   # PREFETCH_PATCH: 002-prefetch.patch
-  # CUSTOM_FILES_PATH: files/
   RELEASE_PREFIX: Mediatek_mt7988a_bpi-r4
   DEVICE_CONFIG: configs/mediatek/mt7988a/bpi-r4
   ROLE_CONFIG: configs/common/main-router
@@ -38,10 +37,16 @@ jobs:
           repository: ${{ env.REMOTE_REPOSITORY }}
           ref: ${{ env.REMOTE_BRANCH }}
 
-      - name: Checkout current repository
-        uses: actions/checkout@v4
-        with:
-          path: "custom_repo"
+#      - name: Checkout current repository
+#        uses: actions/checkout@v4
+#        with:
+#          path: "custom_repo"
+#
+#      - name: Configure firmware image
+#        run: |
+#          cp custom_repo/${{ env.DEVICE_CONFIG }} .config
+#          cat custom_repo/${{ env.ROLE_CONFIG }} >> .config
+#          make defconfig
 
       - name: Update and install feeds
         run: |
@@ -58,18 +63,13 @@ jobs:
 
       - name: Configure firmware image
         run: |
-          cp custom_repo/${{ env.DEVICE_CONFIG }} .config
-          cat custom_repo/${{ env.ROLE_CONFIG }} >> .config
+          curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/mediatek/mt7988a/bpi-r4 > .config
+          curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/common/main-router >> .config
           make defconfig
 
       - name: Remove packages that are marked as modules
         run: |
           grep "=m" .config | grep -v 'CONFIG_PACKAGE_libustream-mbedtls=m' | while read -r line; do module=$(echo "$line" | cut -f1 -d'='); sed -i "s/^$line$/# $module is not set/" .config; done
-
-#      - name: Include custom files
-#        run: |
-#          mkdir -p ${{ env.CUSTOM_FILES_PATH }}
-#          mv custom_repo/BPI-r4/${{ env.CUSTOM_FILES_PATH }}* ${{ env.CUSTOM_FILES_PATH }}
 
       - name: Download dependencies
         run: make -j $(nproc) download
