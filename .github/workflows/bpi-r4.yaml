@@ -55,11 +55,14 @@ jobs:
 
       - name: Apply kmod-thermal and build mt7925 firmware
         run: |
-          cd target/linux/mediatek/patches-6.6
+          git config --global user.email "danielpawlik@test.com"
+          git config --global user.name "Daniel Pawlik"
           curl -LO https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/patches/0001-Add-kmod-thermal-for-BPI-R4.patch
           curl -LO https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/patches/0001-Add-mt7925-firmware-rule.patch
-          git apply 0001-Add-kmod-thermal-for-BPI-R4.patch
-          git apply 0001-Add-mt7925-firmware-rule.patch
+          git apply --check 0001-Add-kmod-thermal-for-BPI-R4.patch
+          git apply --check 0001-Add-mt7925-firmware-rule.patch
+          git am --keep-cr --signoff < 0001-Add-kmod-thermal-for-BPI-R4.patch
+          git am --keep-cr --signoff < 0001-Add-mt7925-firmware-rule.patch
 
       - name: Configure firmware image
         run: |
