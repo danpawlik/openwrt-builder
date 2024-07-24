@@ -28,3 +28,11 @@ CONFIG_ATH11K_THERMAL=n
 # Prevent opkg from adding custom feeds to /etc/opkg/distfeeds.conf
 CONFIG_FEED_nss=n
 CONFIG_FEED_sqm_scripts_nss=n
+
+# Disable default packages
+CONFIG_PACKAGE_kmod-phy-aquantia=n
+CONFIG_PACKAGE_kmod-usb-core=n
+CONFIG_PACKAGE_kmod-usb-dwc3=n
+CONFIG_PACKAGE_kmod-usb-dwc3-qcom=n
+CONFIG_PACKAGE_kmod-usb-xhci-hcd=n
+CONFIG_PACKAGE_kmod-usb3=n

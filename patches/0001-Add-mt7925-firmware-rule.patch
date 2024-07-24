@@ -1,17 +1,8 @@
-From 0e70d96d40206ca1c6705fd8ced2eb3dc3e95293 Mon Sep 17 00:00:00 2001
+From 9db3daefa4ef538e497a7b2bf44ca7140481a333 Mon Sep 17 00:00:00 2001
 From: Daniel Pawlik <pawlik.dan@gmail.com>
-Date: Mon, 15 Jul 2024 12:14:10 +0200
-Subject: [PATCH] Add mt7925-firmware rule
+Date: Wed, 24 Jul 2024 13:39:48 +0000
+Subject: [PATCH] Add definition for mt7925 firmware
 
-It seems that the OpenWRT does not add the firmware for the MT7925
-device.
-This patch includes rules that was suggested on the OpenWRT forum [1],
-where the target rules are defined here [2].
-
-[1] https://forum.openwrt.org/t/banana-bpi-r4-wifi7-status/201051/
-[2] https://github.com/drozdi70/bananapi_bpir4/blob/main/Makefile.mt76
-
-(cherry picked from commit a7653b8bb96d4c7bad4d278d5e75484709ba205b)
 ---
  package/kernel/mt76/Makefile | 15 +++++++++++++++
  1 file changed, 15 insertions(+)
