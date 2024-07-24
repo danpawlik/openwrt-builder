@@ -102,9 +102,6 @@ jobs:
       - name: Extract artifacts
         run: tar xf bpi_r4-images.tar
 
-      - name: Get version
-        run: echo "VERSION_INFO=$(cat version.buildinfo)" >> $GITHUB_ENV
-
       - name: Get current date
         run: echo "RELEASE_DATE=$(date +%F)" >> $GITHUB_ENV
 
@@ -112,10 +109,10 @@ jobs:
         uses: softprops/action-gh-release@master
         with:
           files: bin/targets/mediatek/filogic/*
-          tag_name: ${{ env.RELEASE_PREFIX }}-${{ env.RELEASE_DATE }}-${{ env.VERSION_INFO }}
-          name: OpenWRT BPI-r4 ${{ env.RELEASE_DATE }}-${{ env.VERSION_INFO }}
+          tag_name: ${{ env.RELEASE_PREFIX }}-${{ env.RELEASE_DATE }}
+          name: OpenWRT BPI-r4 ${{ env.RELEASE_DATE }}
           body: |
-            Updated prebuilt images for ${{ env.RELEASE_DATE }} based on ${{ env.VERSION_INFO }}
+            Updated prebuilt images for ${{ env.RELEASE_DATE }}
             Build Commit: ${{ needs.check_commits.outputs.latest_commit_sha }}
 
       - name: Clean up old releases
