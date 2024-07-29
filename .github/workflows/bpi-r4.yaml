@@ -53,7 +53,7 @@ jobs:
           ./scripts/feeds update -a
           ./scripts/feeds install -a
 
-      - name: Apply kmod-thermal and build mt7925 firmware
+      - name: Apply kmod-thermal and build mt7925 firmware patches
         run: |
           git config --global user.email "danielpawlik@test.com"
           git config --global user.name "Daniel Pawlik"
