@@ -5,11 +5,8 @@ name: Build OpenWRT for Xiaomi AX3600 NSS build
 
 on:
   workflow_dispatch:
-  push:
 
 env:
-  # REMOTE_REPOSITORY: openwrt/openwrt
-  # REMOTE_BRANCH: main
   REMOTE_REPOSITORY: qosmio/openwrt-ipq
   REMOTE_BRANCH: qualcommax-6.x-nss-wifi
   RELEASE_PREFIX: IPQ_8074_ax3600
@@ -18,8 +15,25 @@ env:
   NSS_CONFIG: configs/common/nss
 
 jobs:
+  check_commits:
+    name: Check Commits
+    runs-on: ubuntu-24.04
+    outputs:
+      latest_commit_sha: ${{ steps.get_sha.outputs.latest_commit_sha }}
+    steps:
+      - name: Checkout remote repository
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ env.REMOTE_REPOSITORY }}
+          ref: ${{ env.REMOTE_BRANCH }}
+
+      - name: Get the latest commit SHA
+        id: get_sha
+        run: echo "latest_commit_sha=$(git rev-parse HEAD)" >> $GITHUB_ENV
+
   build:
     name: Build OpenWRT for AX3600
+    needs: [check_commits]
     runs-on: ubuntu-24.04
     steps:
       - name: Install dependencies
