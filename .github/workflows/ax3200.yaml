@@ -1,5 +1,5 @@
 ---
-# Based on https://github.com/glassd00r/Openwrt_Builder/tree/main
+# Based on https://github.com/JuliusBairaktaris/Qualcommax_NSS_Builder/blob/main/.github/workflows/build.yaml
 name: Build OpenWRT for Xiaomi AX3200
 
 on:
@@ -27,7 +27,9 @@ jobs:
 
       - name: Get the latest commit SHA
         id: get_sha
-        run: echo "latest_commit_sha=$(git rev-parse HEAD)" >> $GITHUB_ENV
+        run: |
+          echo "latest_commit_sha=$(git rev-parse HEAD)" >> $GITHUB_ENV
+          echo "latest_commit_sha=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
 
   build:
     name: Build OpenWRT for AX3200
@@ -81,7 +83,7 @@ jobs:
 
   release:
     name: Create release
-    needs: [build]
+    needs: [build, check_commits]
     if: needs.build.result == 'success'
     runs-on: ubuntu-24.04
     steps:
