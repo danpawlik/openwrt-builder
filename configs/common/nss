@@ -1,24 +1,38 @@
 # Include Qualcomm NSS
+# Based on https://github.com/JuliusBairaktaris/Qualcommax_NSS_Builder/blob/main/ax3600.config
 
-# Disable QCA9887 radio
-CONFIG_PACKAGE_ath10k-firmware-qca9887-ct=n
-CONFIG_PACKAGE_kmod-ath10k-ct-smallbuffers=n
-
-# NSS Offloading
+# Essential NSS config
 CONFIG_ATH11K_NSS_SUPPORT=y
-CONFIG_PACKAGE_MAC80211_NSS_SUPPORT=y
 CONFIG_PACKAGE_nss-firmware-ipq8074=y
+CONFIG_PACKAGE_MAC80211_NSS_SUPPORT=y
 CONFIG_PACKAGE_kmod-qca-nss-drv=y
 CONFIG_PACKAGE_kmod-qca-nss-ecm=y
+CONFIG_NSS_DRV_CRYPTO_ENABLE=n
 
-# Additional NSS packages (VLAN, Multicast Snooping)
-CONFIG_PACKAGE_kmod-qca-nss-drv-bridge-mgr=y
-CONFIG_PACKAGE_kmod-qca-nss-drv-vlan-mgr=y
-CONFIG_PACKAGE_kmod-qca-mcs=y
-
-# Target dependant NSS config
+# Target dependant config
 CONFIG_NSS_MEM_PROFILE_HIGH=y
 CONFIG_ATH11K_MEM_PROFILE_1G=y
+
+# Additional NSS config
+CONFIG_PACKAGE_kmod-qca-nss-drv-pppoe=y
+CONFIG_PACKAGE_kmod-qca-nss-drv-vlan-mgr=y
+CONFIG_PACKAGE_kmod-qca-nss-drv-bridge-mgr=y
+CONFIG_PACKAGE_kmod-qca-mcs=y
+
+# Disable Ath10k
+CONFIG_PACKAGE_ath10k-board-qca9887=n
+CONFIG_PACKAGE_ath10k-firmware-qca9887-ct=n
+CONFIG_PACKAGE_kmod-ath10k-ct-smallbuffers=n
+CONFIG_ATH10K-CT_LEDS=n
+
+# Redundant Default Packages
+CONFIG_PACKAGE_wpad-basic-mbedtls=n
+CONFIG_PACKAGE_kmod-phy-aquantia=n
+CONFIG_PACKAGE_kmod-usb-core=n
+CONFIG_PACKAGE_kmod-usb-dwc3=n
+CONFIG_PACKAGE_kmod-usb-dwc3-qcom=n
+CONFIG_PACKAGE_kmod-usb-xhci-hcd=n
+CONFIG_PACKAGE_kmod-usb3=n
 
 # Reduce kernel module size
 CONFIG_ATH11K_DEBUGFS_HTT_STATS=n
@@ -28,22 +42,3 @@ CONFIG_ATH11K_THERMAL=n
 # Prevent opkg from adding custom feeds to /etc/opkg/distfeeds.conf
 CONFIG_FEED_nss=n
 CONFIG_FEED_sqm_scripts_nss=n
-
-# Disable default packages
-CONFIG_PACKAGE_kmod-phy-aquantia=n
-CONFIG_PACKAGE_kmod-usb-core=n
-CONFIG_PACKAGE_kmod-usb-dwc3=n
-CONFIG_PACKAGE_kmod-usb-dwc3-qcom=n
-CONFIG_PACKAGE_kmod-usb-xhci-hcd=n
-CONFIG_PACKAGE_kmod-usb3=n
-
-# From https://github.com/AgustinLorenzo/openwrt
-CONFIG_PACKAGE_kmod-qca-nss-drv-eogremgr=y
-CONFIG_PACKAGE_kmod-qca-nss-drv-gre=y
-CONFIG_PACKAGE_kmod-qca-nss-drv-igs=y
-CONFIG_PACKAGE_kmod-qca-nss-drv-lag-mgr=y
-CONFIG_PACKAGE_kmod-qca-nss-drv-map-t=y
-CONFIG_PACKAGE_kmod-qca-nss-drv-match=y
-CONFIG_PACKAGE_kmod-qca-nss-drv-pppoe=y
-CONFIG_PACKAGE_kmod-qca-nss-drv-pptp=y
-CONFIG_PACKAGE_kmod-qca-nss-drv-qdisc=y

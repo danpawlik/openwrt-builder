@@ -8,7 +8,8 @@ on:
 
 env:
   REMOTE_REPOSITORY: qosmio/openwrt-ipq
-  REMOTE_BRANCH: qualcommax-6.x-nss-wifi
+  # REMOTE_BRANCH: qualcommax-6.x-nss-wifi
+  REMOTE_BRANCH: qualcommax-6.x-nss-ath11k-2.12
   RELEASE_PREFIX: IPQ_8074_ax3600
   DEVICE_CONFIG: configs/qualcommax/ax3600
   ROLE_CONFIG: configs/common/main-router
