@@ -132,7 +132,7 @@ jobs:
       - name: Clean up old releases
         uses: dev-drprasad/delete-older-releases@master
         with:
-          keep_latest: 5
+          keep_latest: 15
           delete_tags: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
