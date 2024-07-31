@@ -70,6 +70,9 @@ jobs:
           ./scripts/feeds update -a
           ./scripts/feeds install -a
 
+# NOTE: Temporary do not use LLVM
+# curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/common/snapshot-short >> .config
+#
       - name: Configure firmware image
         run: |
           curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/qualcommax/ax3600 > .config

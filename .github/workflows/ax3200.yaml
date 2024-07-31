@@ -60,6 +60,7 @@ jobs:
         run: |
           curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/mediatek/mt7622/ax3200 > .config
           curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/common/dumb_ap >> .config
+          curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/common/snapshot-short >> .config
           make defconfig
 
       - name: Remove packages that are marked as modules
