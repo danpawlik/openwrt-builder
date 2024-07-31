@@ -1,7 +1,7 @@
-### deps for bridger package
-CONFIG_PACKAGE_kmod-sched-core=y
-CONFIG_PACKAGE_kmod-sched-flower=y
-CONFIG_PACKAGE_kmod-sched-bpf=y
-CONFIG_PACKAGE_kmod-sched-act-vlan=y
-CONFIG_PACKAGE_libelf=y
-CONFIG_PACKAGE_libbpf=y
+CONFIG_BPF_TOOLCHAIN_BUILD_LLVM=y
+# CONFIG_BPF_TOOLCHAIN_NONE is not set
+CONFIG_HAS_BPF_TOOLCHAIN=y
+CONFIG_USE_LLVM_BUILD=y
+CONFIG_DEVEL=y
+
+CONFIG_PACKAGE_bridger=y
