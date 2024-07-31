@@ -28,4 +28,5 @@ CONFIG_PACKAGE_kmod-mtd-rw=y
 # CONFIG_PACKAGE_kmod-veth is not set
 
 CONFIG_TARGET_OPTIONS=y
-CONFIG_TARGET_OPTIMIZATION="-O3 -pipe -mcpu=cortex-a73+crc+crypto+rdma"
+# #CONFIG_TARGET_OPTIMIZATION="-O3 -pipe -mcpu=cortex-a73+crc+crypto+rdma"
+CONFIG_TARGET_OPTIMIZATION="-O3 -pipe -mcpu=cortex-a73+crc+crypto+rdma -mtune=cortex-a73 -march=armv8-a -flto"
