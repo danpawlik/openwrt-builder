@@ -128,3 +128,19 @@ config rule 'wg'
 	option proto 'udp'
 	option target 'ACCEPT'
 
+config redirect
+	option dest 'lan'
+	option target 'DNAT'
+	option name 'Divert-DNS, port 53'
+	option src 'wan'
+	option src_dport '53'
+	option dest_port '53'
+
+config rule
+	option name 'Reject-DoT,port 853'
+	list proto 'tcp'
+	option src 'lan'
+	option dest 'wan'
+	option dest_port '853'
+	option target 'REJECT'
+

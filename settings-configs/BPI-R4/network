@@ -32,11 +32,17 @@ config device
 
 config interface 'wan'
 	option device 'br-wan'
-	option proto 'dhcp'
+	option proto 'static'
+	option ipaddr '10.0.0.2'
+	option netmask '255.255.255.0'
+	option gateway '10.0.0.1'
 
 config interface 'wan6'
 	option device 'br-wan'
 	option proto 'dhcpv6'
+	option reqaddress 'try'
+	option reqprefix 'auto'
+	option peerdns '0'
 
 config device
 	option name 'eth2'

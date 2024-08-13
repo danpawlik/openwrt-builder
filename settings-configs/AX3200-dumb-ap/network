@@ -8,6 +8,7 @@ config interface 'loopback'
 config globals 'globals'
 	option ula_prefix 'fd3a:91fc:a5f6::/48'
 	option packet_steering '1'
+	option steering_flows '256'
 
 config device
 	option name 'br-lan'
@@ -24,7 +25,6 @@ config interface 'lan'
 	option ip6assign '60'
 	option gateway '192.168.88.1'
 	list dns '192.168.88.1'
-	list dns '1.1.1.1'
 
 config device
 	option name 'wan'

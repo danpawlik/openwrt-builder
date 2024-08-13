@@ -5,7 +5,6 @@ config usteer
 	option local_mode '0'
 	option ipv6 '0'
 	option debug_level '2'
-	list ssid_list 'MYWIFI'
 	option roam_scan_snr '-70'
 	option roam_trigger_snr '-75'
 	option min_snr '-85'

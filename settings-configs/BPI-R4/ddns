@@ -1,9 +1,13 @@
 
-config ddns 'global'
-	option ddns_dateformat '%F %R'
-	option ddns_loglines '250'
-	option ddns_rundir '/var/run/ddns'
-	option ddns_logdir '/var/log/ddns'
+#
+# Please read https://openwrt.org/docs/guide-user/base-system/ddns
+#
+config ddns "global"
+	option ddns_dateformat "%F %R"
+#	option ddns_rundir "/var/run/ddns"
+#	option ddns_logdir "/var/log/ddns"
+	option ddns_loglines "250"
+	option upd_privateip "0"
 	option use_curl '1'
 
 config service 'DOMAIN'
@@ -28,8 +32,9 @@ config service 'DOMAIN_ipv6'
 	option enabled '1'
 	option lookup_host 'DOMAIN.duckdns.org'
 	option domain 'DOMAIN'
-	option username 'danpawlik@github'
-	option password 'ff66aa01-0640-493f-a9e4-70561207448b'
+	option username 'MYUSER@GITHUB.COM'
+	option password 'MYTOKEN'
 	option interface 'wan6'
 	option ip_source 'network'
 	option ip_network 'wan6'
+
