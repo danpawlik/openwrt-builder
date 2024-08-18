@@ -62,11 +62,11 @@ jobs:
           git am --keep-cr --signoff < 0001-Add-kmod-thermal-for-BPI-R4.patch
           git am --keep-cr --signoff < 0001-Add-mt7925-firmware-rule.patch
 
-      - name: Add OpenWRT remote and update
-        run: |
-          git remote add omain https://github.com/openwrt/openwrt
-          git remote update omain
-          git pull omain main --rebase
+#      - name: Add OpenWRT remote and update
+#        run: |
+#          git remote add omain https://github.com/openwrt/openwrt
+#          git remote update omain
+#          git pull omain main --rebase
 
       - name: Update and install feeds
         run: |
