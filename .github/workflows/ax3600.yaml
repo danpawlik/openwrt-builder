@@ -122,8 +122,8 @@ jobs:
         uses: softprops/action-gh-release@master
         with:
           files: bin/targets/qualcommax/ipq807x/*
-          tag_name: ${{ env.RELEASE_PREFIX }}-${{ env.RELEASE_DATE }}
-          name: OpenWRT AX3600-NSS ${{ env.RELEASE_DATE }}
+          tag_name: ${{ env.RELEASE_PREFIX }}-${{ env.REMOTE_BRANCH }}-${{ env.RELEASE_DATE }}
+          name: OpenWRT AX3600-NSS - ${{ env.REMOTE_BRANCH }} - ${{ env.RELEASE_DATE }}
           body: |
             Updated prebuilt images for ${{ env.RELEASE_DATE }}
             Build Commit: ${{ needs.check_commits.outputs.latest_commit_sha }}

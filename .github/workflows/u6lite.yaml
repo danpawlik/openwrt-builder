@@ -102,8 +102,8 @@ jobs:
         uses: softprops/action-gh-release@master
         with:
           files: bin/targets/ramips/mt7621/*
-          tag_name: ${{ env.RELEASE_PREFIX }}-${{ env.RELEASE_DATE }}
-          name: OpenWRT u6lite ${{ env.RELEASE_DATE }}
+          tag_name: ${{ env.RELEASE_PREFIX }}-${{ env.REMOTE_BRANCH }}-${{ env.RELEASE_DATE }}
+          name: OpenWRT Unifi 6 Lite - ${{ env.REMOTE_BRANCH }} - ${{ env.RELEASE_DATE }}
           body: |
             Updated prebuilt images for ${{ env.RELEASE_DATE }}
             Build Commit: ${{ needs.check_commits.outputs.latest_commit_sha }}
