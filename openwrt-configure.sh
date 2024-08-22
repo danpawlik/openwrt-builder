@@ -68,7 +68,6 @@ fi
 # additional packages
 if [[ "$DEVICE" =~ Main|main ]]; then
     PACKAGES="$PACKAGES luci-proto-wireguard kmod-wireguard wireguard-tools qrencode"
-    PACKAGES="$PACKAGES luci-app-vnstat2"
     PACKAGES="$PACKAGES luci-app-sqm"
     PACKAGES="$PACKAGES ddns-scripts luci-app-ddns bind-host"
     if [[ "$INSTALL_HTTPS_DNS_PROXY" =~ True|true ]]; then
@@ -111,7 +110,7 @@ esac
 #       opkg install collectd collectd-mod-sensors collectd-mod-dns collectd-mod-wireless luci-app-statistics luci luci-i18n-base-pl vim htop curl iperf3 luci-app-attendedsysupgrade auc bmon irqbalance luci-app-irqbalance rsync
 #
 ### additional
-#       opkg install bind-dig ethtool-full pciutils tcpdump luci-app-vnstat2
+#       opkg install bind-dig ethtool-full pciutils tcpdump
 
 ### wireguard
 #       luci-proto-wireguard kmod-wireguard wireguard-tools qrencode

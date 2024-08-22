@@ -12,7 +12,7 @@ CONFIG_LIBCURL_OPENSSL=y
 CONFIG_OPENSSL_OPTIMIZE_SPEED=y
 
 # Enable http3 and quic
-CONFIG_LIBCURL_NGHTTP3=y
+# CONFIG_LIBCURL_NGHTTP3 is not set
 # CONFIG_LIBCURL_NGTCP2 is not set
 
 # enable /dev/crypto
