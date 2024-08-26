@@ -51,16 +51,13 @@ jobs:
           repository: ${{ env.REMOTE_REPOSITORY }}
           ref: ${{ env.REMOTE_BRANCH }}
 
-      - name: Apply kmod-thermal and build mt7925 firmware patches
+      - name: Apply kmod-thermal patch
         run: |
           git config --global user.email "danielpawlik@test.com"
           git config --global user.name "Daniel Pawlik"
           curl -LO https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/patches/0001-Add-kmod-thermal-for-BPI-R4.patch
-          curl -LO https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/patches/0001-Add-mt7925-firmware-rule.patch
           git apply --check 0001-Add-kmod-thermal-for-BPI-R4.patch
-          git apply --check 0001-Add-mt7925-firmware-rule.patch
           git am --keep-cr --signoff < 0001-Add-kmod-thermal-for-BPI-R4.patch
-          git am --keep-cr --signoff < 0001-Add-mt7925-firmware-rule.patch
 
 #      - name: Add OpenWRT remote and update
 #        run: |
