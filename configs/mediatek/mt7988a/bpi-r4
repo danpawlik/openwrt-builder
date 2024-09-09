@@ -26,3 +26,6 @@ CONFIG_PACKAGE_blockd=m
 CONFIG_PACKAGE_mtdev=m
 CONFIG_PACKAGE_kmod-mtd-rw=y
 CONFIG_PACKAGE_kmod-veth=y
+
+# avoid error when: CONFIG_ALL_KMODS=y
+CONFIG_PACKAGE_kmod-thermal=y
