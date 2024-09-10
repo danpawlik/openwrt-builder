@@ -1,31 +1,7 @@
 #
 # curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/mediatek/mt7988a/bpi-r4 > .config
-# later, eg.:
-# curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/common/main-router >> .config
 #
 
 CONFIG_TARGET_mediatek=y
 CONFIG_TARGET_mediatek_filogic=y
 CONFIG_TARGET_mediatek_filogic_DEVICE_bananapi_bpi-r4=y
-
-# MT7921
-CONFIG_PACKAGE_kmod-mt7921-common=y
-CONFIG_PACKAGE_kmod-mt7921-firmware=y
-CONFIG_PACKAGE_kmod-mt7921e=y
-
-# MT7925
-CONFIG_PACKAGE_kmod-mt7925-common=y
-CONFIG_PACKAGE_kmod-mt7925e=y
-CONFIG_PACKAGE_kmod-mt7925-firmware=y
-CONFIG_PACKAGE_kmod-mt792x-common=y
-CONFIG_PACKAGE_kmod-mt792x-usb=y
-
-## debuging
-CONFIG_PACKAGE_block-mount=y
-CONFIG_PACKAGE_blockd=m
-CONFIG_PACKAGE_mtdev=m
-CONFIG_PACKAGE_kmod-mtd-rw=y
-CONFIG_PACKAGE_kmod-veth=y
-
-# avoid error when: CONFIG_ALL_KMODS=y
-CONFIG_PACKAGE_kmod-thermal=y
