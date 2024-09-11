@@ -9,13 +9,13 @@ on:
 env:
   REMOTE_REPOSITORY: qosmio/openwrt-ipq
   # REMOTE_BRANCH: qualcommax-6.x-nss-wifi
-  REMOTE_BRANCH: qualcommax-6.x-nss-ath11k-2.12
+  REMOTE_BRANCH: qualcommax-6.x-nss-wifi
   RELEASE_PREFIX: IPQ_8074_ax3600
   DEVICE_CONFIG: configs/qualcommax/ax3600
   ROLE_CONFIG: configs/common/main-router
   NSS_CONFIG: configs/common/nss
   NSS_PACKAGES_REPOSITORY: qosmio/nss-packages
-  NSS_PACKAGES_REPOSITORY_BRANCH: NSS-12.5-K6.x
+  NSS_PACKAGES_REPOSITORY_BRANCH: NSS-12.5-K6.x 
 
 jobs:
   check_commits:
