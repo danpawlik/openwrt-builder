@@ -56,8 +56,17 @@ jobs:
 
       - name: Update and install feeds
         run: |
-          ./scripts/feeds update -a
-          ./scripts/feeds install -a
+          ./scripts/feeds update -a && ./scripts/feeds install -a
+
+#      # NOTE: Temporary commented, due it is an error related to missing
+#      # deps like: iwinfo or rpcd.
+#      # Take patch for Luci for BE - https://github.com/openwrt/luci/pull/7271
+#      - name: Add patch for Luci BE wireless standard
+#        run: |
+#          cd feeds/luci
+#          git remote add lakd https://github.com/lakdif/luci
+#          git remote update lakd
+#          git cherry-pick -x e8910c7a3b70c2ea015129fe1811b732522feade
 
       - name: Configure firmware image
         run: |
@@ -98,14 +107,8 @@ jobs:
         run: |
           grep "=m" .config | grep -v 'CONFIG_PACKAGE_libustream-mbedtls=m' | while read -r line; do module=$(echo "$line" | cut -f1 -d'='); sed -i "s/^$line$/# $module is not set/" .config; done
 
-      - name: Run once again defconfig
-        run: make -j $(nproc) defconfig
-
-      - name: Download dependencies
-        run: make -j $(nproc) download
-
       - name: Build the firmware image
-        run: make -j $(nproc) world
+        run: make -j $(nproc) defconfig download world
 
       - name: Compress all packages
         run: |
