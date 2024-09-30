@@ -7,7 +7,7 @@ on:
 
 env:
   REMOTE_REPOSITORY: openwrt/openwrt
-  REMOTE_BRANCH: openwrt-23.05
+  REMOTE_BRANCH: main
   RELEASE_PREFIX: Ath79_uapaclr
   DEVICE_CONFIG: configs/ath79/generic/uap-ac-lr
   ROLE_CONFIG: configs/common/parents-minimal

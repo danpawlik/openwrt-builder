@@ -7,7 +7,7 @@ on:
 
 env:
   REMOTE_REPOSITORY: openwrt/openwrt
-  REMOTE_BRANCH: openwrt-23.05
+  REMOTE_BRANCH: main
   RELEASE_PREFIX: Ramips_mt7621_u6lite
   DEVICE_CONFIG: configs/ramips/mt7621/u6-lite
   ROLE_CONFIG: configs/common/parents
