@@ -79,14 +79,8 @@ jobs:
         run: |
           grep "=m" .config | grep -v 'CONFIG_PACKAGE_libustream-mbedtls=m' | while read -r line; do module=$(echo "$line" | cut -f1 -d'='); sed -i "s/^$line$/# $module is not set/" .config; done
 
-      - name: Run once again defconfig
-        run: make -j $(nproc) defconfig
-
-      - name: Download dependencies
-        run: make -j $(nproc) download
-
       - name: Build the firmware image
-        run: make -j $(nproc) world
+        run: make -j $(nproc) defconfig download world
 
       - name: Package output
         run: tar -cvf bpi_r4-images.tar bin/targets/mediatek/filogic

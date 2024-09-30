@@ -15,7 +15,7 @@ env:
   ROLE_CONFIG: configs/common/main-router
   NSS_CONFIG: configs/common/nss
   NSS_PACKAGES_REPOSITORY: qosmio/nss-packages
-  NSS_PACKAGES_REPOSITORY_BRANCH: NSS-12.5-K6.x 
+  NSS_PACKAGES_REPOSITORY_BRANCH: NSS-12.5-K6.x
 
 jobs:
   check_commits:
@@ -86,12 +86,9 @@ jobs:
 #        run: |
 #          grep "=m" .config | grep -v 'CONFIG_PACKAGE_libustream-mbedtls=m' | while read -r line; do module=$(echo "$line" | cut -f1 -d'='); sed -i "s/^$line$/# $module is not set/" .config; done
 
-      - name: Download dependencies
-        run: make -j $(nproc) download
-
       # If debugging and container is a root: export FORCE_UNSAFE_CONFIGURE=1
       - name: Build the firmware image
-        run: make -j $(nproc) world
+        run: make -j $(nproc) defconfig download world
 
       - name: Package output
         run: tar -cvf ax_3600-images.tar bin/targets/qualcommax/ipq807x
