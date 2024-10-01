@@ -4,4 +4,4 @@
 
 CONFIG_TARGET_mediatek=y
 CONFIG_TARGET_mediatek_filogic=y
-CONFIG_TARGET_mediatek_filogic_DEVICE_bananapi_bpi-r4=y
+CONFIG_TARGET_mediatek_filogic_DEVICE_bananapi_bpi-r4-poe=y
