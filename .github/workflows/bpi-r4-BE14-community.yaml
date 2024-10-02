@@ -120,7 +120,7 @@ jobs:
         with:
           files: bin/targets/mediatek/filogic/*
           tag_name: ${{ env.RELEASE_PREFIX }}-${{ env.REMOTE_BRANCH }}-${{ env.RELEASE_DATE }}
-          name: OpenWRT BPI-R4 + BE14 + luci BE - ${{ env.REMOTE_BRANCH }} - ${{ env.RELEASE_DATE }}
+          name: OpenWRT BPI-R4 ${{ env.DEVICE_CONFIG }} + BE14 + luci BE - ${{ env.REMOTE_BRANCH }} - ${{ env.RELEASE_DATE }}
           body: |
             Updated prebuilt images for ${{ env.RELEASE_DATE }} with BE14, luci BE, basic 5G modem packages, that was
             expected by the community members.
