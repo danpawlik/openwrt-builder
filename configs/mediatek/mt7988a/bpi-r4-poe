@@ -5,8 +5,5 @@
 CONFIG_TARGET_mediatek=y
 CONFIG_TARGET_mediatek_filogic=y
 CONFIG_TARGET_mediatek_filogic_DEVICE_bananapi_bpi-r4-poe=y
-<<<<<<< HEAD
-=======
 
 CONFIG_PACKAGE_mt7988-2p5g-phy-firmware=y
->>>>>>> mikewilks-poe-option
