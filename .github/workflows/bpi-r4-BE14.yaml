@@ -6,7 +6,7 @@ on:
 
 env:
   REMOTE_REPOSITORY: danpawlik/openwrt
-  REMOTE_BRANCH: v14-luci-eht-rmadrad
+  REMOTE_BRANCH: v14-luci-eht
   RELEASE_PREFIX: Mediatek_mt7988a_bpi-r4_be14_all_packages_eht
 
 jobs:
