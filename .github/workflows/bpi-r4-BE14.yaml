@@ -1,5 +1,5 @@
 ---
-name: BPI-R4 + all packages + BE14 + luci BE
+name: BPI-R4 + BE14 + all packages
 
 on:
   workflow_dispatch:
@@ -29,7 +29,7 @@ jobs:
           echo "latest_commit_sha=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
 
   build:
-    name: Build OpenWRT for BPI-R4 with BE14
+    name: Build OpenWRT for BPI-R4 with BE14 and main-router packages
     needs: [check_commits]
     runs-on: ubuntu-24.04
     steps:

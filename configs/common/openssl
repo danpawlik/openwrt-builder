@@ -18,4 +18,6 @@ CONFIG_OPENSSL_OPTIMIZE_SPEED=y
 # enable /dev/crypto
 CONFIG_PACKAGE_libopenssl-devcrypto=y
 CONFIG_PACKAGE_kmod-cryptodev=y
+CONFIG_PACKAGE_libopenssl-afalg=y
+CONFIG_PACKAGE_libopenssl-gost_engine=y
 #### replace mbedtls with openssl - remember to leave commented "is not set" or remove it!
