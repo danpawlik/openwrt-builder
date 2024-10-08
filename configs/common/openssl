@@ -20,8 +20,12 @@ CONFIG_PACKAGE_kmod-cryptodev=y
 CONFIG_PACKAGE_kmod-crypto-user=y
 CONFIG_PACKAGE_libopenssl-devcrypto=y
 CONFIG_PACKAGE_openssl-util=y
-CONFIG_OPENSSL_ENGINE_BUILTIN=y
-CONFIG_OPENSSL_ENGINE_BUILTIN_DEVCRYPTO=y
+# additional modules
 # CONFIG_PACKAGE_libopenssl-afalg=y
 # CONFIG_PACKAGE_libopenssl-gost_engine=y
+
+### Force enable /dev/crypto
+CONFIG_OPENSSL_ENGINE_BUILTIN=y
+CONFIG_OPENSSL_ENGINE_BUILTIN_DEVCRYPTO=y
+
 #### replace mbedtls with openssl - remember to leave commented "is not set" or remove it!

@@ -136,10 +136,13 @@ jobs:
         with:
           files: bin/targets/mediatek/filogic/*
           tag_name: ${{ env.RELEASE_PREFIX }}-${{ env.REMOTE_BRANCH }}-${{ env.RELEASE_DATE }}
-          name: OpenWRT BPI-R4 ${{ env.DEVICE_CONFIG }} + BE14 - ${{ env.REMOTE_BRANCH }} - ${{ env.RELEASE_DATE }}
+          name: OpenWRT BPI-R4 ${{ inputs.DEVICE_CONFIG == 'poe' && 'POE' || '' }} - ${{ env.REMOTE_BRANCH }} - ${{ env.RELEASE_DATE }}
           body: |
-            Updated prebuilt images for ${{ env.RELEASE_DATE }} with BE14, luci BE, basic 5G modem packages, that was
-            expected by the community members. ${{ inputs.RMADRAD_VERSION == true && 'That build contains Rmadrad patch' || 'That builds is more less stock OpenWRT version' }}
+            Updated prebuilt images for BPI-R4 ${{ inputs.DEVICE_CONFIG == 'poe' && 'PoE version' || '' }}  with basic 5G modem packages, that was
+            expected by the community members.
+
+            ${{ inputs.RMADRAD_VERSION == true && 'That build contains Rmadrad patch' || 'That builds is more less stock OpenWRT version' }}
+
             Build Commit: ${{ needs.check_commits.outputs.latest_commit_sha }}
 
       - name: Clean up old releases
