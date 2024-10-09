@@ -4,6 +4,7 @@ CURRENT_DIR=$(pwd)
 DEFCONFIG=$CURRENT_DIR/openwrt-mediatek/mtk-openwrt-feeds/autobuild/unified/filogic/master/defconfig
 OTHER_CONFIG=$CURRENT_DIR/openwrt-mediatek/mtk-openwrt-feeds/autobuild/autobuild_5.4_mac80211_release/mt7988_wifi7_mac80211_mlo/.config
 TEMP_CONFIG=$CURRENT_DIR/openwrt-mediatek/myconfig
+MAIN_CONFIG=$CURRENT_DIR/openwrt-mediatek/.config
 
 echo $DEFCONFIG
 ##exit 0
@@ -40,7 +41,6 @@ CONFIG_PACKAGE_kmod-rtc-pcf8563=y
 CONFIG_PACKAGE_kmod-usb-storage-extras=y
 CONFIG_PACKAGE_kmod-usb-storage-uas=y
 CONFIG_PACKAGE_kmod-mt7996-firmware=y
-CONFIG_PACKAGE_strongswan=y
 EOF
 
 curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/common/main-router > $TEMP_CONFIG
@@ -62,11 +62,13 @@ sed -i 's/CONFIG_PACKAGE_kmod-crypto-eip197/# CONFIG_PACKAGE_kmod-crypto-eip197 
 bash ./mtk-openwrt-feeds/autobuild/unified/autobuild.sh filogic-mac80211-BE19000 log_file=make
 
 # when it fails
-# cd openwrt-mediatek
-# grep "=m" .config | grep -v 'CONFIG_PACKAGE_libustream-mbedtls=m' | while read -r line; do module=$(echo "$line" | cut -f1 -d'='); sed -i "s/^$line$/# $module is not set/" .config; done
-# make defconfig clean download world
-#
+for v in $(grep '=y' $TEMP_CONFIG | grep -v '#') CONFIG_PACKAGE_kmod-crypto-eip197; do
+	name=$(echo $v | cut -f1 -d'=') ;
+	sed -i "s|# $name is not set|$v|" $MAIN_CONFIG
+done
+grep "=m" .config | grep -v 'CONFIG_PACKAGE_libustream-mbedtls=m' | while read -r line; do module=$(echo "$line" | cut -f1 -d'='); sed -i "s/^$line$/# $module is not set/" .config; done
+make $(nproc) defconfig clean download world
+
 # alternative
-# cd openwrt-mediatek
 # git clean -f -d
-# bash ./mtk-openwrt-feeds/autobuild/unified/autobuild.sh filogic-mac80211-BE19000 log_file=make
+# bash ./mtk-openwrt-feeds/autobuild/unified/autobuild.sh clean
