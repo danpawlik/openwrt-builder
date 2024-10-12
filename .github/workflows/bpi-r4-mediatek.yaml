@@ -1,0 +1,160 @@
+---
+# FIXME: Even when the package are set, the mediatek feed is
+# overwriting it.
+name: BPI-R4 + mediatek feed
+
+on:
+  workflow_dispatch:
+    inputs:
+      DEVICE_CONFIG:
+        description: "Device configuration selection: <none> or poe (default: non-poe)"
+        required: true
+        type: choice
+        default: 'non-poe'
+        options:
+          - poe
+          - non-poe
+
+env:
+  REMOTE_REPOSITORY: openwrt/openwrt
+  REMOTE_BRANCH: main
+  RELEASE_PREFIX: Mediatek_mt7988a_bpi-r4_mediatek
+  DEVICE_CONFIG: ${{ inputs.DEVICE_CONFIG == 'poe' && 'configs/mediatek/mt7988a/bpi-r4-poe' || 'configs/mediatek/mt7988a/bpi-r4' }}
+  ROLE_CONFIG: configs/common/community
+
+jobs:
+  check_commits:
+    name: Check Commits
+    runs-on: ubuntu-24.04
+    outputs:
+      latest_commit_sha: ${{ steps.get_sha.outputs.latest_commit_sha }}
+    steps:
+      - name: Checkout remote repository
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ env.REMOTE_REPOSITORY }}
+          ref: ${{ env.REMOTE_BRANCH }}
+
+      - name: Get the latest commit SHA
+        id: get_sha
+        run: |
+          echo "latest_commit_sha=$(git rev-parse HEAD)" >> $GITHUB_ENV
+          echo "latest_commit_sha=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
+
+  build:
+    name: Build BPI-R4 with Mediatek Feed
+    needs: [check_commits]
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Install dependencies
+        run: |
+          sudo apt update
+          sudo apt full-upgrade -y
+          sudo apt install -y \
+            build-essential clang flex bison g++ gawk \
+            gcc-multilib g++-multilib gettext git libncurses-dev libssl-dev \
+            python3-setuptools rsync swig unzip zlib1g-dev \
+            file wget curl zstd bash coreutils
+
+      - name: Checkout remote repository
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ env.REMOTE_REPOSITORY }}
+          ref: ${{ env.REMOTE_BRANCH }}
+
+      - name: Clone Mediatek feed
+        run: |
+          git clone https://git01.mediatek.com/openwrt/feeds/mtk-openwrt-feeds || true
+
+      - name: Add missing kernel config
+        run: |
+          echo '# CONFIG_IXGBEVF_IPSEC is not set' >> target/linux/generic/config-6.6
+          echo '# CONFIG_IXGBE_IPSEC is not set' >> target/linux/generic/config-6.6
+          echo '# CONFIG_RTL8261N_PHY is not set' >> target/linux/generic/config-6.6
+
+      - name: Run Mediatek prepare
+        run: |
+          bash -x ./mtk-openwrt-feeds/autobuild/unified/autobuild.sh filogic-mac80211-BE19000 prepare log_file=make
+
+      - name: Configure firmware image
+        run: |
+          curl -SL https://raw.githubusercontent.com/${{ github.repository_owner }}/openwrt-builder/master/${{ env.DEVICE_CONFIG }} > .config
+          curl -SL https://raw.githubusercontent.com/${{ github.repository_owner }}/openwrt-builder/master/configs/common/luci >> .config
+          curl -SL https://raw.githubusercontent.com/${{ github.repository_owner }}/openwrt-builder/master/configs/common/snapshot-short >> .config
+          sed -i '/CONFIG_PACKAGE_wpad-mbedtls=y/d' .config
+          curl -SL https://raw.githubusercontent.com/${{ github.repository_owner }}/openwrt-builder/master/configs/common/openssl >> .config
+          curl -SL https://raw.githubusercontent.com/${{ github.repository_owner }}/openwrt-builder/master/configs/common/lte-5g-modem >> .config
+          curl -SL https://raw.githubusercontent.com/${{ github.repository_owner }}/openwrt-builder/master/${{ env.ROLE_CONFIG }} >> .config
+
+      # Full diff list is here: https://github.com/danpawlik/openwrt-builder/commit/13e8e751e28e9a9bd852e427b89ed4f3bc0cf15d#diff-c5c79fcc9dff2632be242ed35cef9527aab61e542217f71cd2d396155c976ec4R49
+      - name: Set configs, that were set in Mediatek Feed prepare step
+        run: |
+          echo "CONFIG_PACKAGE_mt7988-wo-firmware=y" >> .config
+
+      - name: Run defconfig
+        run: |
+          make defconfig
+
+      - name: Remove packages that are marked as modules just to save time
+        run: |
+          grep "=m" .config | grep -v 'CONFIG_PACKAGE_libustream-mbedtls=m' | while read -r line; do module=$(echo "$line" | cut -f1 -d'='); sed -i "s/^$line$/# $module is not set/" .config; done
+
+      - name: Comment crypto-eip due it will raise an error
+        run: |
+          sed -i 's/CONFIG_PACKAGE_kmod-crypto-eip=y/# CONFIG_PACKAGE_kmod-crypto-eip is not set/g' .config
+
+      - name: Build the firmware image
+        run: make -j $(nproc) defconfig download world
+
+      - name: Compress all packages
+        run: |
+          tar caf bin/targets/mediatek/filogic/packages.tar.gz bin/targets/mediatek/filogic/packages
+
+      - name: Package output
+        run: tar -cvf bpi_r4-images.tar bin/targets/mediatek/filogic
+
+      - name: Add config file
+        run: cp .config  bin/targets/mediatek/filogic/config-full
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: bpi_r4-images
+          path: bpi_r4-images.tar
+
+  release:
+    name: Create release
+    needs: [build, check_commits]
+    if: needs.build.result == 'success'
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: bpi_r4-images
+
+      - name: Extract artifacts
+        run: tar xf bpi_r4-images.tar
+
+      - name: Get current date
+        run: echo "RELEASE_DATE=$(date +%F)" >> $GITHUB_ENV
+
+      - name: Create release
+        uses: softprops/action-gh-release@master
+        with:
+          files: bin/targets/mediatek/filogic/*
+          tag_name: ${{ env.RELEASE_PREFIX }}-${{ env.REMOTE_BRANCH }}-${{ env.RELEASE_DATE }}
+          name: OpenWRT BPI-R4 ${{ inputs.DEVICE_CONFIG == 'poe' && 'POE' || '' }} Mediatek Feed - ${{ env.REMOTE_BRANCH }} - ${{ env.RELEASE_DATE }}
+          body: |
+            Updated prebuilt images for BPI-R4 ${{ inputs.DEVICE_CONFIG == 'poe' && 'PoE version' || '' }} that contains Mediatek Feed with basic 5G modem packages, that was
+            expected by the community members.
+
+            Build Commit: ${{ needs.check_commits.outputs.latest_commit_sha }}
+
+      - name: Clean up old releases
+        uses: dev-drprasad/delete-older-releases@master
+        with:
+          keep_latest: 5
+          delete_tags: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
