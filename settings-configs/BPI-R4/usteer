@@ -10,4 +10,6 @@ config usteer
 	option min_snr '-85'
 	option roam_scan_tries '0'
 	option max_neighbor_reports '6'
+	option signal_diff_threshold '12'
+	option load_balancing_threshold '0'
 

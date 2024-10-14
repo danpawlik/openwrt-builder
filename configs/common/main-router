@@ -69,12 +69,12 @@ CONFIG_PACKAGE_collectd-mod-dns=y
 
 ## Better roaming: dawn vs usteer => choose one
 ## dawn
-#CONFIG_PACKAGE_dawn=y
-#CONFIG_PACKAGE_luci-app-dawn=y
+CONFIG_PACKAGE_dawn=y
+CONFIG_PACKAGE_luci-app-dawn=y
 
 ### usteer
-CONFIG_PACKAGE_usteer=y
-CONFIG_PACKAGE_luci-app-usteer=y
+# CONFIG_PACKAGE_usteer=y
+# CONFIG_PACKAGE_luci-app-usteer=y
 
 # sqm
 CONFIG_PACKAGE_luci-app-sqm=y
