@@ -74,7 +74,7 @@ jobs:
 
       - name: Run Mediatek prepare
         run: |
-          bash -x ./mtk-openwrt-feeds/autobuild/unified/autobuild.sh filogic-mac80211-BE19000 prepare log_file=make
+          bash -x ./mtk-openwrt-feeds/autobuild/unified/autobuild.sh filogic-mac80211-mt7988_rfb-mt7996 prepare log_file=make
 
       - name: Configure firmware image
         run: |
