@@ -77,15 +77,21 @@ jobs:
         run: |
           ./scripts/feeds update -a && ./scripts/feeds install -a
 
+      - name: environment variable - add date
+        run: echo "RELEASE_DATE=$(date +%F)" >> $GITHUB_ENV
+
+      - name: environment variable - add release branch
+        run: echo "RELEASE_BRANCH=$GITHUB_REF_NAME" >> $GITHUB_ENV
+
       - name: Configure firmware image
         run: |
-          curl -SL https://raw.githubusercontent.com/${{ github.repository_owner }}/openwrt-builder/master/${{ env.DEVICE_CONFIG }} > .config
-          curl -SL https://raw.githubusercontent.com/${{ github.repository_owner }}/openwrt-builder/master/configs/common/luci >> .config
-          curl -SL https://raw.githubusercontent.com/${{ github.repository_owner }}/openwrt-builder/master/configs/common/snapshot-short >> .config
+          curl -SL https://raw.githubusercontent.com/${{ github.repository_owner }}/openwrt-builder/${{ env.RELEASE_BRANCH }}/${{ env.DEVICE_CONFIG }} > .config
+          curl -SL https://raw.githubusercontent.com/${{ github.repository_owner }}/openwrt-builder/${{ env.RELEASE_BRANCH }}/configs/common/luci >> .config
+          curl -SL https://raw.githubusercontent.com/${{ github.repository_owner }}/openwrt-builder/${{ env.RELEASE_BRANCH }}/configs/common/snapshot-short >> .config
           sed -i '/CONFIG_PACKAGE_wpad-mbedtls=y/d' .config
-          curl -SL https://raw.githubusercontent.com/${{ github.repository_owner }}/openwrt-builder/master/configs/common/openssl >> .config
-          curl -SL https://raw.githubusercontent.com/${{ github.repository_owner }}/openwrt-builder/master/configs/common/lte-5g-modem >> .config
-          curl -SL https://raw.githubusercontent.com/${{ github.repository_owner }}/openwrt-builder/master/${{ env.ROLE_CONFIG }} >> .config
+          curl -SL https://raw.githubusercontent.com/${{ github.repository_owner }}/openwrt-builder/${{ env.RELEASE_BRANCH }}/configs/common/openssl >> .config
+          curl -SL https://raw.githubusercontent.com/${{ github.repository_owner }}/openwrt-builder/${{ env.RELEASE_BRANCH }}/configs/common/lte-5g-modem >> .config
+          curl -SL https://raw.githubusercontent.com/${{ github.repository_owner }}/openwrt-builder/${{ env.RELEASE_BRANCH }}/${{ env.ROLE_CONFIG }} >> .config
 
       - name: Run defconfig
         run: |
@@ -101,6 +107,9 @@ jobs:
       - name: Compress all packages
         run: |
           tar caf bin/targets/mediatek/filogic/packages.tar.gz bin/targets/mediatek/filogic/packages
+
+      - name: rename release files
+        run: for f in bin/targets/mediatek/filogic/openwrt-mediatek-filogic-bananapi_bpi-r4*; do mv "$f" "$(echo "$f" | sed s/openwrt-mediatek-filogic-bananapi_bpi-r4/openwrt-${{ env.RELEASE_DATE }}-${{ env.RELEASE_BRANCH }}-mediatek-filogic-bananapi_bpi-r4/)"; done
 
       - name: Package output
         run: tar -cvf bpi_r4-images.tar bin/targets/mediatek/filogic
