@@ -15,10 +15,10 @@ echo '# CONFIG_IXGBE_IPSEC is not set' >> target/linux/generic/config-6.6
 echo '# CONFIG_RTL8261N_PHY is not set' >> target/linux/generic/config-6.6
 
 # Run prepare instead of build
-bash ./mtk-openwrt-feeds/autobuild/unified/autobuild.sh filogic-mac80211-BE19000 prepare log_file=make
+bash ./mtk-openwrt-feeds/autobuild/unified/autobuild.sh filogic-mac80211-mt7988_rfb-mt7996 prepare log_file=make
 
 # To build via mtk feed:
-# bash ./mtk-openwrt-feeds/autobuild/unified/autobuild.sh filogic-mac80211-BE19000 log_file=make
+# bash ./mtk-openwrt-feeds/autobuild/unified/autobuild.sh filogic-mac80211-mt7988_rfb-mt7996 log_file=make
 
 # It will fail, so let's re-use packages set in Mediatek feed + my packages
 # and make world!
