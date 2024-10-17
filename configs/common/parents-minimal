@@ -19,21 +19,21 @@ CONFIG_PACKAGE_luci-theme-bootstrap=y
 
 # additional packages
 CONFIG_PACKAGE_vim=y
-CONFIG_PACKAGE_bmon=y
+# CONFIG_PACKAGE_bmon=y
 CONFIG_PACKAGE_htop=y
-CONFIG_PACKAGE_iperf3=y
+# CONFIG_PACKAGE_iperf3=y
 CONFIG_PACKAGE_curl=y
-CONFIG_PACKAGE_rsync=y
+# CONFIG_PACKAGE_rsync=y
 # CONFIG_PACKAGE_tcpdump is not set
-CONFIG_PACKAGE_bind-dig=y
+# CONFIG_PACKAGE_bind-dig=y
 # CONFIG_PACKAGE_ethtool-full is not set
 # CONFIG_PACKAGE_pciutils is not set
 # CONFIG_PACKAGE_irqbalance is not set
 # CONFIG_PACKAGE_luci-app-irqbalance is not set
 
 # attendedsysupgrade / owut
-# CONFIG_PACKAGE_owut is not set
-CONFIG_PACKAGE_auc=y
+CONFIG_PACKAGE_owut=y
+# CONFIG_PACKAGE_auc is not set
 
 # use experimental kernel
 # CONFIG_TESTING_KERNEL is not set
@@ -42,10 +42,11 @@ CONFIG_PACKAGE_auc=y
 # CONFIG_PACKAGE_kmod-wireguard is not set
 # CONFIG_PACKAGE_wireguard-tools is not set
 # CONFIG_PACKAGE_luci-proto-wireguard is not set
-# CONFIG_PACKAGE_qrencode=y
+# CONFIG_PACKAGE_qrencode is not set
 
 ## https dns
-CONFIG_PACKAGE_dnscrypt-proxy2=y
+# CONFIG_PACKAGE_dnscrypt-proxy2 is not set
+CONFIG_PACKAGE_https-dns-proxy=y
 
 # collecd
 CONFIG_PACKAGE_luci-app-statistics=y
@@ -55,11 +56,11 @@ CONFIG_PACKAGE_collectd-mod-interface=y
 CONFIG_PACKAGE_collectd-mod-iwinfo=y
 CONFIG_PACKAGE_collectd-mod-load=y
 CONFIG_PACKAGE_collectd-mod-memory=y
-CONFIG_PACKAGE_collectd-mod-network=y
+# CONFIG_PACKAGE_collectd-mod-network is not set
 CONFIG_PACKAGE_collectd-mod-rrdtool=y
 CONFIG_PACKAGE_collectd-mod-sensors=y
 CONFIG_PACKAGE_collectd-mod-wireless=y
-CONFIG_PACKAGE_collectd-mod-dns=y
+#CONFIG_PACKAGE_collectd-mod-dns is not set
 
 ## Better roaming: dawn vs usteer => choose one
 ## dawn

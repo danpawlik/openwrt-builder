@@ -62,7 +62,7 @@ if [[ "$INSTALL_DAWN" =~ True|true ]]; then
 fi
 
 if [[ "$INSTALL_USTEER" =~ True|true ]]; then
-    PACKAGES="$PACKAGES usteer luci-app-usteer"
+    PACKAGES="$PACKAGES usteer luci-app-usteer luci-i18n-usteer-pl"
 fi
 
 # additional packages
@@ -83,7 +83,7 @@ if ! [[ "$DEVICE" =~ Main|main ]] && [[ "$INSTALL_BRIDGER" =~ True|true ]]; then
 fi
 
 if [[ "$INSTALL_LANG_PACKAGES" =~ True|true ]]; then
-    PACKAGES="$PACKAGES luci-i18n-firewall-pl luci-i18n-irqbalance-pl luci-i18n-opkg-pl luci-i18n-statistics-pl luci-i18n-usteer-pl luci-i18n-base-pl"
+    PACKAGES="$PACKAGES luci-i18n-firewall-pl luci-i18n-irqbalance-pl luci-i18n-opkg-pl luci-i18n-statistics-pl luci-i18n-base-pl"
 fi
 
 COMMAND="$COMMAND; opkg install $PACKAGES $ADDITIONAL_DRIVERS; /etc/init.d/uhttpd start ; /etc/init.d/uhttpd enable;"

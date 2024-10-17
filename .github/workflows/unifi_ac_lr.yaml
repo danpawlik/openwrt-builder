@@ -62,8 +62,6 @@ jobs:
           curl -SL "https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/$DEVICE_CONFIG" > .config
           curl -SL "https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/$ROLE_CONFIG" >> .config
           curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/common/snapshot-short >> .config
-          sed -i '/CONFIG_PACKAGE_wpad-mbedtls=y/d' .config
-          curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/common/openssl >> .config
           make defconfig
 
       - name: Remove packages that are marked as modules
