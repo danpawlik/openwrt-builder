@@ -12,7 +12,8 @@ INSTALL_BRIDGER=${INSTALL_BRIDGER:-'false'}
 INSTALL_DAWN=${INSTALL_DAWN:-'true'}
 INSTALL_USTEER=${INSTALL_USTEER:-'false'}
 INSTALL_HTTPS_DNS_PROXY=${INSTALL_HTTPS_DNS_PROXY:-'false'}
-INSTALL_DNSCRYPT_PROXY2=${INSTALL_DNSCRYPT_PROXY2:-'true'}
+INSTALL_DNSCRYPT_PROXY2=${INSTALL_DNSCRYPT_PROXY2:-'false'}
+INSTALL_UNBOUND=${INSTALL_UNBOUND:-'true'}
 CRYPTO_LIB=${CRYPTO_LIB:-'openssl'} # wolfssl or openssl; if empty - mbedtls
 ADDITIONAL_DRIVERS=${ADDITIONAL_DRIVERS:-'kmod-mt7921e kmod-mt7921-common kmod-mt7921-firmware kmod-mt7925-common kmod-mt7925e'}
 INSTALL_LANG_PACKAGES=${INSTALL_LANG_PACKAGES:-'true'}
@@ -75,6 +76,9 @@ if [[ "$DEVICE" =~ Main|main ]]; then
     fi
     if [[ "$INSTALL_DNSCRYPT_PROXY2" =~ True|true ]]; then
         PACKAGES="$PACKAGES dnscrypt-proxy2"
+    fi
+    if [[ "$INSTALL_UNBOUND" =~ True|true ]]; then
+        PACKAGES="$PACKAGES unbound-daemon"
     fi
 fi
 

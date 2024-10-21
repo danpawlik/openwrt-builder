@@ -30,24 +30,13 @@ CONFIG_PACKAGE_ethtool-full=y
 CONFIG_PACKAGE_pciutils=y
 CONFIG_PACKAGE_irqbalance=y
 CONFIG_PACKAGE_luci-app-irqbalance=y
+CONFIG_PACKAGE_fping=y
 
 # attendedsysupgrade / owut
 CONFIG_PACKAGE_owut=y
 
 # use experimental kernel
 CONFIG_TESTING_KERNEL=y
-
-## wireguard
-#CONFIG_PACKAGE_kmod-wireguard=y
-#CONFIG_PACKAGE_wireguard-tools=y
-#CONFIG_PACKAGE_luci-proto-wireguard=y
-#CONFIG_PACKAGE_qrencode=y
-
-## https dns
-#CONFIG_PACKAGE_https-dns-proxy=y
-#CONFIG_PACKAGE_luci-app-https-dns-proxy=y
-#CONFIG_PACKAGE_libnghttp3=y
-#CONFIG_PACKAGE_libngtcp2=y
 
 # collecd
 CONFIG_PACKAGE_luci-app-statistics=y
