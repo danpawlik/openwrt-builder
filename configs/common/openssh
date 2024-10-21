@@ -1,3 +1,4 @@
+# NOTE: REMEMBER TO OVERWRITE ssh config to allow root login!
 # CONFIG_PACKAGE_dropbear is not set
 CONFIG_PACKAGE_openssh-server=y
 CONFIG_PACKAGE_openssh-sftp-server=y

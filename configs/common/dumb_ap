@@ -19,15 +19,9 @@ CONFIG_PACKAGE_luci-theme-bootstrap=y
 
 # additional packages
 CONFIG_PACKAGE_vim=y
-CONFIG_PACKAGE_bmon=y
 CONFIG_PACKAGE_htop=y
 CONFIG_PACKAGE_iperf3=y
 CONFIG_PACKAGE_curl=y
-CONFIG_PACKAGE_rsync=y
-CONFIG_PACKAGE_tcpdump=y
-CONFIG_PACKAGE_bind-dig=y
-CONFIG_PACKAGE_ethtool-full=y
-CONFIG_PACKAGE_pciutils=y
 CONFIG_PACKAGE_irqbalance=y
 CONFIG_PACKAGE_luci-app-irqbalance=y
 CONFIG_PACKAGE_fping=y
@@ -50,12 +44,11 @@ CONFIG_PACKAGE_collectd-mod-network=y
 CONFIG_PACKAGE_collectd-mod-rrdtool=y
 CONFIG_PACKAGE_collectd-mod-sensors=y
 CONFIG_PACKAGE_collectd-mod-wireless=y
-CONFIG_PACKAGE_collectd-mod-dns=y
 
 ## Better roaming: dawn vs usteer => choose one
-## dawn
-CONFIG_PACKAGE_dawn=y
-CONFIG_PACKAGE_luci-app-dawn=y
+### dawn
+# CONFIG_PACKAGE_dawn is not set
+# CONFIG_PACKAGE_luci-app-dawn is not set
 
 ### usteer
 # CONFIG_PACKAGE_usteer=y
@@ -69,22 +62,6 @@ CONFIG_LUCI_LANG_pl=y
 CONFIG_PACKAGE_wpad-basic-mbedtls=m
 CONFIG_PACKAGE_wpad-mbedtls=y
 #######
-
-# temporary workaround for kernel 6.6
-# CONFIG_PACKAGE_kmod-usb-serial-dmx_usb_module is not set
-# CONFIG_PACKAGE_kmod-pf-ring is not set
-# CONFIG_PACKAGE_kmod-ovpn-dco-v2 is not set
-# CONFIG_PACKAGE_kmod-usb-serial-xr_usb_serial_common is not set
-# CONFIG_PACKAGE_kmod-mlx5-core is not set
-# CONFIG_PACKAGE_kmod-leds-ubnt-ledbar is not set
-
-### for bridger
-CONFIG_PACKAGE_kmod-sched-core=y
-CONFIG_PACKAGE_kmod-sched-flower=y
-CONFIG_PACKAGE_kmod-sched-bpf=y
-CONFIG_PACKAGE_kmod-sched-act-vlan=y
-CONFIG_PACKAGE_libelf=y
-CONFIG_PACKAGE_libbpf=y
 
 # Debugging
 # CONFIG_PACKAGE_kmod-veth is not set

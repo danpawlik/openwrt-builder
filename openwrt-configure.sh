@@ -9,20 +9,15 @@ ROUTER_IP="${ROUTER_IP=$1}"
 DEVICE="${DEVICE:-$2}"
 FULL_WPAD="${FULL_WPAD:-'true'}"
 INSTALL_BRIDGER=${INSTALL_BRIDGER:-'false'}
-INSTALL_DAWN=${INSTALL_DAWN:-'true'}
+INSTALL_DAWN=${INSTALL_DAWN:-'false'}
 INSTALL_USTEER=${INSTALL_USTEER:-'false'}
-INSTALL_HTTPS_DNS_PROXY=${INSTALL_HTTPS_DNS_PROXY:-'false'}
 INSTALL_DNSCRYPT_PROXY2=${INSTALL_DNSCRYPT_PROXY2:-'false'}
 INSTALL_UNBOUND=${INSTALL_UNBOUND:-'true'}
 CRYPTO_LIB=${CRYPTO_LIB:-'openssl'} # wolfssl or openssl; if empty - mbedtls
-ADDITIONAL_DRIVERS=${ADDITIONAL_DRIVERS:-'kmod-mt7921e kmod-mt7921-common kmod-mt7921-firmware kmod-mt7925-common kmod-mt7925e'}
+# ADDITIONAL_DRIVERS=${ADDITIONAL_DRIVERS:-'kmod-mt7921e kmod-mt7921-common kmod-mt7921-firmware kmod-mt7925-common kmod-mt7925e'}
+ADDITIONAL_DRIVERS=${ADDITIONAL_DRIVERS:-''}
 INSTALL_LANG_PACKAGES=${INSTALL_LANG_PACKAGES:-'true'}
-
-# To replace mbedtls with openssl via firmware-selector, just add:
-# -wpad-basic-mbedtls -libustream-mbedtls -libmbedtls libustream-openssl wpad-openssl
-#
-# To replace mbedtls with wolfssl via firmware-selector, just add:
-# -wpad-basic-mbedtls -libustream-mbedtls -libmbedtls libustream-wolfssl wpad-wolfssl
+INSTALL_MINIMUM_PACKAGES=${INSTALL_MINIMUM_PACKAGES:-'false'}
 
 if [ -z "$ROUTER_IP" ]; then
     echo "Please provide router ip like: 192.168.1.1"
@@ -53,10 +48,16 @@ fi
 # basic packages
 PACKAGES="collectd collectd-mod-sensors \
 collectd-mod-dns collectd-mod-wireless \
-luci-app-statistics luci vim htop \
-curl iperf3 owut bmon \
-irqbalance luci-app-irqbalance rsync \
-bind-dig ethtool-full pciutils tcpdump"
+luci-app-statistics luci vim htop curl iperf3 owut \
+irqbalance luci-app-irqbalance"
+
+if [[ "$INSTALL_MINIMUM_PACKAGES" =~ False|false ]]; then
+    PACKAGES="$PACKAGES bmon rsync bind-dig ethtool-full pciutils tcpdump"
+else
+    if [[ "$CRYPTO_LIB" =~ ^(Wolfssl|wolfssl|Openssl|openssl)$ ]]; then
+        echo -e "By choosing INSTALL_MINIMUM_PACKAGES, consider to use:\n\n export CRYPTO_LIB=mbedtls\n\n"
+    fi
+fi
 
 if [[ "$INSTALL_DAWN" =~ True|true ]]; then
     PACKAGES="$PACKAGES dawn luci-app-dawn"
@@ -71,14 +72,11 @@ if [[ "$DEVICE" =~ Main|main ]]; then
     PACKAGES="$PACKAGES luci-proto-wireguard kmod-wireguard wireguard-tools qrencode"
     PACKAGES="$PACKAGES luci-app-sqm"
     PACKAGES="$PACKAGES ddns-scripts luci-app-ddns bind-host"
-    if [[ "$INSTALL_HTTPS_DNS_PROXY" =~ True|true ]]; then
-        PACKAGES="$PACKAGES https-dns-proxy luci-app-https-dns-proxy luci-i18n-https-dns-proxy-pl libcurl4 libnghttp3 libngtcp2"
-    fi
     if [[ "$INSTALL_DNSCRYPT_PROXY2" =~ True|true ]]; then
         PACKAGES="$PACKAGES dnscrypt-proxy2"
     fi
     if [[ "$INSTALL_UNBOUND" =~ True|true ]]; then
-        PACKAGES="$PACKAGES unbound-daemon"
+        PACKAGES="$PACKAGES unbound-daemon luci-app-unbound"
     fi
 fi
 
@@ -120,7 +118,7 @@ esac
 #       luci-proto-wireguard kmod-wireguard wireguard-tools qrencode
 
 ### DNS over HTTPS
-#       https-dns-proxy luci-app-https-dns-proxy luci-i18n-https-dns-proxy-pl libcurl4 libnghttp3 libngtcp2
+        unbound-daemon luci-app-unbound
 
 ### DDNS
 #       ddns-scripts luci-app-ddns bind-host
@@ -138,3 +136,9 @@ esac
 
 # to enable 802.11k/v replace:
 # wpad-basic-mbedtls with wpad-mbedtls
+
+# To replace mbedtls with openssl via firmware-selector, just add:
+# -wpad-basic-mbedtls -libustream-mbedtls -libmbedtls libustream-openssl wpad-openssl
+#
+# To replace mbedtls with wolfssl via firmware-selector, just add:
+# -wpad-basic-mbedtls -libustream-mbedtls -libmbedtls libustream-wolfssl wpad-wolfssl
