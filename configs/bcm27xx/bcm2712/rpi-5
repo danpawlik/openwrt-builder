@@ -1,0 +1,10 @@
+CONFIG_TARGET_bcm27xx=y
+CONFIG_TARGET_bcm27xx_bcm2712=y
+CONFIG_TARGET_DEVICE_bcm27xx_bcm2712_DEVICE_rpi-5=y
+
+# MT7925
+CONFIG_PACKAGE_kmod-mt7925-common=y
+CONFIG_PACKAGE_kmod-mt7925e=y
+CONFIG_PACKAGE_kmod-mt7925-firmware=y
+CONFIG_PACKAGE_kmod-mt792x-common=y
+CONFIG_PACKAGE_kmod-mt792x-usb=y
