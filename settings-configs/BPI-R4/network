@@ -11,10 +11,11 @@ config globals 'globals'
 config device
 	option name 'br-lan'
 	option type 'bridge'
+	list ports 'eth1'
 	list ports 'lan1'
 	list ports 'lan2'
 	list ports 'lan3'
-	list ports 'eth1'
+	option stp '1'
 
 config interface 'lan'
 	option device 'br-lan'
@@ -24,10 +25,11 @@ config interface 'lan'
 	option ip6assign '60'
 
 config device
-	option name 'br-wan'
-	option type 'bridge'
-	list ports 'eth2'
-	list ports 'wan'
+	option name 'wan'
+	option macaddr 'B6:C7:8B:XX:XX:XX'
+
+config device
+	option name 'eth2'
 	option macaddr 'B6:C7:8B:XX:XX:XX'
 
 config interface 'wan'
@@ -45,9 +47,8 @@ config interface 'wan6'
 	option peerdns '0'
 
 config device
-	option name 'eth2'
-	option macaddr 'B6:C7:8B:XX:XX:XX'
-
-config device
-	option name 'wan'
+	option name 'br-wan'
+	option type 'bridge'
+	list ports 'eth2'
+	list ports 'wan'
 	option macaddr 'B6:C7:8B:XX:XX:XX'

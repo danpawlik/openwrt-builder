@@ -1,0 +1,10 @@
+
+config provider 'legacy'
+	option enabled '0'
+
+config engine 'devcrypto'
+	option enabled '1'
+
+
+config engine 'afalg'
+	option enabled '1'
