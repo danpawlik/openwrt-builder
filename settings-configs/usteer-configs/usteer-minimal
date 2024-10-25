@@ -1,0 +1,13 @@
+
+config usteer
+	option network 'lan'
+	option syslog '1'
+	option local_mode '0'
+	option ipv6 '0'
+	option debug_level '1'
+	option roam_scan_snr '-68'
+	option roam_trigger_snr '-72'
+	option min_snr '-78'
+	option roam_scan_tries '0'
+	option signal_diff_threshold '10'
+	list ssid_list 'Majki'

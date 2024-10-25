@@ -1,0 +1,15 @@
+
+config usteer
+	option network 'lan'
+	option syslog '1'
+	option local_mode '0'
+	option ipv6 '0'
+	option debug_level '2'
+	option roam_scan_snr '-70'
+	option roam_trigger_snr '-75'
+	option min_snr '-85'
+	option roam_scan_tries '0'
+	option max_neighbor_reports '6'
+	option signal_diff_threshold '12'
+	option load_balancing_threshold '0'
+	list ssid_list 'MYWIFI'

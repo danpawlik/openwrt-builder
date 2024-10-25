@@ -1,0 +1,14 @@
+config usteer
+	option 'network' 'lan'
+	option 'syslog' '1'
+	option local_mode '0'
+	option 'ipv6' '0'
+	option 'debug_level' '2'
+	option assoc_steering 1
+	option probe_steering 1
+	option min_snr -82
+	option min_snr_kick_delay 5000
+	option roam_trigger_snr 1
+	option roam_trigger_interval 60000
+	option signal_diff_threshold 10
+	list ssid_list 'MYWIFI'
