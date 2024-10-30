@@ -10,7 +10,7 @@ DEVICE="${DEVICE:-$2}"
 FULL_WPAD="${FULL_WPAD:-'true'}"
 INSTALL_BRIDGER=${INSTALL_BRIDGER:-'false'}
 INSTALL_DAWN=${INSTALL_DAWN:-'false'}
-INSTALL_USTEER=${INSTALL_USTEER:-'true'}
+INSTALL_USTEER=${INSTALL_USTEER:-'false'}
 INSTALL_DNSCRYPT_PROXY2=${INSTALL_DNSCRYPT_PROXY2:-'false'}
 INSTALL_UNBOUND=${INSTALL_UNBOUND:-'true'}
 CRYPTO_LIB=${CRYPTO_LIB:-'openssl'} # wolfssl or openssl; if empty - mbedtls
@@ -85,7 +85,7 @@ if ! [[ "$DEVICE" =~ Main|main ]] && [[ "$INSTALL_BRIDGER" =~ True|true ]]; then
 fi
 
 if [[ "$INSTALL_LANG_PACKAGES" =~ True|true ]]; then
-    PACKAGES="$PACKAGES luci-i18n-firewall-pl luci-i18n-irqbalance-pl luci-i18n-opkg-pl luci-i18n-statistics-pl luci-i18n-base-pl"
+    PACKAGES="$PACKAGES luci-i18n-firewall-pl luci-i18n-irqbalance-pl luci-i18n-statistics-pl luci-i18n-base-pl"
 fi
 
 COMMAND="$COMMAND; opkg install $PACKAGES $ADDITIONAL_DRIVERS; /etc/init.d/uhttpd start ; /etc/init.d/uhttpd enable;"
