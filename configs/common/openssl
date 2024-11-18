@@ -1,4 +1,6 @@
 #### replace mbedtls with openssl - remember to leave commented "is not set" or remove it!
+# CONFIG_PACKAGE_apk-mbedtls is not set
+CONFIG_PACKAGE_apk-openssl=y
 CONFIG_PACKAGE_wpad-openssl=y
 CONFIG_PACKAGE_libustream-mbedtls=m
 CONFIG_PACKAGE_libustream-openssl=y

@@ -1,4 +1,9 @@
 #### replace mbedtls with openssl - remember to leave commented "is not set" or remove it!
+
+### NOTE: switch, when package is available
+CONFIG_PACKAGE_apk-mbedtls=y
+# CONFIG_PACKAGE_apk-wolfssl is not set
+
 CONFIG_PACKAGE_wpad-wolfssl=y
 CONFIG_PACKAGE_libustream-mbedtls=m
 CONFIG_PACKAGE_libustream-wolfssl=y

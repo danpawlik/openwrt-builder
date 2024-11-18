@@ -39,9 +39,9 @@ if [ -n "$CRYPTO_LIB" ]; then
   COMMAND="$COMMAND; opkg remove wpad-basic-mbedtls; opkg install wpad-$CRYPTO_LIB"
 
   if [[ "$CRYPTO_LIB" =~ ^(Wolfssl|wolfssl)$ ]]; then
-    FS_FULL_WPAD_PACKAGES="$FS_FULL_WPAD_PACKAGES -libustream-mbedtls -libmbedtls libustream-wolfssl wpad-wolfssl"
+    FS_FULL_WPAD_PACKAGES="$FS_FULL_WPAD_PACKAGES -apk-mbedtls -libustream-mbedtls -libmbedtls libustream-wolfssl wpad-wolfssl apk-wolfssl"
   elif [[ "$CRYPTO_LIB" =~ ^(Openssl|openssl)$ ]]; then
-    FS_FULL_WPAD_PACKAGES="$FS_FULL_WPAD_PACKAGES -libustream-mbedtls -libmbedtls libustream-openssl wpad-openssl libopenssl-devcrypto libopenssl-afalg_sync"
+    FS_FULL_WPAD_PACKAGES="$FS_FULL_WPAD_PACKAGES -apk-mbedtls -libustream-mbedtls -libmbedtls libustream-openssl wpad-openssl libopenssl-devcrypto libopenssl-afalg_sync apk-openssl"
   fi
 fi
 
@@ -138,7 +138,7 @@ esac
 # wpad-basic-mbedtls with wpad-mbedtls
 
 # To replace mbedtls with openssl via firmware-selector, just add:
-# -wpad-basic-mbedtls -libustream-mbedtls -libmbedtls libustream-openssl wpad-openssl
+# -wpad-basic-mbedtls -libustream-mbedtls -libmbedtls libustream-openssl wpad-openssl -apk-mbedtls apk-openssl
 #
 # To replace mbedtls with wolfssl via firmware-selector, just add:
-# -wpad-basic-mbedtls -libustream-mbedtls -libmbedtls libustream-wolfssl wpad-wolfssl
+# -wpad-basic-mbedtls -libustream-mbedtls -libmbedtls libustream-wolfssl wpad-wolfssl -apk-mbedtls apk-wolfssl
