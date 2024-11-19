@@ -76,7 +76,7 @@ if [[ "$DEVICE" =~ Main|main ]]; then
         PACKAGES="$PACKAGES dnscrypt-proxy2"
     fi
     if [[ "$INSTALL_UNBOUND" =~ True|true ]]; then
-        PACKAGES="$PACKAGES unbound-daemon luci-app-unbound"
+        PACKAGES="$PACKAGES unbound-daemon luci-app-unbound ca-certificates"
     fi
 fi
 

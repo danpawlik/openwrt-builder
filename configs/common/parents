@@ -39,6 +39,7 @@ CONFIG_PACKAGE_luci-proto-wireguard=y
 ## https dns
 CONFIG_PACKAGE_unbound-daemon=y
 CONFIG_PACKAGE_luci-app-unbound=y
+CONFIG_PACKAGE_ca-certificates=y
 
 # collecd
 CONFIG_PACKAGE_luci-app-statistics=y
