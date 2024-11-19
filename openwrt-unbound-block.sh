@@ -19,6 +19,9 @@ curl -SL https://gitlab.com/quidsup/notrack-blocklists/-/raw/master/notrack-malw
 # EasyPrivacy
 curl -SL https://easylist.to/easylist/easyprivacy.txt |  grep -E '^||' | grep -vE '@|---|!' | sed 's/||//g' >> "$TMP_FILE"
 
+# Adguard Tracking Protection filter
+# curl -SL https://raw.githubusercontent.com/AdguardTeam/FiltersRegistry/master/filters/filter_3_Spyware/filter.txt | grep -E '^\|\|' | sed 's/\^.*//g' | sed 's/||//g' | cut -f1 -d'/' | sort  | uniq >>  "$TMP_FILE"
+
 echo "server:" > /etc/unbound/unbound_ext.conf
 # consider: grep -E '^[a-zA-Z0-9.]'
 sort -u "$TMP_FILE" | grep -E '^[a-zA-Z0-9]' | grep -vE '/|!|\^|\(|\)|#|\.$' | while read -r domain; do
