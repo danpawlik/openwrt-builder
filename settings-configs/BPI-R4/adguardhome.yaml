@@ -24,8 +24,7 @@ dns:
   ratelimit_whitelist: []
   refuse_any: true
   upstream_dns:
-    - https://dns11.quad9.net/dns-query
-    - dns11.quad9.net
+    - tls://dns11.quad9.net
   upstream_dns_file: ""
   bootstrap_dns:
     - 9.9.9.11
@@ -33,8 +32,7 @@ dns:
     - 2620:fe::11
     - 2620:fe::fe:11
   fallback_dns:
-    - https://security.cloudflare-dns.com/dns-query
-    - https://freedns.controld.com/p1
+    - tls://p1.freedns.controld.com
   upstream_mode: load_balance
   fastest_timeout: 1s
   allowed_clients:
