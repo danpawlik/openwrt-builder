@@ -16,6 +16,7 @@ dns:
   bind_hosts:
     - 192.168.88.1
     - 127.0.0.1
+    - 10.0.5.1
   port: 5053
   anonymize_client_ip: true
   ratelimit: 30
@@ -24,7 +25,7 @@ dns:
   ratelimit_whitelist: []
   refuse_any: true
   upstream_dns:
-    - tls://dns11.quad9.net
+    - https://dns11.quad9.net/dns-query
   upstream_dns_file: ""
   bootstrap_dns:
     - 9.9.9.11
@@ -32,12 +33,13 @@ dns:
     - 2620:fe::11
     - 2620:fe::fe:11
   fallback_dns:
-    - tls://p1.freedns.controld.com
+    - https://freedns.controld.com/p1
   upstream_mode: load_balance
   fastest_timeout: 1s
   allowed_clients:
     - 192.168.88.0/24
     - 127.0.0.0/24
+    - 10.0.5.0/24
   disallowed_clients: []
   blocked_hosts:
     - version.bind

@@ -13,6 +13,7 @@ INSTALL_DAWN=${INSTALL_DAWN:-'false'}
 INSTALL_USTEER=${INSTALL_USTEER:-'false'}
 INSTALL_DNSCRYPT_PROXY2=${INSTALL_DNSCRYPT_PROXY2:-'false'}
 INSTALL_UNBOUND=${INSTALL_UNBOUND:-'true'}
+INSTALL_ADGUARDHOME=${INSTALL_ADGUARDHOME:-'false'}
 CRYPTO_LIB=${CRYPTO_LIB:-'openssl'} # wolfssl or openssl; if empty - mbedtls
 # ADDITIONAL_DRIVERS=${ADDITIONAL_DRIVERS:-'kmod-mt7921e kmod-mt7921-common kmod-mt7921-firmware kmod-mt7925-common kmod-mt7925e'}
 ADDITIONAL_DRIVERS=${ADDITIONAL_DRIVERS:-''}
@@ -76,7 +77,11 @@ if [[ "$DEVICE" =~ Main|main ]]; then
         PACKAGES="$PACKAGES dnscrypt-proxy2"
     fi
     if [[ "$INSTALL_UNBOUND" =~ True|true ]]; then
-        PACKAGES="$PACKAGES unbound-daemon luci-app-unbound ca-certificates"
+        PACKAGES="$PACKAGES unbound-daemon luci-app-unbound"
+    fi
+
+    if [[ "$INSTALL_ADGUARDHOME" =~ True|true ]]; then
+        PACKAGES="$PACKAGES adguardhome"
     fi
 fi
 
