@@ -24,7 +24,7 @@ curl -SL https://easylist.to/easylist/easyprivacy.txt |  grep -E '^||' | grep -v
 
 echo "server:" > /etc/unbound/unbound_ext.conf
 # consider: grep -E '^[a-zA-Z0-9.]'
-sort -u "$TMP_FILE" | grep -E '^[a-zA-Z0-9]' | grep -vE '/|!|\^|\(|\)|#|\.$' | while read -r domain; do
+sort -u "$TMP_FILE" | grep -E '^[a-zA-Z0-9]' | grep -vE '/|!|\^|\(|\)|#|\.$' | grep -vE 'googleadservices.com' | while read -r domain; do
     echo -e "\tlocal-zone: \"$domain.\" refuse" >> /etc/unbound/unbound_ext.conf
 done
 
