@@ -42,18 +42,18 @@ if [ -n "$CRYPTO_LIB" ]; then
   if [[ "$CRYPTO_LIB" =~ ^(Wolfssl|wolfssl)$ ]]; then
     FS_FULL_WPAD_PACKAGES="$FS_FULL_WPAD_PACKAGES -apk-mbedtls -libustream-mbedtls -libmbedtls libustream-wolfssl wpad-wolfssl apk-wolfssl"
   elif [[ "$CRYPTO_LIB" =~ ^(Openssl|openssl)$ ]]; then
-    FS_FULL_WPAD_PACKAGES="$FS_FULL_WPAD_PACKAGES -apk-mbedtls -libustream-mbedtls -libmbedtls libustream-openssl wpad-openssl libopenssl-devcrypto libopenssl-afalg_sync apk-openssl"
+    FS_FULL_WPAD_PACKAGES="$FS_FULL_WPAD_PACKAGES -apk-mbedtls -libustream-mbedtls -libmbedtls libustream-openssl wpad-openssl apk-openssl"
   fi
 fi
 
 # basic packages
 PACKAGES="collectd collectd-mod-sensors \
 collectd-mod-dns collectd-mod-wireless \
-luci-app-statistics luci vim htop curl iperf3 owut \
+luci-app-statistics luci htop curl owut \
 irqbalance luci-app-irqbalance"
 
 if [[ "$INSTALL_MINIMUM_PACKAGES" =~ False|false ]]; then
-    PACKAGES="$PACKAGES bmon rsync bind-dig ethtool-full pciutils tcpdump"
+    PACKAGES="$PACKAGES bmon rsync bind-dig ethtool-full pciutils tcpdump iperf3 vim"
 else
     if [[ "$CRYPTO_LIB" =~ ^(Wolfssl|wolfssl|Openssl|openssl)$ ]]; then
         echo -e "By choosing INSTALL_MINIMUM_PACKAGES, consider to use:\n\n export CRYPTO_LIB=mbedtls\n\n"

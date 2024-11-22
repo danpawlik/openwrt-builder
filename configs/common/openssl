@@ -7,6 +7,7 @@ CONFIG_PACKAGE_libustream-openssl=y
 # CONFIG_PACKAGE_wpad-mbedtls is not set
 # CONFIG_PACKAGE_wpad-basic-mbedtls is not set
 # CONFIG_PACKAGE_wpad-basic-openssl is not set
+# CONFIG_PACKAGE_openssl-util is not set
 CONFIG_LUA_ECO_OPENSSL=y
 # CONFIG_LUA_ECO_MBEDTLS is not set
 # CONFIG_LIBCURL_MBEDTLS is not set
@@ -19,10 +20,8 @@ CONFIG_OPENSSL_OPTIMIZE_SPEED=y
 
 # enable /dev/crypto
 CONFIG_PACKAGE_kmod-cryptodev=y
-CONFIG_PACKAGE_openssl-util=y
-CONFIG_PACKAGE_libopenssl-devcrypto=y
-CONFIG_PACKAGE_libopenssl-afalg_sync=y
-# CONFIG_PACKAGE_kmod-crypto-user=y
+# CONFIG_PACKAGE_libopenssl-devcrypto is not set
+# CONFIG_PACKAGE_libopenssl-afalg_sync is not set
 
 ### Force add /dev/crypto into libcrypto
 # CONFIG_OPENSSL_ENGINE_BUILTIN=y
