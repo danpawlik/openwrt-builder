@@ -1,7 +1,7 @@
 ---
 # Based on https://github.com/JuliusBairaktaris/Qualcommax_NSS_Builder/blob/main/.github/workflows/build.yaml
 # It includes the NSS package: https://github.com/qosmio/nss-packages
-name: Build OpenWRT for Xiaomi AX3600 NSS build
+name: Xiaomi AX3600 NSS build
 
 on:
   workflow_dispatch:

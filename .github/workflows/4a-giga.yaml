@@ -1,6 +1,6 @@
 ---
 # Based on https://github.com/JuliusBairaktaris/Qualcommax_NSS_Builder/blob/main/.github/workflows/build.yaml
-name: Build OpenWRT for Xiaomi 4a-giga
+name: Xiaomi 4a-giga
 
 on:
   workflow_dispatch:

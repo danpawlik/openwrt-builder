@@ -1,6 +1,6 @@
 ---
 # Based on https://github.com/JuliusBairaktaris/QualcommNSS_Builder/blob/main/.github/workflows/build.yaml
-name: Build OpenWRT for Unifi AP AC LR
+name: Unifi AP AC LR
 
 on:
   workflow_dispatch:

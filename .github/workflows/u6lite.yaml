@@ -1,6 +1,6 @@
 ---
 # Based on https://github.com/JuliusBairaktaris/QualcommNSS_Builder/blob/main/.github/workflows/build.yaml
-name: Build OpenWRT for Unifi 6 lite
+name: Unifi 6 lite
 
 on:
   workflow_dispatch:

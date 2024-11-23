@@ -1,6 +1,6 @@
 ---
 # Based on https://github.com/JuliusBairaktaris/Qualcommax_NSS_Builder/blob/main/.github/workflows/build.yaml
-name: Build OpenWRT for Xiaomi AX3600 - clean OpenWRT
+name: Xiaomi AX3600 - clean OpenWRT
 
 on:
   workflow_dispatch:

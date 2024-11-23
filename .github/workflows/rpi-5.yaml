@@ -1,6 +1,6 @@
 ---
 # MORE INFO: https://github.com/openwrt/openwrt/issues/16273
-name: Build for Raspberry Pi 5 with or without nbd patch
+name: Raspberry Pi 5 +/- nbd patch
 
 on:
   workflow_dispatch:
