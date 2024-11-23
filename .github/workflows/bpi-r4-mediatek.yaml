@@ -81,10 +81,17 @@ jobs:
           curl -SL "https://raw.githubusercontent.com/${{ github.repository_owner }}/openwrt-builder/master/${{ env.DEVICE_CONFIG }}" > .config
           curl -SL "https://raw.githubusercontent.com/${{ github.repository_owner }}/openwrt-builder/master/configs/common/luci" >> .config
           curl -SL "https://raw.githubusercontent.com/${{ github.repository_owner }}/openwrt-builder/master/configs/common/snapshot-short" >> .config
-          sed -i '/CONFIG_PACKAGE_wpad-mbedtls=y/d' .config
-          curl -SL "https://raw.githubusercontent.com/${{ github.repository_owner }}/openwrt-builder/master/configs/common/openssl" >> .config
           curl -SL "https://raw.githubusercontent.com/${{ github.repository_owner }}/openwrt-builder/master/configs/common/lte-5g-modem" >> .config
           curl -SL "https://raw.githubusercontent.com/${{ github.repository_owner }}/openwrt-builder/master/${{ env.ROLE_CONFIG }}" >> .config
+
+      - name: Enable openssl
+        run:
+          sed -i '/CONFIG_PACKAGE_wpad-mbedtls=y/d' .config
+          curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/common/openssl >> .config
+
+      - name: Run defconfig
+        run: |
+          make defconfig
 
       # Full diff list is here: https://github.com/danpawlik/openwrt-builder/commit/13e8e751e28e9a9bd852e427b89ed4f3bc0cf15d#diff-c5c79fcc9dff2632be242ed35cef9527aab61e542217f71cd2d396155c976ec4R49
       - name: Set configs, that were set in Mediatek Feed prepare step

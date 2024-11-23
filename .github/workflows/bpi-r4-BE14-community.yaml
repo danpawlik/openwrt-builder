@@ -83,10 +83,13 @@ jobs:
           curl -SL https://raw.githubusercontent.com/${{ github.repository_owner }}/openwrt-builder/master/${{ env.DEVICE_CONFIG }} > .config
           curl -SL https://raw.githubusercontent.com/${{ github.repository_owner }}/openwrt-builder/master/configs/common/luci >> .config
           curl -SL https://raw.githubusercontent.com/${{ github.repository_owner }}/openwrt-builder/master/configs/common/snapshot-short >> .config
-          sed -i '/CONFIG_PACKAGE_wpad-mbedtls=y/d' .config
-          curl -SL https://raw.githubusercontent.com/${{ github.repository_owner }}/openwrt-builder/master/configs/common/openssl >> .config
           curl -SL https://raw.githubusercontent.com/${{ github.repository_owner }}/openwrt-builder/master/configs/common/lte-5g-modem >> .config
           curl -SL https://raw.githubusercontent.com/${{ github.repository_owner }}/openwrt-builder/master/${{ env.ROLE_CONFIG }} >> .config
+
+      - name: Enable openssl
+        run:
+          sed -i '/CONFIG_PACKAGE_wpad-mbedtls=y/d' .config
+          curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/common/openssl >> .config
 
       - name: Run defconfig
         run: |
