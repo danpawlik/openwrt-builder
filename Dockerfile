@@ -3,7 +3,7 @@ FROM fedora:41
 RUN yum update -y && dnf -y group install development-tools
 
 RUN dnf -y install vim bash-completion file bzip2 gcc gcc-c++ git make ncurses-devel patch \
-    rsync tar unzip wget which diffutils python3 perl-base \
+    rsync tar unzip wget which diffutils python3 glibc-gconv-extra perl-base \
     perl-Data-Dumper perl-File-Compare perl-File-Copy perl-FindBin \
     perl-Thread-Queue hostname perl-IPC-Cmd swig ccache-swig && \
     dnf install -y clang llvm gcc libbpf-devel libxdp-devel xdp-tools \
