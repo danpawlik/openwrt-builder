@@ -1,5 +1,6 @@
-server_names = ['quad9-dnscrypt-ip4-filter-ecs-pri', 'NextDNS-MYID']
-listen_addresses = ['127.0.0.53:53']
+#server_names = ['quad9-dnscrypt-ip4-filter-ecs-pri', 'NextDNS-MYID']
+server_names = ['quad9-dnscrypt-ip4-filter-ecs-pri', 'controld-block-malware']
+listen_addresses = ['127.0.0.1:5353']
 max_clients = 250
 ipv4_servers = true
 ipv6_servers = false
@@ -44,7 +45,11 @@ use_syslog = true
 format = 'tsv'
 [nx_log]
 format = 'tsv'
+
 [blocked_names]
+blocked_names_file = '/etc/dnscrypt-proxy2/dnscrypt-blacklist-domains.txt'
+log_file = '/tmp/blocked-names.log'
+
 [blocked_ips]
 [allowed_names]
 [allowed_ips]
