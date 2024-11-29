@@ -11,8 +11,8 @@ FULL_WPAD="${FULL_WPAD:-'true'}"
 INSTALL_BRIDGER=${INSTALL_BRIDGER:-'false'}
 INSTALL_DAWN=${INSTALL_DAWN:-'false'}
 INSTALL_USTEER=${INSTALL_USTEER:-'false'}
-INSTALL_DNSCRYPT_PROXY2=${INSTALL_DNSCRYPT_PROXY2:-'false'}
-INSTALL_UNBOUND=${INSTALL_UNBOUND:-'true'}
+INSTALL_DNSCRYPT_PROXY2=${INSTALL_DNSCRYPT_PROXY2:-'true'}
+INSTALL_UNBOUND=${INSTALL_UNBOUND:-'false'}
 INSTALL_ADGUARDHOME=${INSTALL_ADGUARDHOME:-'false'}
 CRYPTO_LIB=${CRYPTO_LIB:-'openssl'} # wolfssl or openssl; if empty - mbedtls
 # ADDITIONAL_DRIVERS=${ADDITIONAL_DRIVERS:-'kmod-mt7921e kmod-mt7921-common kmod-mt7921-firmware kmod-mt7925-common kmod-mt7925e'}
@@ -58,6 +58,16 @@ else
     if [[ "$CRYPTO_LIB" =~ ^(Wolfssl|wolfssl|Openssl|openssl)$ ]]; then
         echo -e "By choosing INSTALL_MINIMUM_PACKAGES, consider to use:\n\n export CRYPTO_LIB=mbedtls\n\n"
     fi
+    if [[ "$INSTALL_DNSCRYPT_PROXY2" =~ True|true ]]; then
+        echo -e "It is not good to choose INSTALL_DNSCRYPT_PROXY2 on low space device!"
+        exit 1
+    fi
+
+    if [[ "$INSTALL_ADGUARDHOME" =~ True|true ]]; then
+        echo -e "It is not good to choose INSTALL_ADGUARDHOME on low space device!"
+        exit 1
+    fi
+
 fi
 
 if [[ "$INSTALL_DAWN" =~ True|true ]]; then
