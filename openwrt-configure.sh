@@ -15,8 +15,8 @@ INSTALL_DNSCRYPT_PROXY2=${INSTALL_DNSCRYPT_PROXY2:-'true'}
 INSTALL_UNBOUND=${INSTALL_UNBOUND:-'false'}
 INSTALL_ADGUARDHOME=${INSTALL_ADGUARDHOME:-'false'}
 CRYPTO_LIB=${CRYPTO_LIB:-'openssl'} # wolfssl or openssl; if empty - mbedtls
-# ADDITIONAL_DRIVERS=${ADDITIONAL_DRIVERS:-'kmod-mt7921e kmod-mt7921-common kmod-mt7921-firmware kmod-mt7925-common kmod-mt7925e'}
-ADDITIONAL_DRIVERS=${ADDITIONAL_DRIVERS:-''}
+# ADDITIONAL_PACKAGES=${ADDITIONAL_PACKAGES:-'kmod-mt7921e kmod-mt7921-common kmod-mt7921-firmware kmod-mt7925-common kmod-mt7925e'}
+ADDITIONAL_PACKAGES=${ADDITIONAL_PACKAGES:-'bmon rsync bind-dig ethtool-full pciutils tcpdump iperf3 vim'}
 INSTALL_LANG_PACKAGES=${INSTALL_LANG_PACKAGES:-'true'}
 INSTALL_MINIMUM_PACKAGES=${INSTALL_MINIMUM_PACKAGES:-'false'}
 
@@ -52,9 +52,7 @@ collectd-mod-dns collectd-mod-wireless \
 luci-app-statistics luci htop curl owut \
 irqbalance luci-app-irqbalance"
 
-if [[ "$INSTALL_MINIMUM_PACKAGES" =~ False|false ]]; then
-    PACKAGES="$PACKAGES bmon rsync bind-dig ethtool-full pciutils tcpdump iperf3 vim"
-else
+if [[ "$INSTALL_MINIMUM_PACKAGES" =~ True|true ]]; then
     if [[ "$CRYPTO_LIB" =~ ^(Wolfssl|wolfssl|Openssl|openssl)$ ]]; then
         echo -e "By choosing INSTALL_MINIMUM_PACKAGES, consider to use:\n\n export CRYPTO_LIB=mbedtls\n\n"
     fi
@@ -103,12 +101,12 @@ if [[ "$INSTALL_LANG_PACKAGES" =~ True|true ]]; then
     PACKAGES="$PACKAGES luci-i18n-firewall-pl luci-i18n-irqbalance-pl luci-i18n-statistics-pl luci-i18n-base-pl"
 fi
 
-COMMAND="$COMMAND; opkg install $PACKAGES $ADDITIONAL_DRIVERS; /etc/init.d/uhttpd start ; /etc/init.d/uhttpd enable;"
+COMMAND="$COMMAND; opkg install $PACKAGES $ADDITIONAL_PACKAGES; /etc/init.d/uhttpd start ; /etc/init.d/uhttpd enable;"
 
 read -n 1 -r -p "Should I execute command: $COMMAND on root@$ROUTER_IP? " yn
 case $yn in
     [Yy]* ) ssh "root@$ROUTER_IP" "$COMMAND $PACKAGES";;
-    [Nn]* ) echo -e "\n\nFor firmware-selector.org: \n\n$PACKAGES $FS_FULL_WPAD_PACKAGES $ADDITIONAL_DRIVERS" ; exit 0;;
+    [Nn]* ) echo -e "\n\nFor firmware-selector.org: \n\n$PACKAGES $FS_FULL_WPAD_PACKAGES $ADDITIONAL_PACKAGES" ; exit 0;;
     * ) echo "Please answer yes or no. If no, will show you packages for firmware-selector ;)";;
 esac
 
