@@ -1074,7 +1074,6 @@ smetrics.dominos.com
 doomdefender.com
 dotandad.com
 dotomi.com
-doubleclickbygoogle.com
 doublepimp.com
 doublepimpssl.com
 doubleverify.com
@@ -15152,7 +15151,6 @@ pebed.dm-event.net
 webed.dm-event.net
 dmtrk.net
 dotmetrics.net
-doubleclick.net
 dtrck.net
 duba.net
 dynad.net
