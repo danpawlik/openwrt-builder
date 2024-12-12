@@ -1,0 +1,10 @@
+#
+# curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/mediatek/mt7981b/ax3000t-stock-layout > .config
+#
+
+## NOTE: it uses stock partition layout!
+# https://openwrt.org/inbox/toh/xiaomi/ax3000t#change_to_openwrt_u-boot
+
+CONFIG_TARGET_mediatek=y
+CONFIG_TARGET_mediatek_filogic=y
+CONFIG_TARGET_mediatek_filogic_DEVICE_xiaomi_mi-router-ax3000t=y
