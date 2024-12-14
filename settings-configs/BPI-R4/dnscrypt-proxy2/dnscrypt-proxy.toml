@@ -47,7 +47,7 @@ format = 'tsv'
 format = 'tsv'
 
 [blocked_names]
-blocked_names_file = '/etc/dnscrypt-proxy2/dnscrypt-blacklist-domains.txt'
+blocked_names_file = '/etc/dnscrypt-proxy2/blocked-names.txt'
 log_file = '/tmp/blocked-names.log'
 
 [blocked_ips]
