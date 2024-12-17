@@ -66,6 +66,10 @@ jobs:
         run: |
           git clone https://git01.mediatek.com/openwrt/feeds/mtk-openwrt-feeds mtk-openwrt-feeds
 
+      - name: Comment function that breaks .config rendering
+        run: |
+          sed -i 's/apply_autobuild_script_patch modify_feeds_conf update_feeds/apply_autobuild_script_patch update_feeds/g' mtk-openwrt-feeds/autobuild/unified/rules
+
       - name: Add missing kernel config
         run: |
           echo '# CONFIG_IXGBEVF_IPSEC is not set' >> target/linux/generic/config-6.6
