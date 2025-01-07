@@ -67,7 +67,7 @@ jobs:
         run: |
           curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/mediatek/mt7981b/ax3000t > .config
           curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/${{ env.ROLE_CONFIG }} >> .config
-          curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/common/snapshot-short >> .config
+          curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/common/snapshot >> .config
 
       - name: Enable openssl
         run: |
@@ -116,7 +116,8 @@ jobs:
         with:
           files: bin/targets/mediatek/filogic/*
           tag_name: ${{ env.RELEASE_PREFIX }}-${{ env.REMOTE_BRANCH }}-${{ env.RELEASE_DATE }}
-          name: OpenWRT AX3000T ${{ inputs.DEVICE_CONFIG == 'stock' && 'stock layout' || 'u-boot layout' }} - ${{ env.RELEASE_DATE }}
+          name: |
+            OpenWRT AX3000T ${{ inputs.DEVICE_CONFIG == 'stock' && 'stock layout' || 'u-boot layout' }} - ${{ env.RELEASE_DATE }}
           body: |
             Updated prebuilt images for AX3000T ${{ inputs.DEVICE_CONFIG == 'stock' && 'stock partition layout' || 'u-boot partition layout' }}
 

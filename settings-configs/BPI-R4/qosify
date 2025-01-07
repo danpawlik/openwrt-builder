@@ -40,10 +40,6 @@ config interface wan
 	option nat 1
 	option host_isolate 1
 	option autorate_ingress 0
-	### VLAN or PPPoE => overhead is 44
-	### PPPoE (common for DSL or fiber): 40 bytes (18 bytes Ethernet + 8 bytes PPPoE header + 14 bytes other layers)
-	### Without VLAN or PPPoE => overhead is 18
-	### MPU set 84 or 64.
-	option ingress_options "overhead 18 mpu 84"
-	option egress_options "overhead 18 mpu 84"
+	option ingress_options "overhead 44 mpu 84"
+	option egress_options "overhead 44 mpu 84"
 	option options ""

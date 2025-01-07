@@ -9,11 +9,7 @@ config queue 'eth1'
 	option linklayer 'ethernet'
 	option debug_logging '0'
 	option verbosity '5'
-	### VLAN or PPPoE => overhead is 44
-	### PPPoE (common for DSL or fiber): 40 bytes (18 bytes Ethernet + 8 bytes PPPoE header + 14 bytes other layers)
-	### Without VLAN or PPPoE => 18
-	### MPU set 84 or 64.
-	option overhead '18'
+	option overhead '44'
 	option linklayer_advanced '1'
 	option tcMTU '2047'
 	option tcTSIZE '128'
