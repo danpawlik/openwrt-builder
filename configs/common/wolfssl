@@ -23,3 +23,6 @@ CONFIG_LUA_ECO_WOLFSSL=y
 # CONFIG_PACKAGE_kmod-cryptodev=y
 # CONFIG_WOLFSSL_HAS_DEVCRYPTO=y
 # CONFIG_WOLFSSL_HAS_DEVCRYPTO_FULL=y
+
+# Probably it can be used by wolfssl
+CONFIG_PACKAGE_kmod-crypto-user=y
