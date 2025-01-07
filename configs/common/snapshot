@@ -18,11 +18,12 @@ CONFIG_PACKAGE_libbpf=m
 CONFIG_PACKAGE_libelf=m
 CONFIG_PACKAGE_libpcap=m
 CONFIG_PACKAGE_libxdp=m
-CONFIG_PACKAGE_qosify=m
 CONFIG_PACKAGE_tc-tiny=m
 CONFIG_PACKAGE_xdp-filter=m
 CONFIG_PACKAGE_xdp-loader=m
 CONFIG_PACKAGE_xdpdump=m
+# NOTE: Qosify is already present in main-router.
+# CONFIG_PACKAGE_qosify
 
 # CONFIG_USE_GC_SECTIONS=y
 CONFIG_USE_LTO=y

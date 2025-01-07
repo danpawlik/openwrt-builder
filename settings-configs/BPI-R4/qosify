@@ -1,0 +1,49 @@
+config defaults
+	list defaults /etc/qosify/*.conf
+	option dscp_prio video
+	option dscp_icmp +besteffort
+	option dscp_default_udp besteffort
+	option prio_max_avg_pkt_len 500
+
+config class besteffort
+	option ingress CS0
+	option egress CS0
+
+config class bulk
+	option ingress LE
+	option egress LE
+
+config class video
+	option ingress AF41
+	option egress AF41
+
+config class voice
+	option ingress CS6
+	option egress CS6
+	option bulk_trigger_pps 100
+	option bulk_trigger_timeout 5
+	option dscp_bulk CS0
+
+config interface wan
+	option name wan
+	option disabled 0
+	option bandwidth_up 1000mbit
+	option bandwidth_down 1000mbit
+	## It is better to set own overhead and mpu than what is set in the template
+	## https://forum.openwrt.org/t/qosify-new-package-for-dscp-marking-cake/111789/729
+	# option overhead_type ethernet
+	option overhead_type none
+	# defaults:
+	option ingress 1
+	option egress 1
+	option mode diffserv4
+	option nat 1
+	option host_isolate 1
+	option autorate_ingress 0
+	### VLAN or PPPoE => overhead is 44
+	### PPPoE (common for DSL or fiber): 40 bytes (18 bytes Ethernet + 8 bytes PPPoE header + 14 bytes other layers)
+	### Without VLAN or PPPoE => overhead is 18
+	### MPU set 84 or 64.
+	option ingress_options "overhead 18 mpu 84"
+	option egress_options "overhead 18 mpu 84"
+	option options ""

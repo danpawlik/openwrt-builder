@@ -19,6 +19,7 @@ CRYPTO_LIB=${CRYPTO_LIB:-'openssl'} # wolfssl or openssl; if empty - mbedtls
 ADDITIONAL_PACKAGES=${ADDITIONAL_PACKAGES:-'bmon rsync bind-dig ethtool-full pciutils tcpdump iperf3 vim'}
 INSTALL_LANG_PACKAGES=${INSTALL_LANG_PACKAGES:-'true'}
 INSTALL_MINIMUM_PACKAGES=${INSTALL_MINIMUM_PACKAGES:-'false'}
+SQM_TOOL=${SQM_TOOL:-'qosify'} # or luci-app-sqm
 
 if [ -z "$ROUTER_IP" ]; then
     echo "Please provide router ip like: 192.168.1.1"
@@ -52,6 +53,9 @@ collectd-mod-dns collectd-mod-wireless \
 luci-app-statistics luci htop curl owut \
 irqbalance luci-app-irqbalance"
 
+# additional
+# fping kmod-crypto-user kmod-cryptodev
+
 if [[ "$INSTALL_MINIMUM_PACKAGES" =~ True|true ]]; then
     if [[ "$CRYPTO_LIB" =~ ^(Wolfssl|wolfssl|Openssl|openssl)$ ]]; then
         echo -e "By choosing INSTALL_MINIMUM_PACKAGES, consider to use:\n\n export CRYPTO_LIB=mbedtls\n\n"
@@ -79,7 +83,8 @@ fi
 # additional packages
 if [[ "$DEVICE" =~ Main|main ]]; then
     PACKAGES="$PACKAGES luci-proto-wireguard kmod-wireguard wireguard-tools qrencode"
-    PACKAGES="$PACKAGES luci-app-sqm"
+    # PACKAGES="$PACKAGES luci-app-sqm"
+    PACKAGES="$PACKAGES $SQM_TOOL"
     PACKAGES="$PACKAGES ddns-scripts luci-app-ddns bind-host"
     if [[ "$INSTALL_DNSCRYPT_PROXY2" =~ True|true ]]; then
         PACKAGES="$PACKAGES dnscrypt-proxy2"
@@ -138,6 +143,8 @@ esac
 
 ### Bufferbloat - install SQM - https://openwrt.org/docs/guide-user/network/traffic-shaping/sqm
 #       luci-app-sqm luci-i18n-sqm-pl sqm-scripts-extra
+#       # OR
+#       qosify - https://forum.openwrt.org/t/qosify-new-package-for-dscp-marking-cake/111789/1122
 
 ### Better roaming
 #       usteer luci-app-usteer
