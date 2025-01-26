@@ -1,0 +1,7 @@
+#
+# curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/qualcommax/ipq50xx/gl-b3000 > .config
+#
+
+CONFIG_TARGET_qualcommax=y
+CONFIG_TARGET_qualcommax_ipq50xx=y
+CONFIG_TARGET_qualcommax_ipq50xx_DEVICE_glinet_gl-b3000=y
