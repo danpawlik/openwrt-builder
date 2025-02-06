@@ -3,6 +3,9 @@
 # Example usage:
 # ./openwrt-configure.sh 192.168.88.1 main
 # ./openwrt-configure.sh 192.168.88.2
+#
+## or extended
+# SPEEDTEST_TOOLS=librespeed-go ./openwrt-configure.sh 192.168.88.1 main
 
 ROUTER_IP="${ROUTER_IP=$1}"
 # DEVICE can be main or <nothing>
@@ -20,6 +23,7 @@ ADDITIONAL_PACKAGES=${ADDITIONAL_PACKAGES:-'bmon rsync bind-dig ethtool-full pci
 INSTALL_LANG_PACKAGES=${INSTALL_LANG_PACKAGES:-'true'}
 INSTALL_MINIMUM_PACKAGES=${INSTALL_MINIMUM_PACKAGES:-'false'}
 SQM_TOOL=${SQM_TOOL:-''} # qosify or luci-app-sqm
+SPEEDTEST_TOOLS=${SPEEDTEST_TOOLS:=''} # librespeed-go
 
 if [ -z "$ROUTER_IP" ]; then
     echo "Please provide router ip like: 192.168.1.1"
@@ -78,6 +82,10 @@ fi
 
 if [[ "$INSTALL_USTEER" =~ True|true ]]; then
     PACKAGES="$PACKAGES usteer luci-app-usteer luci-i18n-usteer-pl"
+fi
+
+if [ -n "$SPEEDTEST_TOOLS" ]; then
+    PACKAGES="$PACKAGES $SPEEDTEST_TOOLS"
 fi
 
 # additional packages
