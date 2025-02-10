@@ -14,9 +14,7 @@ FULL_WPAD="${FULL_WPAD:-'true'}"
 INSTALL_BRIDGER=${INSTALL_BRIDGER:-'false'}
 INSTALL_DAWN=${INSTALL_DAWN:-'false'}
 INSTALL_USTEER=${INSTALL_USTEER:-'false'}
-INSTALL_DNSCRYPT_PROXY2=${INSTALL_DNSCRYPT_PROXY2:-'true'}
-INSTALL_UNBOUND=${INSTALL_UNBOUND:-'false'}
-INSTALL_ADGUARDHOME=${INSTALL_ADGUARDHOME:-'false'}
+DOH_PACKAGE=${DOH_PACKAGE:-'stubby'} # can be also: luci-app-unbound or dnscrypt-proxy2 or adguardhome
 CRYPTO_LIB=${CRYPTO_LIB:-'openssl'} # wolfssl or openssl; if empty - mbedtls
 # ADDITIONAL_PACKAGES=${ADDITIONAL_PACKAGES:-'kmod-mt7921e kmod-mt7921-common kmod-mt7921-firmware kmod-mt7925-common kmod-mt7925e'}
 ADDITIONAL_PACKAGES=${ADDITIONAL_PACKAGES:-'bmon rsync bind-dig ethtool-full pciutils tcpdump iperf3 vim'}
@@ -64,13 +62,8 @@ if [[ "$INSTALL_MINIMUM_PACKAGES" =~ True|true ]]; then
     if [[ "$CRYPTO_LIB" =~ ^(Wolfssl|wolfssl|Openssl|openssl)$ ]]; then
         echo -e "By choosing INSTALL_MINIMUM_PACKAGES, consider to use:\n\n export CRYPTO_LIB=mbedtls\n\n"
     fi
-    if [[ "$INSTALL_DNSCRYPT_PROXY2" =~ True|true ]]; then
-        echo -e "It is not good to choose INSTALL_DNSCRYPT_PROXY2 on low space device!"
-        exit 1
-    fi
-
-    if [[ "$INSTALL_ADGUARDHOME" =~ True|true ]]; then
-        echo -e "It is not good to choose INSTALL_ADGUARDHOME on low space device!"
+    if [[ "$DOH_PACKAGE" =~ dnscrypt-proxy2|adguard ]]; then
+        echo -e "It is not good to choose $DOH_PACKAGE on low space device!"
         exit 1
     fi
 
@@ -99,12 +92,10 @@ if [[ "$DEVICE" =~ Main|main ]]; then
     if [[ "$INSTALL_DNSCRYPT_PROXY2" =~ True|true ]]; then
         PACKAGES="$PACKAGES dnscrypt-proxy2"
     fi
-    if [[ "$INSTALL_UNBOUND" =~ True|true ]]; then
-        PACKAGES="$PACKAGES unbound-daemon luci-app-unbound"
-    fi
 
-    if [[ "$INSTALL_ADGUARDHOME" =~ True|true ]]; then
-        PACKAGES="$PACKAGES adguardhome"
+    if [ -n "$DOH_PACKAGE" ]; then
+        PACKAGES="$PACKAGES $DOH_PACKAGE"
+
     fi
 fi
 
