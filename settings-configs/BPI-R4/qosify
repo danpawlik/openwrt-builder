@@ -27,19 +27,15 @@ config class voice
 config interface wan
 	option name wan
 	option disabled 0
-	option bandwidth_up 1000mbit
-	option bandwidth_down 1000mbit
-	## It is better to set own overhead and mpu than what is set in the template
-	## https://forum.openwrt.org/t/qosify-new-package-for-dscp-marking-cake/111789/729
-	# option overhead_type ethernet
-	option overhead_type none
-	# defaults:
+	option bandwidth_up 1gbit
+	option bandwidth_down 1gbit
+	option overhead_type ethernet
 	option ingress 1
 	option egress 1
 	option mode diffserv4
 	option nat 1
 	option host_isolate 1
 	option autorate_ingress 0
-	option ingress_options "overhead 44 mpu 84"
-	option egress_options "overhead 44 mpu 84"
 	option options ""
+	option ingress_options ""
+	option egress_options ""

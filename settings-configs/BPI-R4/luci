@@ -1,7 +1,7 @@
 
 config core 'main'
-	option lang 'pl'
-	option mediaurlbase '/luci-static/bootstrap'
+	option lang 'auto'
+	option mediaurlbase '/luci-static/bootstrap-dark'
 	option resourcebase '/luci-static/resources'
 	option ubuspath '/ubus/'
 
@@ -28,6 +28,7 @@ config internal 'themes'
 	option Bootstrap '/luci-static/bootstrap'
 	option BootstrapDark '/luci-static/bootstrap-dark'
 	option BootstrapLight '/luci-static/bootstrap-light'
+	option Argon '/luci-static/argon'
 
 config internal 'apply'
 	option rollback '90'
