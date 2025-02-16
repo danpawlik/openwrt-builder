@@ -28,7 +28,7 @@ if [ -z "$ROUTER_IP" ]; then
     exit 1
 fi
 
-COMMAND="opkg update"
+COMMAND="apk update"
 
 if [[ "$FULL_WPAD" =~ True|true ]]; then
     FS_FULL_WPAD_PACKAGES="-wpad-basic-mbedtls"
@@ -36,11 +36,11 @@ fi
 
 if [ -z "$CRYPTO_LIB" ]; then
     FS_FULL_WPAD_PACKAGES="$FS_FULL_WPAD_PACKAGES wpad-mbedtls"
-    COMMAND="$COMMAND; opkg remove wpad-basic-mbedtls; opkg install wpad-mbedtls"
+    COMMAND="$COMMAND; apk del wpad-basic-mbedtls; apk add wpad-mbedtls"
 fi
 
 if [ -n "$CRYPTO_LIB" ]; then
-  COMMAND="$COMMAND; opkg remove wpad-basic-mbedtls; opkg install wpad-$CRYPTO_LIB"
+  COMMAND="$COMMAND; apk del wpad-basic-mbedtls; apk add wpad-$CRYPTO_LIB"
 
   if [[ "$CRYPTO_LIB" =~ ^(Wolfssl|wolfssl)$ ]]; then
     FS_FULL_WPAD_PACKAGES="$FS_FULL_WPAD_PACKAGES -apk-mbedtls -libustream-mbedtls -libmbedtls libustream-wolfssl wpad-wolfssl"
@@ -107,7 +107,7 @@ if [[ "$INSTALL_LANG_PACKAGES" =~ True|true ]]; then
     PACKAGES="$PACKAGES luci-i18n-firewall-pl luci-i18n-irqbalance-pl luci-i18n-statistics-pl luci-i18n-base-pl"
 fi
 
-COMMAND="$COMMAND; opkg install $PACKAGES $ADDITIONAL_PACKAGES; /etc/init.d/uhttpd start ; /etc/init.d/uhttpd enable;"
+COMMAND="$COMMAND; apk add $PACKAGES $ADDITIONAL_PACKAGES; /etc/init.d/uhttpd start ; /etc/init.d/uhttpd enable;"
 
 read -n 1 -r -p "Should I execute command: $COMMAND on root@$ROUTER_IP? " yn
 case $yn in
@@ -127,11 +127,11 @@ esac
 # For https://firmware-selector.openwrt.org/
 # Add packages. NOTE: To install wpad-wolfssl, just replace the package name with wpad-basic-wolfssl
 ### basic
-#       opkg update;
-#       opkg install collectd collectd-mod-sensors collectd-mod-dns collectd-mod-wireless luci-app-statistics luci luci-i18n-base-pl vim htop curl iperf3 luci-app-attendedsysupgrade auc bmon irqbalance luci-app-irqbalance rsync
+#       apk update;
+#       apk add collectd collectd-mod-sensors collectd-mod-dns collectd-mod-wireless luci-app-statistics luci luci-i18n-base-pl vim htop curl iperf3 luci-app-attendedsysupgrade auc bmon irqbalance luci-app-irqbalance rsync
 #
 ### additional
-#       opkg install bind-dig ethtool-full pciutils tcpdump
+#       apk add bind-dig ethtool-full pciutils tcpdump
 
 ### wireguard
 #       luci-proto-wireguard kmod-wireguard wireguard-tools qrencode
