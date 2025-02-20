@@ -13,7 +13,7 @@ RUN dnf -y install vim bash-completion file bzip2 gcc gcc-c++ git make ncurses-d
     python3-networkx python3-setuptools luajit2.1-luv libnghttp2-devel \
     perl-Time-Piece perl-Test-CPAN-Meta-JSON net-snmp-libs \
     e2fsprogs-libs pam-devel gcc-g++ cmake glibc-static libstdc++-static util-linux \
-    libstdc++-static slang-devel && dnf clean all
+    libstdc++-static slang-devel systemtap-sdt-devel && dnf clean all
 
 # To build BPI-R4-MT76-OPENWRT-V21.02
 RUN dnf install -y usbutils bison flex openssl-devel \
