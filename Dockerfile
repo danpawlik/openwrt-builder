@@ -3,7 +3,7 @@ FROM fedora:41
 RUN yum update -y && dnf -y group install development-tools
 
 RUN dnf -y install vim bash-completion file bzip2 gcc gcc-c++ git make ncurses-devel patch \
-    rsync tar unzip wget which diffutils python3 glibc-gconv-extra perl-base \
+    rsync tar unzip wget which diffutils python3 python3-devel glibc-gconv-extra perl-base \
     perl-Data-Dumper perl-File-Compare perl-File-Copy perl-FindBin \
     perl-Thread-Queue hostname perl-IPC-Cmd swig ccache-swig && \
     dnf install -y clang llvm gcc libbpf-devel libxdp-devel xdp-tools \
@@ -13,7 +13,7 @@ RUN dnf -y install vim bash-completion file bzip2 gcc gcc-c++ git make ncurses-d
     python3-networkx python3-setuptools luajit2.1-luv libnghttp2-devel \
     perl-Time-Piece perl-Test-CPAN-Meta-JSON net-snmp-libs \
     e2fsprogs-libs pam-devel gcc-g++ cmake glibc-static libstdc++-static util-linux \
-    libstdc++-static slang-devel systemtap-sdt-devel && dnf clean all
+    libstdc++-static slang-devel systemtap-sdt-devel gnutls-devel && dnf clean all
 
 # To build BPI-R4-MT76-OPENWRT-V21.02
 RUN dnf install -y usbutils bison flex openssl-devel \
