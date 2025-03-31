@@ -20,8 +20,8 @@ CRYPTO_LIB=${CRYPTO_LIB:-'openssl'} # wolfssl or openssl; if empty - mbedtls
 ADDITIONAL_PACKAGES=${ADDITIONAL_PACKAGES:-'bmon rsync bind-dig ethtool-full pciutils tcpdump iperf3 vim'}
 INSTALL_LANG_PACKAGES=${INSTALL_LANG_PACKAGES:-'true'}
 INSTALL_MINIMUM_PACKAGES=${INSTALL_MINIMUM_PACKAGES:-'false'}
-SQM_TOOL=${SQM_TOOL:-''} # qosify or luci-app-sqm
-SPEEDTEST_TOOLS=${SPEEDTEST_TOOLS:=''} # librespeed-go
+SQM_TOOL=${SQM_TOOL:-'qosify'} # qosify or luci-app-sqm
+SPEEDTEST_TOOLS=${SPEEDTEST_TOOLS:='librespeed-go'} # librespeed-go
 
 if [ -z "$ROUTER_IP" ]; then
     echo "Please provide router ip like: 192.168.1.1"
