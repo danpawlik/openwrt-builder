@@ -126,7 +126,6 @@ CONFIG_PACKAGE_wpad-mbedtls=y
 
 # enable Realtek RTL8261
 CONFIG_PACKAGE_kmod-phy-realtek=y
-CONFIG_PACKAGE_kmod-r8169=y
 
 # Speedtest tools
 CONFIG_PACKAGE_librespeed-go=y
