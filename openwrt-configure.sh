@@ -43,7 +43,7 @@ if [ -n "$CRYPTO_LIB" ]; then
   COMMAND="$COMMAND; apk del wpad-basic-mbedtls; apk add wpad-$CRYPTO_LIB"
 
   if [[ "$CRYPTO_LIB" =~ ^(Wolfssl|wolfssl)$ ]]; then
-    FS_FULL_WPAD_PACKAGES="$FS_FULL_WPAD_PACKAGES -apk-mbedtls -libustream-mbedtls -libmbedtls libustream-wolfssl wpad-wolfssl"
+    FS_FULL_WPAD_PACKAGES="$FS_FULL_WPAD_PACKAGES -libustream-mbedtls libustream-wolfssl wpad-wolfssl libwolfssl"
   elif [[ "$CRYPTO_LIB" =~ ^(Openssl|openssl)$ ]]; then
     FS_FULL_WPAD_PACKAGES="$FS_FULL_WPAD_PACKAGES -apk-mbedtls -libustream-mbedtls -libmbedtls libustream-openssl wpad-openssl apk-openssl"
   fi
