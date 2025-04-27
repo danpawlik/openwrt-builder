@@ -1,4 +1,4 @@
-FROM fedora:41
+FROM fedora:42
 
 RUN yum update -y && dnf -y group install development-tools
 
