@@ -45,7 +45,7 @@ if [ -n "$CRYPTO_LIB" ]; then
   if [[ "$CRYPTO_LIB" =~ ^(Wolfssl|wolfssl)$ ]]; then
     FS_FULL_WPAD_PACKAGES="$FS_FULL_WPAD_PACKAGES -libustream-mbedtls libustream-wolfssl wpad-wolfssl libwolfssl"
   elif [[ "$CRYPTO_LIB" =~ ^(Openssl|openssl)$ ]]; then
-    FS_FULL_WPAD_PACKAGES="$FS_FULL_WPAD_PACKAGES -libustream-mbedtls libustream-openssl wpad-openssl apk-openssl"
+    FS_FULL_WPAD_PACKAGES="$FS_FULL_WPAD_PACKAGES -libustream-mbedtls libustream-openssl wpad-openssl apk-openssl libopenssl-afalg_sync"
   fi
 fi
 

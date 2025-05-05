@@ -22,7 +22,7 @@ CONFIG_OPENSSL_OPTIMIZE_SPEED=y
 CONFIG_PACKAGE_kmod-cryptodev=y
 CONFIG_PACKAGE_kmod-crypto-user=y
 # CONFIG_PACKAGE_libopenssl-devcrypto is not set
-# CONFIG_PACKAGE_libopenssl-afalg_sync is not set
+CONFIG_PACKAGE_libopenssl-afalg_sync=y
 
 ### Force add /dev/crypto into libcrypto
 # CONFIG_OPENSSL_ENGINE_BUILTIN=y
