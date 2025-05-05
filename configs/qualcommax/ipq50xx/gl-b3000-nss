@@ -6,5 +6,7 @@ CONFIG_TARGET_qualcommax=y
 CONFIG_TARGET_qualcommax_ipq50xx=y
 CONFIG_TARGET_qualcommax_ipq50xx_DEVICE_glinet_gl-b3000=y
 
-# CONFIG_ATH11K_MEM_PROFILE_1G is not set
-CONFIG_ATH11K_MEM_PROFILE_512M=y
+# Temporary workaround: set 1G profile and remove patch:
+# find . -type f -name 999-900-bss-transition-handling.patch -delete
+CONFIG_ATH11K_MEM_PROFILE_1G=y
+# CONFIG_ATH11K_MEM_PROFILE_512M is not set
