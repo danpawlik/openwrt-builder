@@ -22,8 +22,8 @@ CONFIG_OPENSSL_WITH_DEPRECATED=n
 # enable /dev/crypto
 CONFIG_PACKAGE_kmod-cryptodev=y
 CONFIG_PACKAGE_kmod-crypto-user=y
-# CONFIG_PACKAGE_libopenssl-devcrypto is not set
-CONFIG_PACKAGE_libopenssl-afalg_sync=y
+CONFIG_PACKAGE_libopenssl-devcrypto=y
+# CONFIG_PACKAGE_libopenssl-afalg_sync is not set
 
 ### Force add /dev/crypto into libcrypto
 # CONFIG_OPENSSL_ENGINE_BUILTIN=y

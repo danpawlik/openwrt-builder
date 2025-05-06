@@ -22,9 +22,9 @@ CONFIG_LUA_ECO_WOLFSSL=y
 ## Seems devcrypto full does not work with all my routers.
 # CONFIG_PACKAGE_kmod-crypto-authenc=y
 # CONFIG_PACKAGE_kmod-cryptodev=y
-# CONFIG_WOLFSSL_HAS_DEVCRYPTO=y
+CONFIG_WOLFSSL_HAS_DEVCRYPTO=y
 # CONFIG_WOLFSSL_HAS_DEVCRYPTO_FULL=y
-CONFIG_WOLFSSL_HAS_AFALG=y
+# CONFIG_WOLFSSL_HAS_AFALG is not set
 
 # Probably it can be used by wolfssl
 CONFIG_PACKAGE_kmod-crypto-user=y
