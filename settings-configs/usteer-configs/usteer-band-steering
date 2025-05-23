@@ -1,0 +1,14 @@
+config usteer
+    option network 'lan'
+    option local_mode '1'
+    option syslog '1'
+    option ipv6 '0'
+    option debug_level '0'
+
+    option band_steering '1'
+    option prefer_5g '1'
+
+    option sta_selection_policy 'prefer-5g'
+    option sta_move_interval '60'
+
+    list ssid_list 'MYSSID'
