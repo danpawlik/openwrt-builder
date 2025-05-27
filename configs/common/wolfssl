@@ -1,18 +1,10 @@
 #### replace mbedtls with openssl - remember to leave commented "is not set" or remove it!
-
-### NOTE: switch, when package is available
 CONFIG_PACKAGE_apk-mbedtls=y
-# CONFIG_PACKAGE_apk-wolfssl is not set
-
+CONFIG_PACKAGE_libustream-mbedtls=y
 CONFIG_PACKAGE_wpad-wolfssl=y
-CONFIG_PACKAGE_libustream-mbedtls=m
-CONFIG_PACKAGE_libustream-wolfssl=y
-CONFIG_PACKAGE_libwolfssl=y
 # CONFIG_PACKAGE_wpad-mbedtls is not set
 # CONFIG_PACKAGE_wpad-basic-mbedtls is not set
 # CONFIG_PACKAGE_wpad-basic-openssl is not set
-# CONFIG_LIBCURL_MBEDTLS is not set
-CONFIG_LIBCURL_WOLFSSL=y
 CONFIG_LUA_ECO_WOLFSSL=y
 # CONFIG_LUA_ECO_MBEDTLS is not set
 #### replace mbedtls with openssl - remember to leave commented "is not set" or remove it!
@@ -21,10 +13,13 @@ CONFIG_LUA_ECO_WOLFSSL=y
 ## https://www.wolfssl.com/cpu-accelerated-cryptography-on-openwrt-using-wolfssl/
 ## Seems devcrypto full does not work with all my routers.
 # CONFIG_PACKAGE_kmod-crypto-authenc=y
-# CONFIG_PACKAGE_kmod-cryptodev=y
+CONFIG_PACKAGE_kmod-cryptodev=y
 CONFIG_WOLFSSL_HAS_DEVCRYPTO=y
 # CONFIG_WOLFSSL_HAS_DEVCRYPTO_FULL=y
 # CONFIG_WOLFSSL_HAS_AFALG is not set
 
-# Probably it can be used by wolfssl
+# Checking SSL with CPU acceleration
+# MAKE SURE IT IS ARMv8 or Intel AESNI, otherwise use: CONFIG_PACKAGE_libwolfssl=y
+CONFIG_PACKAGE_libwolfsslcpu-crypto=y
+
 CONFIG_PACKAGE_kmod-crypto-user=y
