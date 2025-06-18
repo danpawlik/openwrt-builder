@@ -57,13 +57,8 @@ jobs:
         run: |
           curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/qualcommax/ipq50xx/gl-b3000-nss > .config
           curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/common/dumb_ap >> .config
-          curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/common/snapshot >> .config
           curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/common/qosmio-nss-minimal >> .config
-
-      - name: Enable openssl
-        run: |
-          sed -i '/CONFIG_PACKAGE_wpad-mbedtls=y/d' .config
-          curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/common/openssl >> .config
+          curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/common/snapshot >> .config
 
       # Workaround - https://forum.openwrt.org/t/qualcommax-nss-build/148529/4710
       - name: Remove problematic patch for ipq5018
