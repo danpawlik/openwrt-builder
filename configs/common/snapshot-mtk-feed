@@ -26,3 +26,11 @@ CONFIG_PACKAGE_iperf3=y
 # CONFIG_PACKAGE_iw is not set
 CONFIG_PACKAGE_iw-full=y
 CONFIG_PACKAGE_smp_util=y
+
+CONFIG_PACKAGE_iptables=y
+CONFIG_PACKAGE_ip6tables=y
+CONFIG_PACKAGE_iptables-mod-extra=y
+CONFIG_PACKAGE_iptables-mod-ipopt=y
+
+CONFIG_MT7988_ATF_SMC=y
+CONFIG_MTK_PLAT_NUM_SMC=7
