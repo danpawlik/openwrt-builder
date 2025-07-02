@@ -8,6 +8,7 @@ env:
   REMOTE_REPOSITORY: qosmio/openwrt-ipq
   REMOTE_BRANCH: main-nss
   RELEASE_PREFIX: Ipq5018-nss
+  BUILD_PATH: bin/targets/qualcommax/ipq50xx
 
 jobs:
   check_commits:
@@ -77,7 +78,7 @@ jobs:
         run: make -j $(nproc) defconfig download world
 
       - name: Package output
-        run: tar -cvf b3000.tar bin/targets/qualcommax/ipq50xx/
+        run: tar -cvf b3000.tar ${{ env.BUILD_PATH }}/
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
@@ -104,7 +105,7 @@ jobs:
       - name: Create release
         uses: softprops/action-gh-release@master
         with:
-          files: bin/targets/mediatek/mt7622/*
+          files: ${{ env.BUILD_PATH }}/*
           tag_name: ${{ env.RELEASE_PREFIX }}-${{ env.REMOTE_BRANCH }}-${{ env.RELEASE_DATE }}
           name: OpenWRT Gl.iNet b3000 with NSS - ${{ env.REMOTE_BRANCH }} - ${{ env.RELEASE_DATE }}
           body: |

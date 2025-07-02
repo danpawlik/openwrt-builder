@@ -72,7 +72,7 @@ jobs:
         run: make -j $(nproc) defconfig download world
 
       - name: Package output
-        run: tar -cvf b3000.tar bin/targets/qualcommax/ipq50xx/
+        run: tar -cvf b3000.tar ${{ env.BUILD_PATH }}/
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
@@ -99,7 +99,7 @@ jobs:
       - name: Create release
         uses: softprops/action-gh-release@master
         with:
-          files: bin/targets/mediatek/mt7622/*
+          files: ${{ env.BUILD_PATH }}/*
           tag_name: ${{ env.RELEASE_PREFIX }}-${{ env.REMOTE_BRANCH }}-${{ env.RELEASE_DATE }}
           name: OpenWrt Gl.iNet B3000 - vanila - ${{ env.REMOTE_BRANCH }} - ${{ env.RELEASE_DATE }}
           body: |
