@@ -1,5 +1,5 @@
 ---
-name: BPI-R4 + main_router packages
+name: BPI-R4 + mtk-feed-firmware + EEPROM fix + main_router packages
 
 on:
   workflow_dispatch:
@@ -7,7 +7,7 @@ on:
 env:
   REMOTE_REPOSITORY: danpawlik/openwrt
   # REMOTE_BRANCH: main
-  REMOTE_BRANCH: check-mt76-mac80211
+  REMOTE_BRANCH: main-mt76-fw
   RELEASE_PREFIX: Mediatek_mt7988a_bpi-r4
 
 jobs:
@@ -61,15 +61,15 @@ jobs:
           curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/common/main-router >> .config
           curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/common/snapshot >> .config
 
-#      - name: Enable openssl
-#        run: |
-#          sed -i '/CONFIG_PACKAGE_wpad-mbedtls=y/d' .config
-#          curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/common/openssl >> .config
-
-      - name: Enable wolfssl
+      - name: Enable openssl
         run: |
           sed -i '/CONFIG_PACKAGE_wpad-mbedtls=y/d' .config
-          curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/common/wolfssl >> .config
+          curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/common/openssl >> .config
+
+#      - name: Enable wolfssl
+#        run: |
+#          sed -i '/CONFIG_PACKAGE_wpad-mbedtls=y/d' .config
+#          curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/common/wolfssl >> .config
 
       - name: Add librespeed-go
         run: |
@@ -120,10 +120,16 @@ jobs:
         with:
           files: bin/targets/mediatek/filogic/*
           tag_name: ${{ env.RELEASE_PREFIX }}-${{ env.REMOTE_BRANCH }}-${{ env.RELEASE_DATE }}
-          name: OpenWRT BPI-R4 + main_router packages - ${{ env.REMOTE_BRANCH }} - ${{ env.RELEASE_DATE }}
+          name: OpenWRT BPI-R4 + mtk feed firmware + EEPROM fix + main_router packages - ${{ env.REMOTE_BRANCH }} - ${{ env.RELEASE_DATE }}
           body: |
-            Updated prebuilt images for ${{ env.RELEASE_DATE }} with BE14 and main_router packages with BE14 EEPROM patch.
+            Updated prebuilt images for ${{ env.RELEASE_DATE }} with BE14, mt7996 firmware from mtk feed,
+            EEPROM fix and main_router packages
             Build Commit: ${{ needs.check_commits.outputs.latest_commit_sha }}
+
+            Firmware comes from [1] and EEPROM fix [2]
+
+            [1] https://git01.mediatek.com/plugins/gitiles/openwrt/feeds/mtk-openwrt-feeds/+/f698cd603b51e01528513b090dc52103ef29c60f
+            [2] https://github.com/openwrt/mt76/pull/968
 
       - name: Clean up old releases
         uses: dev-drprasad/delete-older-releases@master
