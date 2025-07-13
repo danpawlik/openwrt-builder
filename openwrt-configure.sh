@@ -15,12 +15,12 @@ INSTALL_BRIDGER=${INSTALL_BRIDGER:-'false'}
 INSTALL_DAWN=${INSTALL_DAWN:-'false'}
 INSTALL_USTEER=${INSTALL_USTEER:-'false'}
 DOH_PACKAGE=${DOH_PACKAGE:-'stubby'} # can be also: luci-app-unbound or dnscrypt-proxy2 or adguardhome
-CRYPTO_LIB=${CRYPTO_LIB:-'openssl'} # wolfssl or openssl; if empty - mbedtls
+CRYPTO_LIB=${CRYPTO_LIB:-'openssl'}  # wolfssl or openssl; if empty - mbedtls
 # ADDITIONAL_PACKAGES=${ADDITIONAL_PACKAGES:-'kmod-mt7921e kmod-mt7921-common kmod-mt7921-firmware kmod-mt7925-common kmod-mt7925e'}
 ADDITIONAL_PACKAGES=${ADDITIONAL_PACKAGES:-'bmon rsync bind-dig ethtool-full pciutils tcpdump iperf3 vim'}
 INSTALL_LANG_PACKAGES=${INSTALL_LANG_PACKAGES:-'true'}
 INSTALL_MINIMUM_PACKAGES=${INSTALL_MINIMUM_PACKAGES:-'false'}
-SQM_TOOL=${SQM_TOOL:-'qosify'} # qosify or luci-app-sqm
+SQM_TOOL=${SQM_TOOL:-'qosify'}                      # qosify or luci-app-sqm
 SPEEDTEST_TOOLS=${SPEEDTEST_TOOLS:='librespeed-go'} # librespeed-go
 
 if [ -z "$ROUTER_IP" ]; then
@@ -40,15 +40,15 @@ if [ -z "$CRYPTO_LIB" ]; then
 fi
 
 if [ -n "$CRYPTO_LIB" ]; then
-  COMMAND="$COMMAND; apk del wpad-basic-mbedtls; apk add wpad-$CRYPTO_LIB"
+    COMMAND="$COMMAND; apk del wpad-basic-mbedtls; apk add wpad-$CRYPTO_LIB"
 
-  if [[ "$CRYPTO_LIB" =~ ^(Wolfssl|wolfssl)$ ]]; then
-    # MAKE SURE IT IS ARMv8 or Intel AESNI, otherwise use: CONFIG_PACKAGE_libwolfssl=y
-    echo -e "\n\n If this is ARMv8, you can replace libwolfssl with libwolfsslcpu-crypto \n\n"
-    FS_FULL_WPAD_PACKAGES="$FS_FULL_WPAD_PACKAGES wpad-wolfssl libwolfssl"
-  elif [[ "$CRYPTO_LIB" =~ ^(Openssl|openssl)$ ]]; then
-    FS_FULL_WPAD_PACKAGES="$FS_FULL_WPAD_PACKAGES -libustream-mbedtls libustream-openssl wpad-openssl apk-openssl libopenssl-devcrypto"
-  fi
+    if [[ "$CRYPTO_LIB" =~ ^(Wolfssl|wolfssl)$ ]]; then
+        # MAKE SURE IT IS ARMv8 or Intel AESNI, otherwise use: CONFIG_PACKAGE_libwolfssl=y
+        echo -e "\n\n If this is ARMv8, you can replace libwolfssl with libwolfsslcpu-crypto \n\n"
+        FS_FULL_WPAD_PACKAGES="$FS_FULL_WPAD_PACKAGES wpad-wolfssl libwolfssl"
+    elif [[ "$CRYPTO_LIB" =~ ^(Openssl|openssl)$ ]]; then
+        FS_FULL_WPAD_PACKAGES="$FS_FULL_WPAD_PACKAGES wpad-openssl apk-openssl libopenssl-devcrypto"
+    fi
 fi
 
 # basic packages
@@ -113,17 +113,20 @@ COMMAND="$COMMAND; apk add $PACKAGES $ADDITIONAL_PACKAGES; /etc/init.d/uhttpd st
 
 read -n 1 -r -p "Should I execute command: $COMMAND on root@$ROUTER_IP? " yn
 case $yn in
-    [Yy]* ) ssh "root@$ROUTER_IP" "$COMMAND $PACKAGES";;
-    [Nn]* ) echo -e "\n\nFor firmware-selector.org: \n\n$PACKAGES $FS_FULL_WPAD_PACKAGES $ADDITIONAL_PACKAGES" ; exit 0;;
-    * ) echo "Please answer yes or no. If no, will show you packages for firmware-selector ;)";;
+[Yy]*) ssh "root@$ROUTER_IP" "$COMMAND $PACKAGES" ;;
+[Nn]*)
+    echo -e "\n\nFor firmware-selector.org: \n\n$PACKAGES $FS_FULL_WPAD_PACKAGES $ADDITIONAL_PACKAGES"
+    exit 0
+    ;;
+*) echo "Please answer yes or no. If no, will show you packages for firmware-selector ;)" ;;
 esac
 
 echo -e "\n\nPackage installation completed!\n\n"
 read -n 1 -r -p "Should I reboot device $ROUTER_IP? " yn
 case $yn in
-    [Yy]* ) ssh "root@$ROUTER_IP" reboot;;
-    [Nn]* ) exit;;
-    * ) echo "Please answer yes or no.";;
+[Yy]*) ssh "root@$ROUTER_IP" reboot ;;
+[Nn]*) exit ;;
+*) echo "Please answer yes or no." ;;
 esac
 
 # For https://firmware-selector.openwrt.org/
@@ -139,7 +142,7 @@ esac
 #       luci-proto-wireguard kmod-wireguard wireguard-tools qrencode
 
 ### DNS over HTTPS
-        unbound-daemon luci-app-unbound
+#       unbound-daemon luci-app-unbound
 
 ### DDNS
 #       ddns-scripts luci-app-ddns bind-host
