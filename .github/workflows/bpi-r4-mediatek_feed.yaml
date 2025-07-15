@@ -46,8 +46,6 @@ jobs:
     needs: [check_commits]
     runs-on: ubuntu-24.04
     steps:
-    
-
       - name: Install dependencies
         run: |
           sudo apt update
@@ -59,7 +57,7 @@ jobs:
             file wget curl zstd bash coreutils\
 
 
-       - name: Free Disk Space
+      - name: Free Disk Space
         uses: endersonmenezes/free-disk-space@main
         with:
           remove_android: true
