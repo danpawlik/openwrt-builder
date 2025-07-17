@@ -70,6 +70,10 @@ jobs:
 #        run: |
 #          sed -i '/CONFIG_PACKAGE_wpad-mbedtls=y/d' .config
 #          curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/common/wolfssl >> .config
+#
+      - name: Apply Lorenzo fix for WED for kernel 6.12
+        run: |
+          curl -SL https://pastebin.com/raw/n5xW9ScK > target/linux/mediatek/patches-6.12/999-lorenzo-dts.patch
 
       - name: Add librespeed-go
         run: |
