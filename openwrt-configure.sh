@@ -20,7 +20,7 @@ CRYPTO_LIB=${CRYPTO_LIB:-'openssl'}  # wolfssl or openssl; if empty - mbedtls
 ADDITIONAL_PACKAGES=${ADDITIONAL_PACKAGES:-'bmon rsync bind-dig ethtool-full pciutils tcpdump iperf3 vim'}
 INSTALL_LANG_PACKAGES=${INSTALL_LANG_PACKAGES:-'true'}
 INSTALL_MINIMUM_PACKAGES=${INSTALL_MINIMUM_PACKAGES:-'false'}
-SQM_TOOL=${SQM_TOOL:-'qosify'}                      # qosify or luci-app-sqm
+SQM_TOOL=${SQM_TOOL:-'luci-app-sqm'}                # qosify or luci-app-sqm
 SPEEDTEST_TOOLS=${SPEEDTEST_TOOLS:='librespeed-go'} # librespeed-go
 
 if [ -z "$ROUTER_IP" ]; then
