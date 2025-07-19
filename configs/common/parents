@@ -66,6 +66,11 @@ CONFIG_PACKAGE_collectd-mod-dns=y
 # CONFIG_PACKAGE_usteer it not set
 # CONFIG_PACKAGE_luci-app-usteer it not set
 
+# Enable WED (Wireless Ethernet Dispatch) for L2
+# Also it is important to enable HW offload and
+# do not disable firewall on dumb ap's.
+CONFIG_PACKAGE_bridger=y
+
 # language
 CONFIG_LUCI_LANG_pl=y
 
