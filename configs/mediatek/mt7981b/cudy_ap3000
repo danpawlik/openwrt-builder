@@ -1,0 +1,8 @@
+#
+# curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/mediatek/mt7981b/cudy_ap3000 > .config
+#
+
+CONFIG_TARGET_mediatek=y
+CONFIG_TARGET_mediatek_filogic=y
+CONFIG_TARGET_mediatek_filogic_DEVICE_cudy_ap3000-v1=y
+
