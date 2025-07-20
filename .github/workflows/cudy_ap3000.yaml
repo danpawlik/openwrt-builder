@@ -1,24 +1,15 @@
 ---
-name: Xiaomi AX3000T
+name: Cudy ap3000
 
 on:
   workflow_dispatch:
-    inputs:
-      DEVICE_CONFIG:
-        description: "Device configuration selection: stock layout or u-boot (default: u-boot)"
-        required: true
-        type: choice
-        default: 'u-boot'
-        options:
-          - stock
-          - u-boot
 
 env:
-  REMOTE_REPOSITORY: danpawlik/openwrt
-  REMOTE_BRANCH: ax3000t
-  RELEASE_PREFIX: Mediatek_mt7981b_ax3000t
-  DEVICE_CONFIG: ${{ inputs.DEVICE_CONFIG == 'stock' && 'configs/mediatek/mt7981b/ax3000t-stock-layout' || 'configs/mediatek/mt7981b/ax3000t' }}
-  ROLE_CONFIG: configs/common/dumb_ap
+  REMOTE_REPOSITORY: openwrt/openwrt
+  REMOTE_BRANCH: main
+  RELEASE_PREFIX: Mediatek_mt7981b_ap3000
+  ROLE_CONFIG: configs/common/parents
+  DEVICE_CONFIG: configs/mediatek/mt7981b/cudy_ap3000
 
 jobs:
   check_commits:
@@ -40,7 +31,7 @@ jobs:
           echo "latest_commit_sha=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
 
   build:
-    name: Build OpenWRT for AX3000T
+    name: Build OpenWRT for ap3000
     needs: [check_commits]
     runs-on: ubuntu-24.04
     steps:
@@ -65,14 +56,14 @@ jobs:
 
       - name: Configure firmware image
         run: |
-          curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/mediatek/mt7981b/ax3000t > .config
+          curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/${{ env.DEVICE_CONFIG }} > .config
           curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/${{ env.ROLE_CONFIG }} >> .config
           curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/common/snapshot >> .config
 
-      - name: Enable openssl
-        run: |
-          sed -i '/CONFIG_PACKAGE_wpad-mbedtls=y/d' .config
-          curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/common/openssl >> .config
+#      - name: Enable openssl
+#        run: |
+#          sed -i '/CONFIG_PACKAGE_wpad-mbedtls=y/d' .config
+#          curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/common/openssl >> .config
 
       - name: Run defconfig
         run: |
@@ -86,13 +77,13 @@ jobs:
         run: make -j $(nproc) defconfig download world
 
       - name: Package output
-        run: tar -cvf ax_3000t-images.tar bin/targets/mediatek/filogic
+        run: tar -cvf ap3000-images.tar bin/targets/mediatek/filogic
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: ax_3000t-images
-          path: ax_3000t-images.tar
+          name: ap3000-images
+          path: ap3000-images.tar
 
   release:
     name: Create release
@@ -103,10 +94,10 @@ jobs:
       - name: Download artifacts
         uses: actions/download-artifact@v4
         with:
-          name: ax_3000t-images
+          name: ap3000-images
 
       - name: Extract artifacts
-        run: tar xf ax_3000t-images.tar
+        run: tar xf ap3000-images.tar
 
       - name: Get current date
         run: echo "RELEASE_DATE=$(date +%F)" >> $GITHUB_ENV
@@ -117,9 +108,9 @@ jobs:
           files: bin/targets/mediatek/filogic/*
           tag_name: ${{ env.RELEASE_PREFIX }}-${{ env.REMOTE_BRANCH }}-${{ env.RELEASE_DATE }}
           name: |
-            OpenWRT AX3000T ${{ inputs.DEVICE_CONFIG == 'stock' && 'stock layout' || 'u-boot layout' }} - ${{ env.RELEASE_DATE }}
+            OpenWRT ap3000 - ${{ env.RELEASE_DATE }}
           body: |
-            Updated prebuilt images for AX3000T ${{ inputs.DEVICE_CONFIG == 'stock' && 'stock partition layout' || 'u-boot partition layout' }}
+            Updated prebuilt images for Cudy ap3000
 
             Build Commit: ${{ needs.check_commits.outputs.latest_commit_sha }}
 

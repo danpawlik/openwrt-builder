@@ -47,7 +47,7 @@ if [ -n "$CRYPTO_LIB" ]; then
         echo -e "\n\n If this is ARMv8, you can replace libwolfssl with libwolfsslcpu-crypto \n\n"
         FS_FULL_WPAD_PACKAGES="$FS_FULL_WPAD_PACKAGES wpad-wolfssl libwolfssl"
     elif [[ "$CRYPTO_LIB" =~ ^(Openssl|openssl)$ ]]; then
-        FS_FULL_WPAD_PACKAGES="$FS_FULL_WPAD_PACKAGES wpad-openssl apk-openssl libopenssl-devcrypto"
+        FS_FULL_WPAD_PACKAGES="$FS_FULL_WPAD_PACKAGES wpad-openssl libopenssl-devcrypto"
     fi
 fi
 
