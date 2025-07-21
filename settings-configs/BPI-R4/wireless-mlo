@@ -18,7 +18,7 @@ config wifi-iface 'default_radio0'
 	option ssid 'Testi_2G'
 	option encryption 'psk2+ccmp'
 	option disassoc_low_ack '0'
-	option key 'test1234'
+	option key 'test1234test'
 	option log_level '0'
 
 config wifi-device 'radio1'
@@ -32,7 +32,7 @@ config wifi-device 'radio1'
 	option cell_density '0'
 	option log_level '1'
 	option background_radar '1'
-	option txpower '23'
+	option txpower '20'
 
 config wifi-iface 'default_radio1'
 	option device 'radio1'
@@ -40,11 +40,10 @@ config wifi-iface 'default_radio1'
 	option mode 'ap'
 	option ssid 'Testi'
 	option encryption 'sae'
-	option key 'test1234'
+	option key 'test1234test'
 	option wnm_sleep_mode '1'
 	option bss_transition '1'
 	option ocv '0'
-	option macaddr 'random'
 	option log_level '0'
 
 config wifi-device 'radio2'
@@ -57,7 +56,7 @@ config wifi-device 'radio2'
 	option country 'DE'
 	option cell_density '0'
 	option log_level '1'
-	option txpower '23'
+	option txpower '20'
 
 config wifi-iface 'default_radio2'
 	option device 'radio2'
@@ -65,16 +64,13 @@ config wifi-iface 'default_radio2'
 	option mode 'ap'
 	option ssid 'Testi_6G'
 	option encryption 'sae'
-	option key 'test1234'
+	option key 'test1234test'
 	option wnm_sleep_mode '1'
 	option bss_transition '1'
 	option ocv '0'
-	option macaddr 'random'
 	option sae_pwe '2'
 	option ieee80211w '2'
 	option log_level '0'
-
-
 
 # ########################### MLD #################################
 
@@ -83,13 +79,9 @@ config wifi-mld 'ap_mld_1'
 	option mld_id '1'
 	option ssid 'Testowo'
 	option encryption 'sae'
-	option key '1234test'
+	option key 'test1234test'
 	option sae_pwe '2'
 
-# NOTE: It seems there is a bug, where when radio0 is using WPA2+CCMP,
-# I can not add it into mld. When I change WPA2 to SAE, all is fine.
-# So far, comment radio0 and use MLO as it is.
-#
 # config wifi-iface 'default_radio0_mld'
 # 	option device 'radio0'
 # 	option network 'lan'
