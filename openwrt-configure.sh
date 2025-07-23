@@ -15,7 +15,7 @@ INSTALL_BRIDGER=${INSTALL_BRIDGER:-'true'}
 INSTALL_DAWN=${INSTALL_DAWN:-'false'}
 INSTALL_USTEER=${INSTALL_USTEER:-'false'}
 DOH_PACKAGE=${DOH_PACKAGE:-'stubby'} # can be also: luci-app-unbound or dnscrypt-proxy2 or adguardhome
-CRYPTO_LIB=${CRYPTO_LIB:-'openssl'}  # wolfssl or openssl; if empty - mbedtls
+CRYPTO_LIB=${CRYPTO_LIB:-'openssl'}  # wolfssl or openssl or mbedtls
 # ADDITIONAL_PACKAGES=${ADDITIONAL_PACKAGES:-'kmod-mt7921e kmod-mt7921-common kmod-mt7921-firmware kmod-mt7925-common kmod-mt7925e'}
 ADDITIONAL_PACKAGES=${ADDITIONAL_PACKAGES:-'bmon rsync bind-dig ethtool-full pciutils tcpdump iperf3 vim'}
 INSTALL_LANG_PACKAGES=${INSTALL_LANG_PACKAGES:-'true'}
@@ -34,21 +34,15 @@ if [[ "$FULL_WPAD" =~ True|true ]]; then
     FS_FULL_WPAD_PACKAGES="-wpad-basic-mbedtls"
 fi
 
-if [ -z "$CRYPTO_LIB" ]; then
+if [[ "$CRYPTO_LIB" =~ ^(Wolfssl|wolfssl)$ ]]; then
+    # MAKE SURE IT IS ARMv8 or Intel AESNI, otherwise use: CONFIG_PACKAGE_libwolfssl=y
+    echo -e "\n\n If this is ARMv8, you can replace libwolfssl with libwolfsslcpu-crypto \n\n"
+    FS_FULL_WPAD_PACKAGES="$FS_FULL_WPAD_PACKAGES wpad-wolfssl libwolfssl"
+elif [[ "$CRYPTO_LIB" =~ ^(Openssl|openssl)$ ]]; then
+    FS_FULL_WPAD_PACKAGES="$FS_FULL_WPAD_PACKAGES wpad-openssl libopenssl-devcrypto"
+elif [[ "$CRYPTO_LIB" =~ ^(Mbedtls|mbedtls)$ ]]; then
     FS_FULL_WPAD_PACKAGES="$FS_FULL_WPAD_PACKAGES wpad-mbedtls"
     COMMAND="$COMMAND; apk del wpad-basic-mbedtls; apk add wpad-mbedtls"
-fi
-
-if [ -n "$CRYPTO_LIB" ]; then
-    COMMAND="$COMMAND; apk del wpad-basic-mbedtls; apk add wpad-$CRYPTO_LIB"
-
-    if [[ "$CRYPTO_LIB" =~ ^(Wolfssl|wolfssl)$ ]]; then
-        # MAKE SURE IT IS ARMv8 or Intel AESNI, otherwise use: CONFIG_PACKAGE_libwolfssl=y
-        echo -e "\n\n If this is ARMv8, you can replace libwolfssl with libwolfsslcpu-crypto \n\n"
-        FS_FULL_WPAD_PACKAGES="$FS_FULL_WPAD_PACKAGES wpad-wolfssl libwolfssl"
-    elif [[ "$CRYPTO_LIB" =~ ^(Openssl|openssl)$ ]]; then
-        FS_FULL_WPAD_PACKAGES="$FS_FULL_WPAD_PACKAGES wpad-openssl libopenssl-devcrypto"
-    fi
 fi
 
 # basic packages
