@@ -1,5 +1,5 @@
 ---
-name: BPI-R4 + mtk-feed-firmware + EEPROM fix + main_router packages
+name: BPI-R4 + EEPROM fix + main_router packages
 
 on:
   workflow_dispatch:
