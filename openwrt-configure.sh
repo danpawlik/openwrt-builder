@@ -17,7 +17,7 @@ INSTALL_USTEER=${INSTALL_USTEER:-'false'}
 DOH_PACKAGE=${DOH_PACKAGE:-'stubby'} # can be also: luci-app-unbound or dnscrypt-proxy2 or adguardhome
 CRYPTO_LIB=${CRYPTO_LIB:-'openssl'}  # wolfssl or openssl or mbedtls
 # ADDITIONAL_PACKAGES=${ADDITIONAL_PACKAGES:-'kmod-mt7921e kmod-mt7921-common kmod-mt7921-firmware kmod-mt7925-common kmod-mt7925e'}
-ADDITIONAL_PACKAGES=${ADDITIONAL_PACKAGES:-'bmon rsync bind-dig ethtool-full pciutils tcpdump iperf3 vim'}
+ADDITIONAL_PACKAGES=${ADDITIONAL_PACKAGES:-'bmon rsync ethtool-full pciutils tcpdump iperf3 vim'}
 INSTALL_LANG_PACKAGES=${INSTALL_LANG_PACKAGES:-'true'}
 INSTALL_MINIMUM_PACKAGES=${INSTALL_MINIMUM_PACKAGES:-'false'}
 SQM_TOOL=${SQM_TOOL:-'luci-app-sqm'}                # qosify or luci-app-sqm
@@ -84,7 +84,7 @@ if [[ "$DEVICE" =~ Main|main ]]; then
     if [ -n "$SQM_TOOL" ]; then
         PACKAGES="$PACKAGES $SQM_TOOL"
     fi
-    PACKAGES="$PACKAGES ddns-scripts luci-app-ddns bind-host"
+    PACKAGES="$PACKAGES ddns-scripts luci-app-ddns"
     if [[ "$INSTALL_DNSCRYPT_PROXY2" =~ True|true ]]; then
         PACKAGES="$PACKAGES dnscrypt-proxy2"
     fi
@@ -134,7 +134,7 @@ esac
 #       apk add collectd collectd-mod-sensors collectd-mod-dns collectd-mod-wireless luci-app-statistics luci luci-i18n-base-pl vim htop curl iperf3 luci-app-attendedsysupgrade auc bmon irqbalance luci-app-irqbalance rsync
 #
 ### additional
-#       apk add bind-dig ethtool-full pciutils tcpdump
+#       apk add ethtool-full pciutils tcpdump
 
 ### wireguard
 #       luci-proto-wireguard kmod-wireguard wireguard-tools qrencode
@@ -143,7 +143,7 @@ esac
 #       unbound-daemon luci-app-unbound
 
 ### DDNS
-#       ddns-scripts luci-app-ddns bind-host
+#       ddns-scripts luci-app-ddns
 
 ### Bufferbloat - install SQM - https://openwrt.org/docs/guide-user/network/traffic-shaping/sqm
 #       luci-app-sqm luci-i18n-sqm-pl sqm-scripts-extra
