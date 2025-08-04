@@ -14,13 +14,13 @@ FULL_WPAD="${FULL_WPAD:-'true'}"
 INSTALL_BRIDGER=${INSTALL_BRIDGER:-'true'}
 INSTALL_DAWN=${INSTALL_DAWN:-'false'}
 INSTALL_USTEER=${INSTALL_USTEER:-'false'}
-DOH_PACKAGE=${DOH_PACKAGE:-'stubby'} # can be also: luci-app-unbound or dnscrypt-proxy2 or adguardhome
+DOH_PACKAGE=${DOH_PACKAGE:-'stubby'} # can be also: luci-app-unbound or dnscrypt-proxy2 or adguardhome or stubby
 CRYPTO_LIB=${CRYPTO_LIB:-'openssl'}  # wolfssl or openssl or mbedtls
-# ADDITIONAL_PACKAGES=${ADDITIONAL_PACKAGES:-'kmod-mt7921e kmod-mt7921-common kmod-mt7921-firmware kmod-mt7925-common kmod-mt7925e'}
+# ADDITIONAL_PACKAGES=${ADDITIONAL_PACKAGES:-'kmod-mt7921e kmod-mt7921-common kmod-mt7921-firmware kmod-mt7925-common kmod-mt7925e luci-app-nft-qos'}
 ADDITIONAL_PACKAGES=${ADDITIONAL_PACKAGES:-'bmon rsync ethtool-full pciutils tcpdump iperf3 vim'}
 INSTALL_LANG_PACKAGES=${INSTALL_LANG_PACKAGES:-'true'}
 INSTALL_MINIMUM_PACKAGES=${INSTALL_MINIMUM_PACKAGES:-'false'}
-SQM_TOOL=${SQM_TOOL:-'luci-app-sqm'}                # qosify or luci-app-sqm
+SQM_TOOL=${SQM_TOOL:-'qosify'}                      # qosify or luci-app-sqm
 SPEEDTEST_TOOLS=${SPEEDTEST_TOOLS:='librespeed-go'} # librespeed-go
 
 if [ -z "$ROUTER_IP" ]; then
@@ -37,9 +37,9 @@ fi
 if [[ "$CRYPTO_LIB" =~ ^(Wolfssl|wolfssl)$ ]]; then
     # MAKE SURE IT IS ARMv8 or Intel AESNI, otherwise use: CONFIG_PACKAGE_libwolfssl=y
     echo -e "\n\n If this is ARMv8, you can replace libwolfssl with libwolfsslcpu-crypto \n\n"
-    FS_FULL_WPAD_PACKAGES="$FS_FULL_WPAD_PACKAGES wpad-wolfssl libwolfssl"
+    FS_FULL_WPAD_PACKAGES="$FS_FULL_WPAD_PACKAGES wpad-wolfssl"
 elif [[ "$CRYPTO_LIB" =~ ^(Openssl|openssl)$ ]]; then
-    FS_FULL_WPAD_PACKAGES="$FS_FULL_WPAD_PACKAGES wpad-openssl libopenssl-devcrypto"
+    FS_FULL_WPAD_PACKAGES="$FS_FULL_WPAD_PACKAGES wpad-openssl"
 elif [[ "$CRYPTO_LIB" =~ ^(Mbedtls|mbedtls)$ ]]; then
     FS_FULL_WPAD_PACKAGES="$FS_FULL_WPAD_PACKAGES wpad-mbedtls"
     COMMAND="$COMMAND; apk del wpad-basic-mbedtls; apk add wpad-mbedtls"
@@ -58,7 +58,7 @@ if [[ "$INSTALL_MINIMUM_PACKAGES" =~ True|true ]]; then
     if [[ "$CRYPTO_LIB" =~ ^(Wolfssl|wolfssl|Openssl|openssl)$ ]]; then
         echo -e "By choosing INSTALL_MINIMUM_PACKAGES, consider to use:\n\n export CRYPTO_LIB=mbedtls\n\n"
     fi
-    if [[ "$DOH_PACKAGE" =~ dnscrypt-proxy2|adguard ]]; then
+    if [[ "$DOH_PACKAGE" =~ dnscrypt-proxy2|adguardhome ]]; then
         echo -e "It is not good to choose $DOH_PACKAGE on low space device!"
         exit 1
     fi
@@ -73,25 +73,20 @@ if [[ "$INSTALL_USTEER" =~ True|true ]]; then
     PACKAGES="$PACKAGES usteer luci-app-usteer luci-i18n-usteer-pl"
 fi
 
-if [ -n "$SPEEDTEST_TOOLS" ]; then
-    PACKAGES="$PACKAGES $SPEEDTEST_TOOLS"
-fi
-
 # additional packages
 if [[ "$DEVICE" =~ Main|main ]]; then
+    PACKAGES="$PACKAGES ddns-scripts luci-app-ddns"
     PACKAGES="$PACKAGES luci-proto-wireguard kmod-wireguard wireguard-tools qrencode"
-    # PACKAGES="$PACKAGES luci-app-sqm"
     if [ -n "$SQM_TOOL" ]; then
         PACKAGES="$PACKAGES $SQM_TOOL"
-    fi
-    PACKAGES="$PACKAGES ddns-scripts luci-app-ddns"
-    if [[ "$INSTALL_DNSCRYPT_PROXY2" =~ True|true ]]; then
-        PACKAGES="$PACKAGES dnscrypt-proxy2"
     fi
 
     if [ -n "$DOH_PACKAGE" ]; then
         PACKAGES="$PACKAGES $DOH_PACKAGE"
+    fi
 
+    if [ -n "$SPEEDTEST_TOOLS" ]; then
+        PACKAGES="$PACKAGES $SPEEDTEST_TOOLS"
     fi
 fi
 
@@ -154,6 +149,9 @@ esac
 #       usteer luci-app-usteer
 # OR
 #       dawn luci-app-dawn
+#
+### Limit bandwidth
+#       luci-app-nft-qos
 
 ### to use mbedtls, replace:
 # libustream-wolfssl and wpad-basic-wolfssl *WITH* libustream-mbedtls and wpad-basic-mbedtls.
@@ -166,3 +164,4 @@ esac
 #
 # To replace mbedtls with wolfssl via firmware-selector, just add:
 # -wpad-basic-mbedtls -libustream-mbedtls -libmbedtls libustream-wolfssl wpad-wolfssl -apk-mbedtls apk-wolfssl
+#
