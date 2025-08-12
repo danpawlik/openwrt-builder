@@ -27,8 +27,8 @@ config class voice
 config interface wan
 	option name wan
 	option disabled 0
-	option bandwidth_up 1gbit
-	option bandwidth_down 1gbit
+	option bandwidth_up 920mbit
+	option bandwidth_down 920mbit
 	option overhead_type ethernet
 	option ingress 1
 	option egress 1
@@ -36,6 +36,12 @@ config interface wan
 	option nat 1
 	option host_isolate 1
 	option autorate_ingress 0
-	option options ""
 	option ingress_options ""
 	option egress_options ""
+	option options ""
+
+config device wandev
+	option disabled 0
+	option name wan
+	option bandwidth 920mbit
+
