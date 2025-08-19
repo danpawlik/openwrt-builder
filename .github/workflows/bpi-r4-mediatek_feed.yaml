@@ -108,13 +108,16 @@ jobs:
           mkdir -p package/kernel/mt76/patches
           curl -SL https://github.com/openwrt/mt76/commit/8088940ffd047a6d282a95af829562e8038f5b2d.patch > package/kernel/mt76/patches/001-Add-tx_power-check-Yukariin.patch
 
-      # https://github.com/openwrt/mt76/pull/968
-      - name: Use patch from im-0
-        run: |
-          mkdir -p package/kernel/mt76/patches
-          curl -SL https://github.com/openwrt/mt76/commit/aaf90b24fde77a38ee9f0a60d7097ded6a94ad1f.patch > package/kernel/mt76/patches/001-use-tx_power-from-default-fw-if-EEPROM-contains-0s-im-0.patch
+#      # https://github.com/openwrt/mt76/pull/968
+#      - name: Use patch from im-0
+#        run: |
+#          mkdir -p package/kernel/mt76/patches
+#          curl -SL https://github.com/openwrt/mt76/commit/aaf90b24fde77a38ee9f0a60d7097ded6a94ad1f.patch > package/kernel/mt76/patches/001-use-tx_power-from-default-fw-if-EEPROM-contains-0s-im-0.patch
 
 #################
+#      - name: Workaround for golang
+#        run: |
+#          curl -SL https://raw.githubusercontent.com/openwrt/packages/refs/heads/master/lang/golang/golang/Makefile >  package/feeds/packages/golang/Makefile
 
       - name: Print config file
         run: cat .config
