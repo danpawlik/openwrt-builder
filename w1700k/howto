@@ -1,0 +1,9 @@
+dd if=mtd3 of=w1700k-mtd3.dtb bs=1 skip=$((0x21FC)) count=13307
+dd if=mtd5 of=w1700k-mtd5.dtb bs=1 skip=$((0x21FC)) count=13307
+dd if=mtd7 of=w1700k-mtd7.dtb bs=1 skip=$((0xFC)) count=13307
+dd if=mtd8 of=w1700k-mtd8.dtb bs=1 skip=$((0x21FC)) count=13307
+
+dtc -I dtb -O dts -o w1700k-mtd3.dts w1700k-mtd3.dtb
+dtc -I dtb -O dts -o w1700k-mtd5.dts w1700k-mtd5.dtb
+dtc -I dtb -O dts -o w1700k-mtd7.dts w1700k-mtd7.dtb
+dtc -I dtb -O dts -o w1700k-mtd8.dts w1700k-mtd8.dtb
