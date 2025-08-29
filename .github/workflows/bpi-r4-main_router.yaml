@@ -64,19 +64,23 @@ jobs:
           curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/common/main-router >> .config
           curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/common/snapshot >> .config
 
+      - name: Enable MLO
+        run: |
+          curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/common/mlo >> .config
+
       - name: Enable openssl
         run: |
           sed -i '/CONFIG_PACKAGE_wpad-mbedtls=y/d' .config
           curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/common/openssl >> .config
 
-#      - name: Enable wolfssl
-#        run: |
-#          sed -i '/CONFIG_PACKAGE_wpad-mbedtls=y/d' .config
-#          curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/common/wolfssl >> .config
+      #- name: Enable wolfssl
+      #  run: |
+      #    sed -i '/CONFIG_PACKAGE_wpad-mbedtls=y/d' .config
+      #    curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/common/wolfssl >> .config
 
-#
-### EEPROM FIX ###
-#
+      #
+      ### EEPROM FIX ###
+      #
 
       # https://github.com/openwrt/mt76/pull/954
       - name: Use patch from Yukariin
@@ -84,13 +88,13 @@ jobs:
           mkdir -p package/kernel/mt76/patches
           curl -SL https://github.com/openwrt/mt76/commit/8088940ffd047a6d282a95af829562e8038f5b2d.patch > package/kernel/mt76/patches/001-Add-tx_power-check-Yukariin.patch
 
-      # https://github.com/openwrt/mt76/pull/968
-      - name: Use patch from im-0
-        run: |
-          mkdir -p package/kernel/mt76/patches
-          curl -SL https://github.com/openwrt/mt76/commit/aaf90b24fde77a38ee9f0a60d7097ded6a94ad1f.patch > package/kernel/mt76/patches/001-use-tx_power-from-default-fw-if-EEPROM-contains-0s-im-0.patch
-
-#################
+      ## https://github.com/openwrt/mt76/pull/968
+      #- name: Use patch from im-0
+      #  run: |
+      #    mkdir -p package/kernel/mt76/patches
+      #    curl -SL https://github.com/openwrt/mt76/commit/aaf90b24fde77a38ee9f0a60d7097ded6a94ad1f.patch > package/kernel/mt76/patches/001-use-tx_power-from-default-fw-if-EEPROM-contains-0s-im-0.patch
+      #
+      #################
 
       - name: Add librespeed-go
         run: |
@@ -141,12 +145,13 @@ jobs:
         with:
           files: bin/targets/mediatek/filogic/*
           tag_name: ${{ env.RELEASE_PREFIX }}-${{ env.REMOTE_BRANCH }}-${{ env.RELEASE_DATE }}
-          name: OpenWRT BPI-R4 + mtk feed firmware + EEPROM fix + main_router packages - ${{ env.REMOTE_BRANCH }} - ${{ env.RELEASE_DATE }}
+          name: OpenWRT BPI-R4 + mtk feed firmware + EEPROM fix + MLO + main_router packages - ${{ env.REMOTE_BRANCH }} - ${{ env.RELEASE_DATE }}
           body: |
             Updated prebuilt images for ${{ env.RELEASE_DATE }} with BE14, with EEPROM fix and main_router packages
             Build Commit: ${{ needs.check_commits.outputs.latest_commit_sha }}
 
-            EEPROM fixes - both used [1][2]
+            EEPROM fixes - used version [1]. Alternative [2].
+            Image include CONFIG_WIFI_SCRIPTS_UCODE required to have MLO feature.
 
             [1] https://github.com/openwrt/mt76/pull/954
             [2] https://github.com/openwrt/mt76/pull/968
