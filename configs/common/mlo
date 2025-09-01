@@ -1,23 +1,5 @@
 # From Felix comment: https://github.com/openwrt/openwrt/commit/a04b5fdcb6e553282911bf4d43fff5dc72bc423c
 CONFIG_WIFI_SCRIPTS_UCODE=y
 
-
-# additional packages, due just wifi scripts ucode work for mlo, but can
-# not connect to the AP.
-CONFIG_NETJSON_MONITORING_IWINFO=y
-CONFIG_PACKAGE_libiwinfo-data=y
+# Probably it is required
 CONFIG_PACKAGE_wireless-tools=y
-CONFIG_PACKAGE_uhttpd-mod-ucode=y
-
-CONFIG_PACKAGE_ucode=y
-CONFIG_PACKAGE_ucode-mod-digest=y
-CONFIG_PACKAGE_ucode-mod-fs=y
-CONFIG_PACKAGE_ucode-mod-log=y
-CONFIG_PACKAGE_ucode-mod-math=y
-CONFIG_PACKAGE_ucode-mod-nl80211=y
-CONFIG_PACKAGE_ucode-mod-rtnl=y
-CONFIG_PACKAGE_ucode-mod-ubus=y
-CONFIG_PACKAGE_ucode-mod-uci=y
-CONFIG_PACKAGE_ucode-mod-uloop=y
-
-CONFIG_PACKAGE_libucode=y
