@@ -49,7 +49,8 @@ fi
 PACKAGES="collectd collectd-mod-sensors \
 collectd-mod-dns collectd-mod-wireless \
 luci-app-statistics luci htop curl owut \
-irqbalance luci-app-irqbalance"
+irqbalance luci-app-irqbalance \
+wifi-scripts"
 
 # additional
 # fping kmod-crypto-user kmod-cryptodev
