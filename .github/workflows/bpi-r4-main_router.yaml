@@ -1,5 +1,5 @@
 ---
-name: BPI-R4 + EEPROM fix + main_router packages
+name: BPI-R4 + main_router packages + GCC15
 
 on:
   workflow_dispatch:
@@ -63,6 +63,7 @@ jobs:
           curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/mediatek/mt7988a/bpi-r4 > .config
           curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/common/main-router >> .config
           curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/common/snapshot >> .config
+          curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/common/optimize >> .config
 
       - name: Enable MLO
         run: |
@@ -145,16 +146,10 @@ jobs:
         with:
           files: bin/targets/mediatek/filogic/*
           tag_name: ${{ env.RELEASE_PREFIX }}-${{ env.REMOTE_BRANCH }}-${{ env.RELEASE_DATE }}
-          name: OpenWRT BPI-R4 + mtk feed firmware + EEPROM fix + MLO + main_router packages - ${{ env.REMOTE_BRANCH }} - ${{ env.RELEASE_DATE }}
+          name: OpenWRT BPI-R4 + MLO + main_router packages +GCC15 - ${{ env.REMOTE_BRANCH }} - ${{ env.RELEASE_DATE }}
           body: |
-            Updated prebuilt images for ${{ env.RELEASE_DATE }} with BE14, with EEPROM fix and main_router packages
+            Updated prebuilt images for ${{ env.RELEASE_DATE }} with BE14, main_router packages + build with GCC15
             Build Commit: ${{ needs.check_commits.outputs.latest_commit_sha }}
-
-            EEPROM fixes - used version [1]. Alternative [2].
-            Image include CONFIG_WIFI_SCRIPTS_UCODE required to have MLO feature.
-
-            [1] https://github.com/openwrt/mt76/pull/954
-            [2] https://github.com/openwrt/mt76/pull/968
 
       - name: Clean up old releases
         uses: dev-drprasad/delete-older-releases@master
