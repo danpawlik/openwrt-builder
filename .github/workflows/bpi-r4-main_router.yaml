@@ -74,6 +74,12 @@ jobs:
           sed -i '/CONFIG_PACKAGE_wpad-mbedtls=y/d' .config
           curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/common/openssl >> .config
 
+      - name: Add patches for 4GB WED
+        run: |
+          mkdir -p package/kernel/mt76/patches
+          curl -SL https://github.com/LorenzoBianconi/mt76/commit/35bc8effe9e495ccded5d6722b299dafadce060e.patch > package/kernel/mt76/patches/999-mtk-mt76-mt7996-use-GFP_DMA32-for-page_pool.patch
+          curl -SL https://github.com/LorenzoBianconi/net-next/commit/93dfca902f0d79126612b8e3cc553b5d891c1f55.patch > target/linux/mediatek/patches-6.12/999-wed-dma-mask-limitation.patch
+
       #- name: Enable wolfssl
       #  run: |
       #    sed -i '/CONFIG_PACKAGE_wpad-mbedtls=y/d' .config
@@ -82,13 +88,12 @@ jobs:
       #
       ### EEPROM FIX ###
       #
-
-      # https://github.com/openwrt/mt76/pull/954
-      - name: Use patch from Yukariin
-        run: |
-          mkdir -p package/kernel/mt76/patches
-          curl -SL https://github.com/openwrt/mt76/commit/8088940ffd047a6d282a95af829562e8038f5b2d.patch > package/kernel/mt76/patches/001-Add-tx_power-check-Yukariin.patch
-
+      ## https://github.com/openwrt/mt76/pull/954
+      #- name: Use patch from Yukariin
+      #  run: |
+      #    mkdir -p package/kernel/mt76/patches
+      #    curl -SL https://github.com/openwrt/mt76/commit/8088940ffd047a6d282a95af829562e8038f5b2d.patch > package/kernel/mt76/patches/001-Add-tx_power-check-Yukariin.patch
+      #
       ## https://github.com/openwrt/mt76/pull/968
       #- name: Use patch from im-0
       #  run: |
@@ -146,9 +151,9 @@ jobs:
         with:
           files: bin/targets/mediatek/filogic/*
           tag_name: ${{ env.RELEASE_PREFIX }}-${{ env.REMOTE_BRANCH }}-${{ env.RELEASE_DATE }}
-          name: OpenWRT BPI-R4 + MLO + main_router packages +GCC15 - ${{ env.REMOTE_BRANCH }} - ${{ env.RELEASE_DATE }}
+          name: OpenWRT BPI-R4 + MLO + main_router packages + GCC15 + WED 4GB patch - ${{ env.REMOTE_BRANCH }} - ${{ env.RELEASE_DATE }}
           body: |
-            Updated prebuilt images for ${{ env.RELEASE_DATE }} with BE14, main_router packages + build with GCC15
+            Updated prebuilt images with main_router packages, patches for working 4GB RAM WED  build with GCC14 - ${{ env.RELEASE_DATE }},
             Build Commit: ${{ needs.check_commits.outputs.latest_commit_sha }}
 
       - name: Clean up old releases
