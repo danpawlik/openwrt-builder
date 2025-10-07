@@ -47,7 +47,7 @@ fi
 
 # basic packages
 PACKAGES="collectd collectd-mod-sensors \
-collectd-mod-dns collectd-mod-wireless \
+collectd-mod-dns collectd-mod-wireless collectd-mod-ping \
 luci-app-statistics luci htop curl owut \
 irqbalance luci-app-irqbalance \
 wifi-scripts"
