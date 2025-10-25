@@ -78,7 +78,7 @@ fi
 if [[ "$DEVICE" =~ Main|main ]]; then
     PACKAGES="$PACKAGES ddns-scripts luci-app-ddns"
     PACKAGES="$PACKAGES luci-proto-wireguard kmod-wireguard wireguard-tools qrencode"
-    PACKAGES="$PACKAGES tc-full pciutils"
+    PACKAGES="$PACKAGES tc-full pciutils kmod-phy-aquantia"
     if [ -n "$SQM_TOOL" ]; then
         PACKAGES="$PACKAGES $SQM_TOOL"
     fi
