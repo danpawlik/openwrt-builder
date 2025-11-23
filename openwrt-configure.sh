@@ -78,6 +78,7 @@ if [[ "$DEVICE" =~ Main|main ]]; then
     PACKAGES="$PACKAGES ddns-scripts luci-app-ddns"
     PACKAGES="$PACKAGES luci-proto-wireguard kmod-wireguard wireguard-tools qrencode"
     PACKAGES="$PACKAGES tc-full pciutils kmod-phy-aquantia"
+    PACKAGES="$PACKAGES kmod-tun"
     if [ -n "$SQM_TOOL" ]; then
         PACKAGES="$PACKAGES $SQM_TOOL"
     fi
@@ -134,6 +135,9 @@ esac
 
 ### wireguard
 #       luci-proto-wireguard kmod-wireguard wireguard-tools qrencode
+
+### Tailscale/Zerotier
+#       kmod-tun
 
 ### DNS over HTTPS
 #       unbound-daemon luci-app-unbound
