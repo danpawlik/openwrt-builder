@@ -1,40 +1,45 @@
 
-#
-# Please read https://openwrt.org/docs/guide-user/base-system/ddns
-#
-config ddns "global"
-	option ddns_dateformat "%F %R"
-#	option ddns_rundir "/var/run/ddns"
-#	option ddns_logdir "/var/log/ddns"
-	option ddns_loglines "250"
-	option upd_privateip "0"
+config ddns 'global'
+	option ddns_dateformat '%F %R'
+	option ddns_loglines '250'
+	option ddns_rundir '/var/run/ddns'
+	option ddns_logdir '/var/log/ddns'
 	option use_curl '1'
 
-config service 'DOMAIN'
+config service 'dancio_ipv4'
 	option service_name 'duckdns.org'
-	option lookup_host 'DOMAIN.duckdns.org'
+	option lookup_host 'my.duckdns.org'
 	option enabled '1'
 	option use_ipv6 '0'
-	option domain 'DOMAIN.duckdns.org'
-	option username 'MYUSER@GITHUB.COM'
-	option password 'MYTOKEN'
+	option domain 'my.duckdns.org'
+	option username 'my@github'
+	option password 'sometoken'
 	option ip_source 'network'
 	option ip_network 'wan'
 	option interface 'wan'
 	option use_syslog '2'
 	option check_unit 'minutes'
-	option force_unit 'minutes'
+	option force_unit 'hours'
 	option retry_unit 'seconds'
+	option check_interval '30'
+	option force_interval '1'
 
-config service 'DOMAIN_ipv6'
-	option service_name 'duckdns.org'
-	option use_ipv6 '1'
+config service 'dancio_desec'
+	option service_name 'desec.io'
+	option use_ipv6 '0'
 	option enabled '1'
-	option lookup_host 'DOMAIN.duckdns.org'
-	option domain 'DOMAIN'
-	option username 'MYUSER@GITHUB.COM'
-	option password 'MYTOKEN'
-	option interface 'wan6'
+	option lookup_host 'my.dedyn.io'
+	option domain 'my.dedyn.io'
+	option username 'my.dedyn.io'
+	option password 'token'
 	option ip_source 'network'
-	option ip_network 'wan6'
+	option interface 'wan'
+	option use_syslog '2'
+	option check_interval '15'
+	option check_unit 'minutes'
+	option force_interval '1'
+	option force_unit 'hours'
+	option retry_unit 'seconds'
+	option use_https '1'
+	option ip_network 'wan'
 

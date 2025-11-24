@@ -1,0 +1,72 @@
+
+config interface 'loopback'
+	option device 'lo'
+	option proto 'static'
+	list ipaddr '127.0.0.1/8'
+
+config globals 'globals'
+	option ula_prefix 'fd7e:38e9:4215::/48'
+	option packet_steering '1'
+	option steering_flows '256'
+
+config device
+	option name 'br-lan'
+	option type 'bridge'
+	list ports 'lan1'
+	list ports 'lan2'
+	list ports 'lan3'
+	list ports 'sfp-lan'
+	option igmp_snooping '1'
+
+config interface 'lan'
+	option device 'br-lan'
+	option proto 'static'
+	list ipaddr '192.168.88.1/24'
+	option ip6assign '60'
+
+config device
+	option name 'br-wan'
+	option type 'bridge'
+	list ports 'wan'
+	list ports 'sfp-wan'
+
+config device
+	option name 'wan'
+
+config interface 'wan'
+	option device 'br-wan.35'
+	option proto 'pppoe'
+	option username 'user'
+	option password 'password'
+	option ipv6 'auto'
+	option norelease '1'
+
+config interface 'wan6'
+	option device 'br-wan.35'
+	option proto 'dhcpv6'
+	option reqaddress 'try'
+	option reqprefix 'auto'
+	option norelease '1'
+	option peerdns '0'
+	option auto '0'
+
+# NOTE: usually on BPi-R4 would use br-wan, but below would be an
+# example, how it would be for other devices.
+
+config device
+	option type '8021q'
+	option ifname 'br-wan'
+	option vid '35'
+	option name 'br-wan.35'
+
+config device
+	option type '8021q'
+	option ifname 'wan'
+	option vid '35'
+	option name 'wan.35'
+
+config device
+	option type '8021q'
+	option ifname 'sfp-wan'
+	option vid '35'
+	option name 'sfp-wan.35'

@@ -9,20 +9,20 @@ config defaults
 
 config zone 'lan'
 	option name 'lan'
-	option network 'lan wg_lan'
 	option input 'ACCEPT'
 	option output 'ACCEPT'
 	option forward 'ACCEPT'
+	list network 'lan'
+	list network 'wg_lan'
 
 config zone 'wan'
 	option name 'wan'
-	list network 'wan'
-	list network 'wan6'
 	option input 'REJECT'
 	option output 'ACCEPT'
-	option forward 'REJECT'
+	option forward 'DROP'
 	option masq '1'
 	option mtu_fix '1'
+	list network 'wan'
 
 config forwarding
 	option src 'lan'
@@ -124,23 +124,43 @@ config rule
 config rule 'wg'
 	option name 'Allow-WireGuard-lan'
 	option src 'wan'
-	option dest_port '12345'
+	option dest_port '51820'
 	option proto 'udp'
 	option target 'ACCEPT'
+
+config rule
+	option name 'Block-Public-DNS-and-force-DoH-DoT'
+	option src 'lan'
+	option dest 'wan'
+	option dest_port '53 853 5353'
+	option target 'REJECT'
+	option enabled '0'
 
 config redirect
 	option dest 'lan'
 	option target 'DNAT'
-	option name 'Divert-DNS, port 53'
+	option name 'http server'
 	option src 'wan'
-	option src_dport '53'
-	option dest_port '53'
+	option src_dport '3000'
+	option dest_ip '192.168.88.117'
+	option dest_port '3000'
+	option enabled '0'
+
+config redirect
+	option dest 'lan'
+	option target 'DNAT'
+	option name 'librespeed'
+	option src 'wan'
+	option src_dport '8989'
+	option dest_ip '192.168.88.1'
+	option dest_port '8989'
+	option enabled '0'
 
 config rule
-	option name 'Reject-DoT,port 853'
+	option name 'Block-DNS-from-WAN'
+	option src 'wan'
+	option dest_port '53'
 	list proto 'tcp'
-	option src 'lan'
-	option dest 'wan'
-	option dest_port '853'
+	list proto 'udp'
 	option target 'REJECT'
 
