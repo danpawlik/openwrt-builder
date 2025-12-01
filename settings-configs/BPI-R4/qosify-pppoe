@@ -31,8 +31,8 @@ config interface 'wan'
         option bandwidth_down '820mbit'
 	####
 	option overhead_type manual
-	option overhead 42
-        option overhead_mpu 84
+	option overhead 44
+        # option overhead_mpu 84
 	####
 	## https://forum.openwrt.org/t/qosify-new-package-for-dscp-marking-cake/111789/135
 	# option overhead_type manual
