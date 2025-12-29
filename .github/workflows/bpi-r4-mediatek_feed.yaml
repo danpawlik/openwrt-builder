@@ -17,7 +17,7 @@ on:
 
 env:
   REMOTE_REPOSITORY: openwrt/openwrt
-  REMOTE_BRANCH: openwrt-24.10
+  REMOTE_BRANCH: main
   RELEASE_PREFIX: Mediatek_mt7988a_bpi-r4_mediatek
   DEVICE_CONFIG: ${{ inputs.DEVICE_CONFIG == 'poe' && 'configs/mediatek/mt7988a/bpi-r4-poe' || 'configs/mediatek/mt7988a/bpi-r4' }}
   ROLE_CONFIG: configs/common/main-router
@@ -64,84 +64,45 @@ jobs:
 
       - name: Clone Mediatek feed
         run: |
-          git clone https://git01.mediatek.com/openwrt/feeds/mtk-openwrt-feeds mtk-openwrt-feeds
+          git clone https://git01.mediatek.com/openwrt/feeds/mtk-openwrt-feeds
 
-      - name: Comment function that breaks .config rendering
+      # NOTE: no need to add qosify and sqm-scripts due there is hw qos done by mtk folks
+      - name: Dump my packages into a file
         run: |
-          sed -i 's/apply_autobuild_script_patch modify_feeds_conf update_feeds/apply_autobuild_script_patch update_feeds/g' mtk-openwrt-feeds/autobuild/unified/rules
+          curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/mediatek/mt7988a/bpi-r4 >> my-config
+          curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/common/main-router >> my-config
+          curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/common/snapshot >> my-config
+          curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/common/sfp >> my-config
+          sed -i '/CONFIG_PACKAGE_wpad-mbedtls=y/d' my-config
+          curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/common/snapshot-mtk-feed >> my-config
+          sed -i '/CONFIG_PACKAGE_qosify=y/d' my-config
+          sed -i '/CONFIG_PACKAGE_sqm-scripts=y/d' my-config
 
-      - name: Run Mediatek prepare
+      - name: Add my packages into the mtk feed defconfig
         run: |
-          bash ./mtk-openwrt-feeds/autobuild/unified/autobuild.sh filogic-mac80211-mt7988_rfb-mt7996 prepare log_file=make
+          grep '^CONFIG_PACKAGE*' my-config >>  mtk-openwrt-feeds/autobuild/unified/filogic/master/defconfig
+          grep '^CONFIG_PACKAGE*' my-config >>  mtk-openwrt-feeds/autobuild/unified/filogic/25.12/defconfig
+          grep '^CONFIG_PACKAGE*' my-config >>  mtk-openwrt-feeds/autobuild/unified/filogic/24.10/defconfig
 
-      - name: Configure firmware image
+      - name: Make symlink for mtk feed
         run: |
-          curl -SL "https://raw.githubusercontent.com/${{ github.repository_owner }}/openwrt-builder/master/${{ env.DEVICE_CONFIG }}" > .config
-          curl -SL "https://raw.githubusercontent.com/${{ github.repository_owner }}/openwrt-builder/master/${{ env.ROLE_CONFIG }}" >> .config
-          curl -SL "https://raw.githubusercontent.com/${{ github.repository_owner }}/openwrt-builder/master/configs/common/snapshot" >> .config
-          curl -SL "https://raw.githubusercontent.com/${{ github.repository_owner }}/openwrt-builder/master/configs/common/snapshot-mtk-feed" >> .config
+          ln -s mtk-openwrt-feeds ../
 
-      - name: Add missing kernel config or remove problematic and not needed for bpi-r4
+      - name: Run Mediatek build - without additional packages
         run: |
-          echo 'CONFIG_PINCTRL_MT7987=y' >> target/linux/mediatek/filogic/config-6.6
-          echo 'CONFIG_COMMON_CLK_MT7987=y' >> target/linux/mediatek/filogic/config-6.6
-          echo 'CONFIG_VIRTIO_BLK=n' >> target/linux/mediatek/filogic/config-6.6
-          echo 'CONFIG_VIRTIO_NET=n' >> target/linux/mediatek/filogic/config-6.6
-          echo 'CONFIG_REMOTEPROC_CDEV=n' >> target/linux/mediatek/filogic/config-6.6
-          echo 'CONFIG_MTK_SCP=n' >> target/linux/mediatek/filogic/config-6.6
-          echo 'CONFIG_MEDIATEK_NETSYS_V2=y' >> target/linux/mediatek/filogic/config-6.6
-          echo 'CONFIG_MEDIATEK_NETSYS_V3=y' >> target/linux/mediatek/filogic/config-6.6
-          sed -i '/CONFIG_EXTRA_FIRMWARE/d' target/linux/mediatek/filogic/config-6.6
-          sed -i '/CONFIG_EXTRA_FIRMWARE_DIR/d' target/linux/mediatek/filogic/config-6.6
-          sed -i 's/# CONFIG_PACKAGE_kmod-phy-airoha-en8811h is not set/CONFIG_PACKAGE_kmod-phy-airoha-en8811h=y/g' .config
-
-      - name: Run defconfig
-        run: |
-          make defconfig
-#
-### EEPROM FIX ###
-#
-
-      # https://github.com/openwrt/mt76/pull/954
-      - name: Use patch from Yukariin
-        run: |
-          mkdir -p package/kernel/mt76/patches
-          curl -SL https://github.com/openwrt/mt76/commit/8088940ffd047a6d282a95af829562e8038f5b2d.patch > package/kernel/mt76/patches/001-Add-tx_power-check-Yukariin.patch
-
-#      # https://github.com/openwrt/mt76/pull/968
-#      - name: Use patch from im-0
-#        run: |
-#          mkdir -p package/kernel/mt76/patches
-#          curl -SL https://github.com/openwrt/mt76/commit/aaf90b24fde77a38ee9f0a60d7097ded6a94ad1f.patch > package/kernel/mt76/patches/001-use-tx_power-from-default-fw-if-EEPROM-contains-0s-im-0.patch
-
-#################
-#      - name: Workaround for golang
-#        run: |
-#          curl -SL https://raw.githubusercontent.com/openwrt/packages/refs/heads/master/lang/golang/golang/Makefile >  package/feeds/packages/golang/Makefile
-
-      - name: Print config file
-        run: cat .config
-
-      - name: Run defconfig
-        run: |
-          make defconfig
-
-      - name: Remove packages that are marked as modules just to save time
-        run: |
-          grep "=m" .config | grep -v 'CONFIG_PACKAGE_libustream-mbedtls=m' | while read -r line; do module=$(echo "$line" | cut -f1 -d'='); sed -i "s/^$line$/# $module is not set/" .config; done
-
-      - name: Comment crypto-eip due it will raise an error
-        run: |
-          sed -i 's/CONFIG_PACKAGE_kmod-crypto-eip=y/# CONFIG_PACKAGE_kmod-crypto-eip is not set/g' .config
-
-      - name: Run defconfig once again
-        run: make defconfig
+          bash ../mtk-openwrt-feeds/autobuild/unified/autobuild.sh filogic bootloader=1 log_file=make || true
 
       - name: Print the config file
         run: cat .config
 
-      - name: Build the firmware image
-        run: make -j $(nproc) download world
+      - name: Disable nf-flow-netlink
+        run: |
+          find feeds -type f -exec sed -i 's/\+kmod-nf-flow-netlink//g' {} \;
+          sed -i 's/+kmod-nf-flow-netlink//g' feeds/mtk_openwrt_feed/feed/app/flowtable/Makefile
+
+      - name: Build image with packages
+        run: |
+          make -j$(nproc) world
 
       - name: Compress all packages
         run: |
