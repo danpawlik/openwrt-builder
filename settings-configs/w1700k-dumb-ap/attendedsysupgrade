@@ -1,0 +1,24 @@
+
+config server 'server'
+	option url 'https://sysupgrade.openwrt.org'
+
+config client 'client'
+	option upgrade_packages '1'
+	option auto_search '0'
+	option advanced_mode '0'
+
+# Example configuration for 'owut'.  The option names are the same
+# as those used on the command line, with all '-' dashes replaced by
+# '_' underscores.  Use 'owut --help' to see more.
+
+config owut 'owut'
+#	option verbosity         0
+#	option keep              true
+#	option init_script      '/root/data/my-init-script.sh'
+#	option image            '/tmp/my-firmware-img.bin'
+#	option rootfs_size       256
+#	option pre_install      '/etc/owut.d/pre-install.sh'
+#	option poll_interval     10000  # In milliseconds
+#	list   ignored_defaults 'kmod-drm-i915'
+#	list   ignored_defaults 'kmod-dwmac-intel'
+

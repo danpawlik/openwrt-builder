@@ -1,0 +1,45 @@
+
+config system
+	option hostname 'W1700K'
+	option timezone 'CET-1CEST,M3.5.0,M10.5.0/3'
+	option zonename 'Europe/Warsaw'
+	option ttylogin '0'
+	option log_size '128'
+	option urandom_seed '0'
+
+config timeserver 'ntp'
+	option enabled '1'
+	option enable_server '0'
+	list server '194.177.4.1'
+	list server '213.222.217.11'
+	list server '80.50.102.114'
+	list server '193.219.28.60'
+
+config led 'led_lan3_yellow'
+	option name 'lan3'
+	option sysfs 'yellow:lan-3'
+	option trigger 'netdev'
+	option mode 'link_10 link_100'
+	option dev 'lan3'
+
+config led 'led_lan3_green'
+	option name 'lan3'
+	option sysfs 'green:lan-3'
+	option trigger 'netdev'
+	option mode 'link_1000 tx rx'
+	option dev 'lan3'
+
+config led 'led_lan4_yellow'
+	option name 'lan4'
+	option sysfs 'yellow:lan-4'
+	option trigger 'netdev'
+	option mode 'link_10 link_100'
+	option dev 'lan4'
+
+config led 'led_lan4_green'
+	option name 'lan4'
+	option sysfs 'green:lan-4'
+	option trigger 'netdev'
+	option mode 'link_1000 tx rx'
+	option dev 'lan4'
+

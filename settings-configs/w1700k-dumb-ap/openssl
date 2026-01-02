@@ -1,0 +1,3 @@
+
+config provider 'legacy'
+	option enabled '1'
