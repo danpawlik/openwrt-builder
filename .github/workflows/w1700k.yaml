@@ -6,7 +6,7 @@ on:
 
 env:
   REMOTE_REPOSITORY: danpawlik/openwrt
-  REMOTE_BRANCH: w1700k
+  REMOTE_BRANCH: w1700k-minimal-v3-my-mt76-no-interrupts
   RELEASE_PREFIX: airoha
 
 jobs:
@@ -53,6 +53,9 @@ jobs:
           ./scripts/feeds update -a
           ./scripts/feeds install -a
 
+      # NOTE: something seems to be not right after
+      # https://github.com/openwrt/openwrt/compare/4d653973de0eb6254d7c343de58de9b632b26ebe..37ebcb6c22ea8ef410d1dd9604ae8a77340fe32c
+      # Include removed packages.
       - name: Configure firmware image
         run: |
           curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/airoha/an7581/gemtek_w1700k > .config ;
@@ -61,6 +64,8 @@ jobs:
           curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/common/mlo >> .config;
           curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/common/optimize >> .config ;
           echo "CONFIG_PACKAGE_librespeed-go=y" >> .config
+          echo "CONFIG_PACKAGE_kmod-phy-realtek=y" >> .config
+          echo "CONFIG_PACKAGE_rtl8261n-firmware=y" >> .config
 
       - name: Run defconfig
         run:
