@@ -6,7 +6,7 @@ on:
 
 env:
   REMOTE_REPOSITORY: danpawlik/openwrt
-  REMOTE_BRANCH: w1700k-minimal-v3-my-mt76-no-interrupts
+  REMOTE_BRANCH: w1700k-minimal-v3-no-interrupts-npu
   RELEASE_PREFIX: airoha
 
 jobs:
