@@ -6,3 +6,5 @@ CONFIG_PACKAGE_kmod-phy-realtek=y
 CONFIG_PACKAGE_kmod-phy-rtl8261n=y
 CONFIG_PACKAGE_kmod-phy-aquantia=y
 CONFIG_PACKAGE_kmod-phy-motorcomm=y
+
+CONFIG_PACKAGE_rtl8261n-firmware=y
