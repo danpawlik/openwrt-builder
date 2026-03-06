@@ -6,7 +6,7 @@ on:
 
 env:
   REMOTE_REPOSITORY: danpawlik/openwrt
-  REMOTE_BRANCH: w1700k-npu-no-balika-v3
+  REMOTE_BRANCH: w1700k-npu-no-balika-v4
   RELEASE_PREFIX: airoha
 
 jobs:
@@ -56,9 +56,13 @@ jobs:
       # NOTE: something seems to be not right after
       # https://github.com/openwrt/openwrt/compare/4d653973de0eb6254d7c343de58de9b632b26ebe..37ebcb6c22ea8ef410d1dd9604ae8a77340fe32c
       # Include removed packages.
+      # NOTE: Since https://github.com/openwrt/openwrt/pull/22151, we changed
+      # way to run the system. Now it would be using chainload.
+      # To bootstrap the router, see: https://github.com/hurrian/w1700k-ubi-installer
+      # then in the system, push the firmware and just do: sysupgrade --force firmware.bin
       - name: Configure firmware image
         run: |
-          curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/airoha/an7581/gemtek_w1700k > .config ;
+          curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/airoha/an7581/gemtek_w1700k_chainload > .config ;
           curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/common/dumb_ap >> .config ;
           curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/common/snapshot >> .config ;
           curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/common/mlo >> .config;
@@ -108,10 +112,12 @@ jobs:
         with:
           files: bin/targets/airoha/an7581/*
           tag_name: ${{ env.RELEASE_PREFIX }}-${{ env.REMOTE_BRANCH }}-${{ env.RELEASE_DATE }}
-          name: OpenWrt Quantum Fiber W1700k - vanila - ${{ env.REMOTE_BRANCH }} - ${{ env.RELEASE_DATE }}
+          name: OpenWrt Quantum Fiber W1700k - vanilla with bl chainload - ${{ env.REMOTE_BRANCH }} - ${{ env.RELEASE_DATE }}
           body: |
             Updated prebuilt images for ${{ env.RELEASE_DATE }}
             Build Commit: ${{ needs.check_commits.outputs.latest_commit_sha }}
+            Uses also chainload proposed in https://github.com/openwrt/openwrt/pull/22151.
+            To bootstrap the device, use: https://github.com/hurrian/w1700k-ubi-installer
 
       - name: Clean up old releases
         uses: dev-drprasad/delete-older-releases@master
