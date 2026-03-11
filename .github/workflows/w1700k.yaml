@@ -6,7 +6,7 @@ on:
 
 env:
   REMOTE_REPOSITORY: danpawlik/openwrt
-  REMOTE_BRANCH: w1700k-npu-no-balika-v5
+  REMOTE_BRANCH: w1700k-npu
   RELEASE_PREFIX: airoha
 
 jobs:
