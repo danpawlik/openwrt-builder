@@ -116,15 +116,9 @@ CONFIG_PACKAGE_kmod-sched-red=y
 CONFIG_PACKAGE_luci-app-ddns=y
 CONFIG_PACKAGE_ddns-scripts=y
 
-# Enable WED (Wireless Ethernet Dispatch) for L2
-# Also it is important to enable HW offload and
-# do not disable firewall on dumb ap's.
-CONFIG_PACKAGE_bridger=y
-
 # IGMPv3 and MLDv2 multicast proxy
 CONFIG_PACKAGE_omcproxy=y
 CONFIG_PACKAGE_luci-app-omcproxy=y
-
 
 # language
 CONFIG_LUCI_LANG_pl=y
