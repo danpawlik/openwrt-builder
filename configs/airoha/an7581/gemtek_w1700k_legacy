@@ -1,0 +1,10 @@
+#
+# curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/airoha/an7581/gemtek_w1700k > .config
+#
+
+CONFIG_TARGET_airoha=y
+CONFIG_TARGET_airoha_an7581=y
+CONFIG_TARGET_airoha_an7581_DEVICE_gemtek_w1700k=y
+
+# enable HW crypto acceleration
+CONFIG_PACKAGE_kmod-crypto-hw-eip93=y
