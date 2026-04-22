@@ -145,3 +145,6 @@ CONFIG_AUTOREMOVE=y
 
 # For tailscail/zerotier
 CONFIG_PACKAGE_kmod-tun=y
+
+# Temporary adding for testing - https://github.com/openwrt/openwrt/pull/22533
+CONFIG_PACKAGE_kmod-br-netfilter=y

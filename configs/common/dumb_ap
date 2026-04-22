@@ -77,7 +77,13 @@ CONFIG_PACKAGE_wifi-scripts=y
 # Enable WED (Wireless Ethernet Dispatch) for L2
 # Also it is important to enable HW offload and
 # do not disable firewall on dumb ap's.
-CONFIG_PACKAGE_bridger=y
+# NOTE: Bridger temporary disabled, due on Quantum Fiber W1700k when
+# NPU is enabled, when wireless client is disconnected after a while,
+# later have difficulties to have more than 1 mbit bandwidth.
+# CONFIG_PACKAGE_bridger=y
+
+# Temporary adding for testing - https://github.com/openwrt/openwrt/pull/22533
+CONFIG_PACKAGE_kmod-br-netfilter=y
 
 # Speedtest tools
 CONFIG_PACKAGE_librespeed-go=y
