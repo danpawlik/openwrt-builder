@@ -6,7 +6,7 @@ on:
 
 env:
   REMOTE_REPOSITORY: danpawlik/openwrt
-  REMOTE_BRANCH: w1700k-npu
+  REMOTE_BRANCH: devel-6.18
   RELEASE_PREFIX: airoha
 
 jobs:
@@ -62,14 +62,12 @@ jobs:
       # then in the system, push the firmware and just do: sysupgrade --force firmware.bin
       - name: Configure firmware image
         run: |
-          curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/airoha/an7581/gemtek_w1700k_chainload > .config ;
+          curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/airoha/an7581/gemtek_w1700k > .config ;
           curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/common/dumb_ap >> .config ;
           curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/common/snapshot >> .config ;
           curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/common/mlo >> .config;
           curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/common/optimize >> .config ;
           echo "CONFIG_PACKAGE_librespeed-go=y" >> .config
-          echo "CONFIG_PACKAGE_kmod-phy-realtek=y" >> .config
-          echo "CONFIG_PACKAGE_rtl8261n-firmware=y" >> .config
 
       - name: Run defconfig
         run:
@@ -112,12 +110,10 @@ jobs:
         with:
           files: bin/targets/airoha/an7581/*
           tag_name: ${{ env.RELEASE_PREFIX }}-${{ env.REMOTE_BRANCH }}-${{ env.RELEASE_DATE }}
-          name: OpenWrt Quantum Fiber W1700k - vanilla with bl chainload - ${{ env.REMOTE_BRANCH }} - ${{ env.RELEASE_DATE }}
+          name: OpenWrt Quantum Fiber W1700k - 6.18 with few features - ${{ env.REMOTE_BRANCH }} - ${{ env.RELEASE_DATE }}
           body: |
-            Updated prebuilt images for ${{ env.RELEASE_DATE }}
+            Updated prebuilt images for ${{ env.RELEASE_DATE }} base on kernel 6.18
             Build Commit: ${{ needs.check_commits.outputs.latest_commit_sha }}
-            Uses also chainload proposed in https://github.com/openwrt/openwrt/pull/22151.
-            To bootstrap the device, use: https://github.com/hurrian/w1700k-ubi-installer
 
       - name: Clean up old releases
         uses: dev-drprasad/delete-older-releases@master
