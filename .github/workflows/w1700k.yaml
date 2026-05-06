@@ -6,7 +6,7 @@ on:
 
 env:
   REMOTE_REPOSITORY: danpawlik/openwrt
-  REMOTE_BRANCH: devel-6.18
+  REMOTE_BRANCH: devel-6.18-nft_flow
   RELEASE_PREFIX: airoha
 
 jobs:
