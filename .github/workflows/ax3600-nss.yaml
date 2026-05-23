@@ -55,13 +55,13 @@ jobs:
           sudo apt full-upgrade -y
 
       - name: Checkout remote repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           repository: ${{ env.REMOTE_REPOSITORY }}
           ref: ${{ env.REMOTE_BRANCH }}
 
       - name: Checkout current repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           path: "custom_repo"
 
