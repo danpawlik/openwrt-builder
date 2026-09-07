@@ -1,0 +1,36 @@
+#
+# curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/qualcommax/ipq50xx/gl-b3000 > .config
+#
+
+# Based on https://github.com/kuncy7/openwrt-nss-edma/blob/ipq50xx-nss-pre-rebase-20260906/README.ipq50xx.md
+CONFIG_TARGET_qualcommax=y
+CONFIG_TARGET_qualcommax_ipq50xx=y
+CONFIG_TARGET_qualcommax_ipq50xx_DEVICE_glinet_gl-b3000=y
+
+# the runtime; depends on kmod-qca-dwmac-nss, kmod-qca-nss-drv,
+# kmod-qca-nss-ecm, kmod-qca-nss-drv-vlan-mgr, kmod-qca8337-nss
+CONFIG_PACKAGE_nss-tools-dwmac=y
+
+# firmware: 12.2-156 is the one that works on IPQ5018 (see below)
+CONFIG_PACKAGE_nss-firmware=y
+CONFIG_NSS_FIRMWARE_VERSION_12_2=y
+CONFIG_NSS_MEM_PROFILE_MEDIUM=y
+
+# qca-nss-drv features the plane uses
+CONFIG_NSS_DRV_VLAN_ENABLE=y
+CONFIG_NSS_DRV_IPV6_ENABLE=y
+CONFIG_NSS_DRV_VIRT_IF_ENABLE=y
+
+# PPPoE: the kernel side builds, but ECM only accelerates PPPoE when this
+# connection manager is present - without it flows are tracked and never
+# offloaded, with nothing in the log to say so.
+CONFIG_PACKAGE_kmod-ppp=y
+CONFIG_PACKAGE_kmod-pppoe=y
+CONFIG_PACKAGE_kmod-qca-nss-drv-pppoe=y
+
+# ath11k with the NSS patches applied. Needed for the Wi-Fi offload, and
+# the validated combination for the wired plane as well.
+CONFIG_PACKAGE_MAC80211_NSS_SUPPORT=y
+CONFIG_ATH11K_NSS_SUPPORT=y
+CONFIG_NSS_DRV_WIFIOFFLOAD_ENABLE=y
+CONFIG_NSS_DRV_WIFI_EXT_VDEV_ENABLE=y
