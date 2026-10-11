@@ -1,5 +1,3 @@
 # From Felix comment: https://github.com/openwrt/openwrt/commit/a04b5fdcb6e553282911bf4d43fff5dc72bc423c
-CONFIG_WIFI_SCRIPTS_UCODE=y
-
 # Probably it is required
 CONFIG_PACKAGE_wireless-tools=y

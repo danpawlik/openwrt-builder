@@ -1,6 +1,7 @@
 # based on https://github.com/glassd00r/Openwrt_Builder/blob/main/bpi-r4.config
 
 # set GCC15
+GCC_USE_VERSION_15=y
 CONFIG_BUILD_PATENTED=y
 CONFIG_DEVEL=y
 CONFIG_EXPERIMENTAL=y

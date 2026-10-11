@@ -1,6 +1,0 @@
-CONFIG_ATH11K_NSS_MESH_SUPPORT=y
-CONFIG_PACKAGE_sqm-scripts-nss=y
-CONFIG_FEED_nss_packages=n
-CONFIG_FEED_sqm_scripts_nss=n
-# CONFIG_NSS_FIRMWARE_VERSION_12_5=y
-CONFIG_PACKAGE_kmod-qca-nss-crypto=n
