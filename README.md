@@ -19,22 +19,13 @@ How to use:
 
 ```shell
 mkdir -p openwrt-builder && chmod 0777 openwrt-builder
-podman run --name openwrt -it -u user -v $(pwd)/openwrt-builder:/home/user/openwrt-builder:z,rw quay.io/dpawlik/openwrt:f40 bash
+podman run --name openwrt -it -u user -v $(pwd)/openwrt-builder:/home/user/openwrt-builder:z,rw quay.io/dpawlik/openwrt:f44 bash
 ```
 
 Then inside the container (from https://openwrt.org/docs/guide-developer/toolchain/use-buildsystem):
 
 ```shell
 git clone https://git.openwrt.org/openwrt/openwrt.git ~/openwrt-builder/openwrt && cd ~/openwrt-builder/openwrt
-```
-
-Optionally add MediaTek feed (onlt for 21.02):
-
-```shell
-cat << EOF >> feeds.conf.default
-src-git mtksdk https://git01.mediatek.com/openwrt/feeds/mtk-openwrt-feeds
-EOF
-git add feeds.conf.default ; git commit -m 'Add MediaTek feed'
 ```
 
 Update the feeds:
@@ -48,6 +39,9 @@ Use device config:
 ```shell
 # BPI-R4
 curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/mediatek/mt7988a/bpi-r4 > ~/openwrt-builder/openwrt/.config
+
+# Quantum Fiber W1700k
+curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/airoha/an7581/gemtek_w1700k > ~/openwrt-builder/openwrt/.config
 
 # AX3200
 curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/mediatek/mt7622/ax3200 > ~/openwrt-builder/openwrt/.config
@@ -74,6 +68,7 @@ it is also included in the config file.
 then add the required packages that I use for the router/AP function:
 
 * Main router:
+
 ```shell
 curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/common/main-router >> ~/openwrt-builder/openwrt/.config
 ```
@@ -84,10 +79,16 @@ curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/conf
 curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/common/dumb_ap >> ~/openwrt-builder/openwrt/.config
 ```
 
-* Basic config
+Changing wpad-mbedtls to wpad-openssl or wpad-wolfssl
 
 ```shell
-curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/common/basic >> ~/openwrt-builder/openwrt/.config
+sed -i '/CONFIG_PACKAGE_wpad-mbedtls=y/d' ~/openwrt-builder/openwrt/.config
+
+# openssl
+curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/refs/heads/master/configs/common/openssl >> ~/openwrt-builder/openwrt/.config
+
+# wolfssl
+curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/refs/heads/master/configs/common/wolfssl >> ~/openwrt-builder/openwrt/.config
 ```
 
 ## Build
@@ -133,7 +134,7 @@ make -j1 V=s defconfig download clean world
 ## Example workflow
 
 ```shell
-# Banana Pi R4 as main router
+# Banana Pi R4 as main router - basic
 curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/mediatek/mt7988a/bpi-r4 > ~/openwrt-builder/openwrt/.config
 curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/common/main-router >> ~/openwrt-builder/openwrt/.config
 ./scripts/diffconfig.sh > diffconfig
@@ -142,24 +143,30 @@ make defconfig
 make -j$(nproc) kernel_menuconfig
 make -j $(nproc) defconfig download clean world
 
-# AX3200 as dumb AP
-curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/mediatek/mt7622/ax3200 > ~/openwrt-builder/openwrt/.config
-curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/common/dumb_ap >> ~/openwrt-builder/openwrt/.config
-./scripts/diffconfig.sh > diffconfig
-cp diffconfig .config
-make defconfig
-make -j$(nproc) kernel_menuconfig
-make -j $(nproc) defconfig download clean world
+# Banana Pi R4 as main router - openssl
+curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/mediatek/mt7988a/bpi-r4 > ~/openwrt-builder/openwrt/.config
+curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/common/main-router >> ~/openwrt-builder/openwrt/.config;
+curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/common/snapshot-short >> ~/openwrt-builder/openwrt/.config;
+curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/common/mlo >> ~/openwrt-builder/openwrt/.config;
+curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/common/optimize >> ~/openwrt-builder/openwrt/.config;
+curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/common/sfp >> ~/openwrt-builder/openwrt/.config;
+sed -i '/CONFIG_PACKAGE_wpad-mbedtls=y/d' ~/openwrt-builder/openwrt/.config;
+echo 'CONFIG_PACKAGE_wpad-openssl=y' >> ~/openwrt-builder/openwrt/.config;
+make defconfig;
+grep "=m" ~/openwrt-builder/openwrt/.config | grep -v 'CONFIG_PACKAGE_libustream-mbedtls=m' | while read -r line; do module=$(echo "$line" | cut -f1 -d'='); sed -i "s/^$line$/# $module is not set/" ~/openwrt-builder/openwrt/.config; done;
+make -j $(nproc) defconfig clean download world;
+mv bin/targets/mediatek/filogic/ bin/targets/mediatek/filogic-bpi-r4-$(date +%F-%R)-openssl;
 
-# AX3600 as main router with Qualcomm NSS framework
-curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/qualcommax/ax3600 > ~/openwrt-builder/openwrt/.config
-curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/common/main-router >> ~/openwrt-builder/openwrt/.config
-curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/common/nss >> ~/openwrt-builder/openwrt/.config
-./scripts/diffconfig.sh > diffconfig
-cp diffconfig .config
-make defconfig
-make -j$(nproc) kernel_menuconfig
-make -j $(nproc) defconfig download clean world
+# W1700K as dumb ap
+curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/airoha/an7581/gemtek_w1700k > ~/openwrt-builder/openwrt/.config;
+curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/common/dumb_ap >> ~/openwrt-builder/openwrt/.config;
+curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/common/snapshot-short >> ~/openwrt-builder/openwrt/.config;
+curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/common/mlo >> ~/openwrt-builder/openwrt/.config;
+curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/common/optimize >> ~/openwrt-builder/openwrt/.config;
+make defconfig;
+grep "=m" ~/openwrt-builder/openwrt/.config | grep -v 'CONFIG_PACKAGE_libustream-mbedtls=m' | while read -r line; do module=$(echo "$line" | cut -f1 -d'='); sed -i "s/^$line$/# $module is not set/" ~/openwrt-builder/openwrt/.config; done;
+make -j $(nproc) defconfig clean download world;
+mv bin/targets/airoha/an7581/ bin/targets/airoha/an7581-w1700k-$(date +%F-%R)
 ```
 
 ## With Ansible - WIP (Work In Progress)

@@ -1,0 +1,34 @@
+#### replace mbedtls with openssl - remember to leave commented "is not set" or remove it!
+# CONFIG_PACKAGE_apk-mbedtls is not set
+# CONFIG_PACKAGE_luci-ssl-openssl is not set
+CONFIG_PACKAGE_apk-openssl=y
+CONFIG_PACKAGE_wpad-openssl=y
+CONFIG_PACKAGE_libustream-mbedtls=y
+# CONFIG_PACKAGE_libustream-openssl is not set
+# CONFIG_PACKAGE_wpad-mbedtls is not set
+# CONFIG_PACKAGE_wpad-basic-mbedtls is not set
+# CONFIG_PACKAGE_wpad-basic-openssl is not set
+# CONFIG_PACKAGE_openssl-util is not set
+CONFIG_LUA_ECO_OPENSSL=y
+# CONFIG_LUA_ECO_MBEDTLS is not set
+# CONFIG_LIBCURL_MBEDTLS is not set
+CONFIG_LIBCURL_OPENSSL=y
+CONFIG_OPENSSL_OPTIMIZE_SPEED=y
+CONFIG_OPENSSL_WITH_DEPRECATED=n
+
+# Enable http3 and quic
+# CONFIG_LIBCURL_NGHTTP3 is not set
+# CONFIG_LIBCURL_NGTCP2 is not set
+
+# enable /dev/crypto
+CONFIG_PACKAGE_kmod-cryptodev=y
+CONFIG_PACKAGE_kmod-crypto-user=y
+CONFIG_PACKAGE_libopenssl-devcrypto=y
+# CONFIG_PACKAGE_libopenssl-afalg_sync is not set
+
+### Force add /dev/crypto into libcrypto
+CONFIG_OPENSSL_ENGINE_BUILTIN=y
+CONFIG_OPENSSL_ENGINE_BUILTIN_DEVCRYPTO=y
+CONFIG_OPENSSL_ENGINE_BUILTIN_AFALG=y
+
+#### replace mbedtls with openssl - remember to leave commented "is not set" or remove it!

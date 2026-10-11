@@ -11,7 +11,7 @@ ROUTER_IP="${ROUTER_IP=$1}"
 # DEVICE can be main or <nothing>
 DEVICE="${DEVICE:-$2}"
 FULL_WPAD="${FULL_WPAD:-'true'}"
-INSTALL_BRIDGER=${INSTALL_BRIDGER:-'false'}
+INSTALL_BRIDGER=${INSTALL_BRIDGER:-'true'}
 INSTALL_DAWN=${INSTALL_DAWN:-'false'}
 INSTALL_USTEER=${INSTALL_USTEER:-'false'}
 DOH_PACKAGE=${DOH_PACKAGE:-'dnscrypt-proxy2'} # can be also: luci-app-unbound or dnscrypt-proxy2 or adguardhome or stubby
