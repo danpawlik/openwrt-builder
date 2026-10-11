@@ -17,6 +17,8 @@ config wifi-iface 'default_radio0'
 	option ssid 'Test_2G'
 	option encryption 'psk2+ccmp'
 	option key 'test1234test'
+	option ieee80211w '0'
+	option beacon_prot '0'
 
 config wifi-device 'radio1'
 	option type 'mac80211'
