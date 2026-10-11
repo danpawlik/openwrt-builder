@@ -1,25 +1,19 @@
-#### replace mbedtls with openssl - remember to leave commented "is not set" or remove it!
+# Same as configs/common/wolfssl, plus CPU AES (ARMv8 CE / AES-NI / RISC-V).
+# Only for aarch64, x86_64, or riscv64 with AES — otherwise use libwolfssl.
+# No cryptodev: HW accel menu does not apply to libwolfsslcpu-crypto, and
+# /dev/crypto is unreliable / slower than CPU AES on filogic.
+
 CONFIG_PACKAGE_apk-mbedtls=y
 CONFIG_PACKAGE_libustream-mbedtls=y
+# CONFIG_PACKAGE_libustream-wolfssl is not set
+
 CONFIG_PACKAGE_wpad-wolfssl=y
 # CONFIG_PACKAGE_wpad-mbedtls is not set
 # CONFIG_PACKAGE_wpad-basic-mbedtls is not set
-# CONFIG_PACKAGE_wpad-basic-openssl is not set
+# CONFIG_PACKAGE_wpad-basic-wolfssl is not set
+
 CONFIG_LUA_ECO_WOLFSSL=y
 # CONFIG_LUA_ECO_MBEDTLS is not set
-#### replace mbedtls with openssl - remember to leave commented "is not set" or remove it!
 
-## on ARMv8 - enable CPU Acceleration
-## https://www.wolfssl.com/cpu-accelerated-cryptography-on-openwrt-using-wolfssl/
-## Seems devcrypto full does not work with all my routers.
-# CONFIG_PACKAGE_kmod-crypto-authenc=y
-CONFIG_PACKAGE_kmod-cryptodev=y
-CONFIG_WOLFSSL_HAS_DEVCRYPTO=y
-# CONFIG_WOLFSSL_HAS_DEVCRYPTO_FULL=y
-# CONFIG_WOLFSSL_HAS_AFALG is not set
-
-# Checking SSL with CPU acceleration
-# MAKE SURE IT IS ARMv8 or Intel AESNI, otherwise use: CONFIG_PACKAGE_libwolfssl=y
 CONFIG_PACKAGE_libwolfsslcpu-crypto=y
-
-CONFIG_PACKAGE_kmod-crypto-user=y
+# CONFIG_PACKAGE_libwolfssl is not set

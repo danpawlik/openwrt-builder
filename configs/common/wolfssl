@@ -1,10 +1,15 @@
-#### replace mbedtls with openssl - remember to leave commented "is not set" or remove it!
+# Prefer wolfssl for wpad/lua-eco.
+# apk/ustream/curl stay on mbedtls (no apk-wolfssl; ustream switch breaks some setups).
+# Leave "# ... is not set" lines so defconfig does not re-enable mbedtls variants.
+
 CONFIG_PACKAGE_apk-mbedtls=y
 CONFIG_PACKAGE_libustream-mbedtls=y
+# CONFIG_PACKAGE_libustream-wolfssl is not set
+
 CONFIG_PACKAGE_wpad-wolfssl=y
 # CONFIG_PACKAGE_wpad-mbedtls is not set
 # CONFIG_PACKAGE_wpad-basic-mbedtls is not set
-# CONFIG_PACKAGE_wpad-basic-openssl is not set
+# CONFIG_PACKAGE_wpad-basic-wolfssl is not set
+
 CONFIG_LUA_ECO_WOLFSSL=y
 # CONFIG_LUA_ECO_MBEDTLS is not set
-#### replace mbedtls with openssl - remember to leave commented "is not set" or remove it!
