@@ -1,19 +1,5 @@
-# Same as configs/common/wolfssl, plus CPU AES (ARMv8 CE / AES-NI / RISC-V).
-# Only for aarch64, x86_64, or riscv64 with AES — otherwise use libwolfssl.
-# No cryptodev: HW accel menu does not apply to libwolfsslcpu-crypto, and
-# /dev/crypto is unreliable / slower than CPU AES on filogic.
-
-CONFIG_PACKAGE_apk-mbedtls=y
-CONFIG_PACKAGE_libustream-mbedtls=y
-# CONFIG_PACKAGE_libustream-wolfssl is not set
-
-CONFIG_PACKAGE_wpad-wolfssl=y
-# CONFIG_PACKAGE_wpad-mbedtls is not set
-# CONFIG_PACKAGE_wpad-basic-mbedtls is not set
-# CONFIG_PACKAGE_wpad-basic-wolfssl is not set
-
-CONFIG_LUA_ECO_WOLFSSL=y
-# CONFIG_LUA_ECO_MBEDTLS is not set
+# Append after configs/common/wolfssl.
+# CPU AES only (ARMv8 CE / AES-NI / RISC-V). Otherwise keep libwolfssl.
 
 CONFIG_PACKAGE_libwolfsslcpu-crypto=y
 # CONFIG_PACKAGE_libwolfssl is not set

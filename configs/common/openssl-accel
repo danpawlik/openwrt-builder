@@ -1,20 +1,4 @@
-# Same as configs/common/openssl, plus userspace speed opts.
-# No cryptodev/AFALG: on ARMv8/MT798x OpenSSL already uses CPU AES (CE);
-# /dev/crypto via SafeXcel is usually slower for userspace TLS.
-
-# CONFIG_PACKAGE_apk-mbedtls is not set
-CONFIG_PACKAGE_apk-openssl=y
-CONFIG_PACKAGE_wpad-openssl=y
-# CONFIG_PACKAGE_wpad-mbedtls is not set
-# CONFIG_PACKAGE_wpad-basic-mbedtls is not set
-# CONFIG_PACKAGE_wpad-basic-openssl is not set
-
-CONFIG_PACKAGE_libustream-mbedtls=y
-# CONFIG_PACKAGE_libustream-openssl is not set
-
-CONFIG_LUA_ECO_OPENSSL=y
-# CONFIG_LUA_ECO_MBEDTLS is not set
-# CONFIG_LIBCURL_MBEDTLS is not set
-CONFIG_LIBCURL_OPENSSL=y
+# Append after configs/common/openssl.
+# Userspace speed opts only — OpenSSL on ARMv8 already uses CPU AES (CE).
 
 CONFIG_OPENSSL_OPTIMIZE_SPEED=y

@@ -79,16 +79,19 @@ curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/conf
 curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/common/dumb_ap >> ~/openwrt-builder/openwrt/.config
 ```
 
-Changing wpad-mbedtls to wpad-openssl or wpad-wolfssl
+* Cryptolib (pick one; append after the profile):
 
 ```shell
-sed -i '/CONFIG_PACKAGE_wpad-mbedtls=y/d' ~/openwrt-builder/openwrt/.config
+# mbedtls (full wpad) — default choice
+curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/common/mbedtls >> ~/openwrt-builder/openwrt/.config
 
-# openssl
-curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/refs/heads/master/configs/common/openssl >> ~/openwrt-builder/openwrt/.config
+# openssl (+ optional with accel)
+curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/common/openssl >> ~/openwrt-builder/openwrt/.config
+# curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/common/openssl-accel >> ~/openwrt-builder/openwrt/.config
 
-# wolfssl
-curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/refs/heads/master/configs/common/wolfssl >> ~/openwrt-builder/openwrt/.config
+# wolfssl (+ optional with CPU AES accel on aarch64/x86_64/riscv64)
+curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/common/wolfssl >> ~/openwrt-builder/openwrt/.config
+# curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/common/wolfssl-accel >> ~/openwrt-builder/openwrt/.config
 ```
 
 ## Build
@@ -137,6 +140,7 @@ make -j1 V=s defconfig download clean world
 # Banana Pi R4 as main router - basic
 curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/mediatek/mt7988a/bpi-r4 > ~/openwrt-builder/openwrt/.config
 curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/common/main-router >> ~/openwrt-builder/openwrt/.config
+curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/common/mbedtls >> ~/openwrt-builder/openwrt/.config
 ./scripts/diffconfig.sh > diffconfig
 cp diffconfig .config
 make defconfig
@@ -161,8 +165,9 @@ mv bin/targets/mediatek/filogic/ bin/targets/mediatek/filogic-bpi-r4-$(date +%F-
 curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/airoha/an7581/gemtek_w1700k > ~/openwrt-builder/openwrt/.config;
 curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/common/dumb_ap >> ~/openwrt-builder/openwrt/.config;
 curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/common/snapshot-short >> ~/openwrt-builder/openwrt/.config;
-curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/common/mlo >> ~/openwrt-builder/openwrt/.config;
 curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/common/optimize >> ~/openwrt-builder/openwrt/.config;
+curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/common/mlo >> ~/openwrt-builder/openwrt/.config;
+curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/common/mbedtls >> ~/openwrt-builder/openwrt/.config
 make defconfig;
 grep "=m" ~/openwrt-builder/openwrt/.config | grep -v 'CONFIG_PACKAGE_libustream-mbedtls=m' | while read -r line; do module=$(echo "$line" | cut -f1 -d'='); sed -i "s/^$line$/# $module is not set/" ~/openwrt-builder/openwrt/.config; done;
 make -j $(nproc) defconfig clean download world;

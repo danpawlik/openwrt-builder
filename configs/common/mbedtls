@@ -1,2 +1,6 @@
+# Full wpad on mbedtls (replaces target default wpad-basic-mbedtls).
+# Append after a profile (main-router, dumb_ap, …). For openssl/wolfssl use
+# those overlays instead.
+
 CONFIG_PACKAGE_wpad-basic-mbedtls=m
 CONFIG_PACKAGE_wpad-mbedtls=y
