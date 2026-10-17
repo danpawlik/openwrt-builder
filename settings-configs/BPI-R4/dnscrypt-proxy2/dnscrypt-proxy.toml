@@ -19,9 +19,9 @@ require_dnssec = false
 require_nolog = true
 require_nofilter = false
 disabled_server_names = []
-force_tcp = false
-http3 = true
-http3_probe = true
+force_tcp = true
+http3 = false
+http3_probe = false
 timeout = 5000
 keepalive = 30
 log_files_max_size = 10
@@ -38,7 +38,7 @@ block_undelegated = true
 reject_ttl = 10
 cache = true
 cache_size = 8196
-cache_min_ttl = 2400
+cache_min_ttl = 600
 cache_max_ttl = 86400
 cache_neg_min_ttl = 60
 cache_neg_max_ttl = 600
@@ -49,6 +49,8 @@ use_syslog = true
 [captive_portals]
 [local_doh]
 [query_log]
+## Keep that settings for debugging
+# file = '/tmp/dnscrypt-query.log'
 format = 'tsv'
 [nx_log]
 format = 'tsv'
@@ -109,7 +111,5 @@ tls_key = ""
 enable_query_log = true
 privacy_level = 1
 [static]
-[static.'NextDNS-XXX']
-stamp = 'sdns://XXXX'
 [static.'ada.openbld.net']
 stamp = 'sdns://AgAAAAAAAAAAAAAPYWRhLm9wZW5ibGQubmV0Ci9kbnMtcXVlcnk'
