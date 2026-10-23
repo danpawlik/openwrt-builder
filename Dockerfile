@@ -5,7 +5,7 @@ RUN yum update -y && dnf -y group install development-tools
 RUN dnf -y install vim bash-completion file bzip2 gcc gcc-c++ git make ncurses-devel patch \
     rsync tar unzip wget which diffutils python3 python3-devel glibc-gconv-extra perl-base \
     perl-Data-Dumper perl-File-Compare perl-File-Copy perl-FindBin \
-    perl-Thread-Queue hostname perl-IPC-Cmd swig ccache-swig && \
+    perl-Thread-Queue hostname perl-IPC-Cmd swig ccache-swig procps-ng && \
     dnf install -y clang llvm gcc libbpf-devel libxdp-devel xdp-tools \
     bpftool kernel-headers elfutils-libelf-devel zlib-devel libpcap-devel \
     m4 wireshark-cli python3-netifaces python3-unidecode \
