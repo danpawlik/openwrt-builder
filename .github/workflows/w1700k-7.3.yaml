@@ -1,14 +1,13 @@
 ---
-name: Gl.iNet b3000
+name: Quantum Fiber W1700k - kernel 7.3 - dumb AP
 
 on:
   workflow_dispatch:
 
 env:
-  REMOTE_REPOSITORY: qosmio/openwrt-ipq
-  REMOTE_BRANCH: main-nss
-  RELEASE_PREFIX: Ipq5018-nss
-  BUILD_PATH: bin/targets/qualcommax/ipq50xx
+  REMOTE_REPOSITORY: danpawlik/openwrt
+  REMOTE_BRANCH: devel-7.3
+  RELEASE_PREFIX: airoha
 
 jobs:
   check_commits:
@@ -30,7 +29,7 @@ jobs:
           echo "latest_commit_sha=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
 
   build:
-    name: Build OpenWRT with NSS for B3000
+    name: Build OpenWRT for W1700k
     needs: [check_commits]
     runs-on: ubuntu-24.04
     steps:
@@ -56,35 +55,34 @@ jobs:
 
       - name: Configure firmware image
         run: |
-          curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/qualcommax/ipq50xx/gl-b3000-nss > .config
-          curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/common/dumb_ap >> .config
-          curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/common/qosmio-nss-minimal >> .config
-          curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/common/snapshot >> .config
-
-      # Workaround - https://forum.openwrt.org/t/qualcommax-nss-build/148529/4710
-      - name: Remove problematic patch for ipq5018
-        run: |
-          find . -type f -name 999-900-bss-transition-handling.patch -delete
+          curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/airoha/an7581/gemtek_w1700k > .config ;
+          curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/common/dumb_ap >> .config ;
+          curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/common/snapshot-short >> .config ;
+          curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/common/mlo >> .config ;
+          curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/common/optimize >> .config ;
+          curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/common/mbedtls >> .config;
 
       - name: Run defconfig
         run:
           make defconfig
 
       - name: Remove packages that are marked as modules
-        run: |
-          grep "=m" .config | grep -v 'CONFIG_PACKAGE_libustream-mbedtls=m' | while read -r line; do module=$(echo "$line" | cut -f1 -d'='); sed -i "s/^$line$/# $module is not set/" .config; done
+        run: >
+          grep "=m" .config |
+          grep -v 'CONFIG_PACKAGE_libustream-mbedtls=m' |
+          while read -r line; do module=$(echo "$line" | cut -f1 -d'='); sed -i "s/^$line$/# $module is not set/" .config; done
 
       - name: Build the firmware image
         run: make -j $(nproc) defconfig download world
 
       - name: Package output
-        run: tar -cvf b3000.tar ${{ env.BUILD_PATH }}/
+        run: tar -cvf W1700k.tar bin/targets/airoha/an7581
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v7
         with:
-          name: b3000
-          path: b3000.tar
+          name: W1700k
+          path: W1700k.tar
 
   release:
     name: Create release
@@ -95,9 +93,9 @@ jobs:
       - name: Download artifacts
         uses: actions/download-artifact@v8
         with:
-          name: b3000
+          name: W1700k
       - name: Extract artifacts
-        run: tar xf b3000.tar
+        run: tar xf W1700k.tar
 
       - name: Get current date
         run: echo "RELEASE_DATE=$(date +%F)" >> $GITHUB_ENV
@@ -105,11 +103,11 @@ jobs:
       - name: Create release
         uses: softprops/action-gh-release@master
         with:
-          files: ${{ env.BUILD_PATH }}/*
+          files: bin/targets/airoha/an7581/*
           tag_name: ${{ env.RELEASE_PREFIX }}-${{ env.REMOTE_BRANCH }}-${{ env.RELEASE_DATE }}
-          name: OpenWRT Gl.iNet b3000 with NSS - ${{ env.REMOTE_BRANCH }} - ${{ env.RELEASE_DATE }}
+          name: OpenWrt Quantum Fiber W1700k - kernel 7.3 - ${{ env.REMOTE_BRANCH }} - ${{ env.RELEASE_DATE }}
           body: |
-            Updated prebuilt images for ${{ env.RELEASE_DATE }}
+            Updated prebuilt images for ${{ env.RELEASE_DATE }} base on kernel 7.3 configured as dumb AP.
             Build Commit: ${{ needs.check_commits.outputs.latest_commit_sha }}
 
       - name: Clean up old releases

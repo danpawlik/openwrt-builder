@@ -1,12 +1,12 @@
 ---
-name: Quantum Fiber W1700k
+name: Quantum Fiber W1700k - kernel 6.18 - dumb AP
 
 on:
   workflow_dispatch:
 
 env:
   REMOTE_REPOSITORY: danpawlik/openwrt
-  REMOTE_BRANCH: devel-mtk-feed
+  REMOTE_BRANCH: devel
   RELEASE_PREFIX: airoha
 
 jobs:
@@ -64,10 +64,10 @@ jobs:
         run: |
           curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/airoha/an7581/gemtek_w1700k > .config ;
           curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/common/dumb_ap >> .config ;
-          curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/common/snapshot >> .config ;
-          curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/common/mlo >> .config;
+          curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/common/snapshot-short >> .config ;
+          curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/common/mlo >> .config ;
           curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/common/optimize >> .config ;
-          echo "CONFIG_PACKAGE_librespeed-go=y" >> .config
+          curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/common/mbedtls >> .config;
 
       - name: Run defconfig
         run:
@@ -76,11 +76,6 @@ jobs:
       - name: Remove packages that are marked as modules
         run: |
           grep "=m" .config | grep -v 'CONFIG_PACKAGE_libustream-mbedtls=m' | while read -r line; do module=$(echo "$line" | cut -f1 -d'='); sed -i "s/^$line$/# $module is not set/" .config; done
-
-      - name: Ensure realtek drivers are enabled
-        run: |
-          sed -i 's/# CONFIG_PACKAGE_kmod-phy-realtek is not set/CONFIG_PACKAGE_kmod-phy-realtek=y/g' .config;
-          sed -i 's/# CONFIG_PACKAGE_rtl8261n-firmware is not set/CONFIG_PACKAGE_rtl8261n-firmware=y/g' .config ;
 
       - name: Build the firmware image
         run: make -j $(nproc) defconfig download world
@@ -115,9 +110,9 @@ jobs:
         with:
           files: bin/targets/airoha/an7581/*
           tag_name: ${{ env.RELEASE_PREFIX }}-${{ env.REMOTE_BRANCH }}-${{ env.RELEASE_DATE }}
-          name: OpenWrt Quantum Fiber W1700k - 6.18 with few features - ${{ env.REMOTE_BRANCH }} - ${{ env.RELEASE_DATE }}
+          name: OpenWrt Quantum Fiber W1700k - kernel 6.18 - ${{ env.REMOTE_BRANCH }} - ${{ env.RELEASE_DATE }}
           body: |
-            Updated prebuilt images for ${{ env.RELEASE_DATE }} base on kernel 6.18
+            Updated prebuilt images for ${{ env.RELEASE_DATE }} base on kernel 6.18 configured as dumb AP.
             Build Commit: ${{ needs.check_commits.outputs.latest_commit_sha }}
 
       - name: Clean up old releases
