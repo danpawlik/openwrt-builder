@@ -1,0 +1,307 @@
+---
+# Reusable build + release workflow for OpenWrt images.
+#
+# Device specific workflows live next to this file and only pass inputs, e.g.:
+#
+#   jobs:
+#     build:
+#       uses: ./.github/workflows/_build-openwrt.yml
+#       permissions:
+#         contents: write
+#       with:
+#         branch: main
+#         device_config: mediatek/mt7622/ax3200
+#         role_config: common/dumb_ap
+#         extra_configs: common/snapshot-short
+#         target_path: bin/targets/mediatek/mt7622
+#         release_prefix: Mediatek_mt7622_ax3200
+#         title: OpenWRT AX3200
+#
+# Config fragments are read from this repository (the one that was checked out),
+# so a workflow run always builds the configs from the same commit as the workflow.
+name: Build and release OpenWrt image
+
+on:
+  workflow_call:
+    inputs:
+      repository:
+        description: Upstream OpenWrt repository to build.
+        type: string
+        default: openwrt/openwrt
+      branch:
+        description: Branch of the upstream repository.
+        type: string
+        required: true
+      device_config:
+        description: Device config file, relative to configs/.
+        type: string
+        required: true
+      role_config:
+        description: Role config file (router, dumb AP, ...), relative to configs/.
+        type: string
+        required: true
+      extra_configs:
+        description: Extra config fragments, one path per line, relative to configs/.
+        type: string
+        default: ""
+      target_path:
+        description: Output directory inside bin/targets, e.g. bin/targets/mediatek/filogic.
+        type: string
+        required: true
+      release_prefix:
+        description: Release tag prefix. Must be unique per device.
+        type: string
+        required: true
+      title:
+        description: Human readable release title (without branch and date).
+        type: string
+        required: true
+      description:
+        description: First line of the release body.
+        type: string
+        default: Updated prebuilt images
+      use_openssl:
+        description: Drop wpad-mbedtls and append configs/common/openssl.
+        type: boolean
+        default: false
+      disable_lto:
+        description: Drop CONFIG_USE_LTO from the config.
+        type: boolean
+        default: false
+      enable_ccache:
+        description: Enable the OpenWrt ccache and keep it between runs (long builds only).
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build image
+    runs-on: ubuntu-24.04
+    timeout-minutes: 350
+    outputs:
+      commit_sha: ${{ steps.commit.outputs.sha }}
+    steps:
+      - name: Checkout builder repository
+        uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+
+      - name: Checkout ${{ inputs.repository }} (${{ inputs.branch }})
+        uses: actions/checkout@v6
+        with:
+          repository: ${{ inputs.repository }}
+          ref: ${{ inputs.branch }}
+          path: openwrt
+          fetch-depth: 1
+          persist-credentials: false
+
+      - name: Record upstream commit
+        id: commit
+        working-directory: openwrt
+        run: echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
+      - name: Free disk space
+        # A full `world` build does not fit into the default ~14 GB of free space.
+        run: |
+          sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc \
+            /opt/hostedtoolcache/CodeQL /usr/local/share/boost
+          sudo docker image prune --all --force > /dev/null 2>&1 || true
+          df -h /
+
+      - name: Restore ccache
+        if: inputs.enable_ccache
+        uses: actions/cache@v6
+        with:
+          # OpenWrt puts the cache into $(TOPDIR)/.ccache unless CONFIG_CCACHE_DIR is set.
+          path: openwrt/.ccache
+          key: ccache-${{ inputs.release_prefix }}-${{ inputs.branch }}-${{ github.run_id }}
+          restore-keys: |
+            ccache-${{ inputs.release_prefix }}-${{ inputs.branch }}-
+
+      - name: Install build dependencies
+        env:
+          DEBIAN_FRONTEND: noninteractive
+        run: |
+          sudo -E apt-get update
+          sudo -E apt-get install -y \
+            build-essential clang flex bison g++ gawk \
+            gcc-multilib g++-multilib gettext git libncurses-dev libssl-dev \
+            python3-setuptools rsync swig unzip zlib1g-dev file wget curl zstd
+
+      - name: Install ccache
+        if: inputs.enable_ccache
+        env:
+          DEBIAN_FRONTEND: noninteractive
+        run: sudo -E apt-get install -y ccache
+
+      - name: Update and install feeds
+        working-directory: openwrt
+        run: |
+          ./scripts/feeds update -a
+          ./scripts/feeds install -a
+
+      - name: Configure firmware image
+        working-directory: openwrt
+        env:
+          CONFIGS: ${{ github.workspace }}/configs
+          DEVICE_CONFIG: ${{ inputs.device_config }}
+          ROLE_CONFIG: ${{ inputs.role_config }}
+          EXTRA_CONFIGS: ${{ inputs.extra_configs }}
+          USE_OPENSSL: ${{ inputs.use_openssl }}
+          DISABLE_LTO: ${{ inputs.disable_lto }}
+          ENABLE_CCACHE: ${{ inputs.enable_ccache }}
+        run: |
+          set -euo pipefail
+
+          cat "$CONFIGS/$DEVICE_CONFIG" > .config
+          cat "$CONFIGS/$ROLE_CONFIG" >> .config
+
+          while IFS= read -r fragment; do
+            [ -n "$fragment" ] || continue
+            cat "$CONFIGS/$fragment" >> .config
+          done <<< "$EXTRA_CONFIGS"
+
+          if [ "$DISABLE_LTO" = "true" ]; then
+            sed -i '/CONFIG_USE_LTO=y/d' .config
+          fi
+
+          if [ "$USE_OPENSSL" = "true" ]; then
+            sed -i '/CONFIG_PACKAGE_wpad-mbedtls=y/d' .config
+            cat "$CONFIGS/common/openssl" >> .config
+          fi
+
+          if [ "$ENABLE_CCACHE" = "true" ]; then
+            echo 'CONFIG_CCACHE=y' >> .config
+            # OpenWrt exports CCACHE_DIR=$(TOPDIR)/.ccache (rules.mk), and ccache
+            # reads ccache.conf from its cache directory. Keep the cache below the
+            # 10 GB repository cache budget (ccache defaults to 5G per device).
+            mkdir -p .ccache
+            printf 'max_size = 2G\n' > .ccache/ccache.conf
+          fi
+
+      - name: Run defconfig
+        working-directory: openwrt
+        run: make defconfig
+
+      - name: Remove packages that are marked as modules
+        working-directory: openwrt
+        run: |
+          set -euo pipefail
+          # libustream-mbedtls has to stay a module, otherwise the image build breaks.
+          sed -i -E '/^CONFIG_PACKAGE_libustream-mbedtls=m$/! s/^(CONFIG_[^=]+)=m$/# \1 is not set/' .config
+
+      - name: Download sources
+        working-directory: openwrt
+        run: make -j"$(nproc)" download
+
+      - name: Build the firmware image
+        working-directory: openwrt
+        run: make -j"$(nproc)" world
+
+      - name: Show ccache statistics
+        if: always() && inputs.enable_ccache
+        env:
+          CCACHE_DIR: ${{ github.workspace }}/openwrt/.ccache
+        run: ccache --show-stats || true
+
+      - name: Package output
+        working-directory: openwrt
+        env:
+          TARGET_PATH: ${{ inputs.target_path }}
+        run: |
+          set -euo pipefail
+          cp .config "$TARGET_PATH/config-full"
+          # packages/ and kernels/ are several hundred MB and are not release assets.
+          tar -cf images.tar --exclude=packages --exclude=kernels "$TARGET_PATH"
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v7
+        with:
+          name: openwrt-images
+          path: openwrt/images.tar
+          if-no-files-found: error
+          retention-days: 3
+          compression-level: 0
+
+  release:
+    name: Create release
+    needs: build
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    permissions:
+      contents: write
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v8
+        with:
+          name: openwrt-images
+
+      - name: Extract artifacts
+        run: tar xf images.tar
+
+      - name: Verify that images were produced
+        run: |
+          set -euo pipefail
+          # Do not publish an empty release if the target path or the build output is wrong.
+          first_image=$(find bin/targets -type f \
+            \( -name '*.bin' -o -name '*.itb' -o -name '*.img.gz' -o -name '*.ubi' \) \
+            -print -quit)
+          if [ -z "$first_image" ]; then
+            echo "No firmware images found in the artifact, refusing to publish an empty release."
+            exit 1
+          fi
+          echo "Found firmware images, e.g. $first_image"
+
+      - name: Get current date
+        run: echo "RELEASE_DATE=$(date +%F)" >> "$GITHUB_ENV"
+
+      - name: Create release
+        uses: softprops/action-gh-release@v3.0.3
+        with:
+          # The date is kept right after the branch on purpose: the cleanup step below
+          # uses it to tell "devel" and "devel-7.3" releases apart.
+          tag_name: >-
+            ${{ inputs.release_prefix }}-${{ inputs.branch }}-${{ env.RELEASE_DATE }}-${{ github.run_number }}-${{ github.run_attempt }}
+          name: ${{ inputs.title }} - ${{ inputs.branch }} - ${{ env.RELEASE_DATE }}
+          body: |
+            ${{ inputs.description }} (${{ env.RELEASE_DATE }})
+            Upstream build commit: ${{ needs.build.outputs.commit_sha }}
+            Builder commit: ${{ github.sha }}
+          files: |
+            bin/targets/*/*/*.bin
+            bin/targets/*/*/*.itb
+            bin/targets/*/*/*.img.gz
+            bin/targets/*/*/*.trx
+            bin/targets/*/*/*.ubi
+            bin/targets/*/*/*.squashfs
+            bin/targets/*/*/*.tar
+            bin/targets/*/*/*.buildinfo
+            bin/targets/*/*/sha256sums
+            bin/targets/*/*/profiles.json
+            bin/targets/*/*/config-full
+
+      - name: Clean up old releases
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+          RELEASE_PREFIX: ${{ inputs.release_prefix }}
+          BRANCH: ${{ inputs.branch }}
+          KEEP_LATEST: "5"
+        run: |
+          set -euo pipefail
+          # Only touch releases of this device/branch, otherwise one workflow
+          # would delete the releases created by all the other workflows.
+          # The date right after the branch tells "devel" and "devel-7.3" apart.
+          pattern="^${RELEASE_PREFIX}-${BRANCH}-[0-9]{4}-[0-9]{2}-[0-9]{2}"
+
+          # `gh release list` is already sorted newest first.
+          gh release list --limit 200 --json tagName |
+            jq -r --arg re "$pattern" --argjson keep "$KEEP_LATEST" \
+              '[.[] | select(.tagName | test($re))] | .[$keep:] | .[].tagName' |
+            while IFS= read -r tag; do
+              echo "Deleting old release: $tag"
+              gh release delete "$tag" --yes --cleanup-tag
+            done

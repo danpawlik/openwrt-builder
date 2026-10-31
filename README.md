@@ -47,7 +47,7 @@ curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/conf
 curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/mediatek/mt7622/ax3200 > ~/openwrt-builder/openwrt/.config
 
 # AX3600
-curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/qualcommax/ax3600 > ~/openwrt-builder/openwrt/.config
+curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/qualcommax/ipq807x/ax3600 > ~/openwrt-builder/openwrt/.config
 
 # Xiaomi 4A Giga Edition
 curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/ramips/mt7621/4a-giga > ~/openwrt-builder/openwrt/.config
@@ -111,9 +111,8 @@ make defconfig
 Optional: comment modules:
 
 ```shell
-for m in $(grep "=m" .config | grep -v 'CONFIG_PACKAGE_libustream-mbedtls=m'); do module=$(echo $m| cut -f1 -d'='); sed -i "s/$m/\# $module is not set/g" .config; done
-# or
-grep "=m" .config | grep -v 'CONFIG_PACKAGE_libustream-mbedtls=m' | while read -r line; do module=$(echo "$line" | cut -f1 -d'='); sed -i "s/^$line$/# $module is not set/" .config; done
+# keep CONFIG_PACKAGE_libustream-mbedtls=m, comment out every other module
+sed -i -E '/^CONFIG_PACKAGE_libustream-mbedtls=m$/! s/^(CONFIG_[^=]+)=m$/# \1 is not set/' .config
 ```
 
 Then:
@@ -133,6 +132,28 @@ To get more verbosity:
 ```shell
 make -j1 V=s defconfig download clean world
 ```
+
+## GitHub Actions workflows
+
+All images are built by `.github/workflows/_build-openwrt.yml`, a reusable
+workflow. Each device has a small workflow (for example
+`.github/workflows/ax3200.yaml`) that only passes inputs to it:
+
+| Input | Description |
+| --- | --- |
+| `repository` / `branch` | Upstream OpenWrt repo and branch (default `openwrt/openwrt@main`). |
+| `device_config` | Device config, relative to `configs/`. |
+| `role_config` | Role config (`common/main-router`, `common/dumb_ap`, ...). |
+| `extra_configs` | Extra fragments, one path per line, relative to `configs/`. |
+| `target_path` | Output dir, e.g. `bin/targets/mediatek/filogic`. |
+| `release_prefix` | Tag prefix, e.g. `Mediatek_mt7622_ax3200`. |
+| `title` | Release title without branch and date. |
+| `use_openssl` / `disable_lto` | Optional config tweaks. |
+| `enable_ccache` | Enable the OpenWrt ccache and keep it between runs (used for the long BPi-R4/W1700k builds). |
+
+To add a device, copy an existing workflow and adjust the inputs. Workflows are
+started manually (`workflow_dispatch`) and publish a release tagged
+`<release_prefix>-<branch>-<date>-<run>-<attempt>`.
 
 ## Example workflow
 
@@ -157,7 +178,7 @@ curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/conf
 sed -i '/CONFIG_PACKAGE_wpad-mbedtls=y/d' ~/openwrt-builder/openwrt/.config;
 echo 'CONFIG_PACKAGE_wpad-openssl=y' >> ~/openwrt-builder/openwrt/.config;
 make defconfig;
-grep "=m" ~/openwrt-builder/openwrt/.config | grep -v 'CONFIG_PACKAGE_libustream-mbedtls=m' | while read -r line; do module=$(echo "$line" | cut -f1 -d'='); sed -i "s/^$line$/# $module is not set/" ~/openwrt-builder/openwrt/.config; done;
+sed -i -E '/^CONFIG_PACKAGE_libustream-mbedtls=m$/! s/^(CONFIG_[^=]+)=m$/# \1 is not set/' ~/openwrt-builder/openwrt/.config;
 make -j $(nproc) defconfig clean download world;
 mv bin/targets/mediatek/filogic/ bin/targets/mediatek/filogic-bpi-r4-$(date +%F-%R)-openssl;
 
@@ -169,7 +190,7 @@ curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/conf
 curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/common/mlo >> ~/openwrt-builder/openwrt/.config;
 curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/common/mbedtls >> ~/openwrt-builder/openwrt/.config
 make defconfig;
-grep "=m" ~/openwrt-builder/openwrt/.config | grep -v 'CONFIG_PACKAGE_libustream-mbedtls=m' | while read -r line; do module=$(echo "$line" | cut -f1 -d'='); sed -i "s/^$line$/# $module is not set/" ~/openwrt-builder/openwrt/.config; done;
+sed -i -E '/^CONFIG_PACKAGE_libustream-mbedtls=m$/! s/^(CONFIG_[^=]+)=m$/# \1 is not set/' ~/openwrt-builder/openwrt/.config;
 make -j $(nproc) defconfig clean download world;
 mv bin/targets/airoha/an7581/ bin/targets/airoha/an7581-w1700k-$(date +%F-%R)
 ```

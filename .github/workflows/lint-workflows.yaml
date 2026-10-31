@@ -1,0 +1,31 @@
+---
+name: Lint workflows
+
+on:
+  push:
+    paths:
+      - ".github/**"
+  pull_request:
+    paths:
+      - ".github/**"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  actionlint:
+    name: actionlint
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+
+      - name: Lint GitHub workflows
+        uses: raven-actions/actionlint@v2.2.0
+        with:
+          shellcheck: true
+          pyflakes: false
