@@ -4,7 +4,6 @@ server_names = [
   'dns.sb',
   'doh-cleanbrowsing-security',
   'cloudflare-security',
-  'ada.openbld.net',
 ]
 
 listen_addresses = ['127.0.0.1:54']
@@ -111,5 +110,3 @@ tls_key = ""
 enable_query_log = true
 privacy_level = 1
 [static]
-[static.'ada.openbld.net']
-stamp = 'sdns://AgAAAAAAAAAAAAAPYWRhLm9wZW5ibGQubmV0Ci9kbnMtcXVlcnk'
