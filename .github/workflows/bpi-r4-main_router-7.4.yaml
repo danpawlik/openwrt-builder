@@ -1,0 +1,31 @@
+---
+name: BPI-R4 + main_router packages - kernel 7.4
+
+on:
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: false
+
+jobs:
+  build:
+    uses: ./.github/workflows/_build-openwrt.yml
+    permissions:
+      contents: write
+    with:
+      repository: danpawlik/openwrt
+      branch: devel-7.4
+      device_config: mediatek/mt7988a/bpi-r4
+      role_config: common/main-router
+      extra_configs: |
+        common/snapshot-short
+        common/optimize
+        common/sfp
+        common/mbedtls
+        common/mlo
+      target_path: bin/targets/mediatek/filogic
+      release_prefix: BPi-R4
+      title: OpenWRT BPI-R4 - kernel 7.4
+      description: Updated prebuilt images with main_router packages
+      enable_ccache: true

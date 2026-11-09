@@ -1,0 +1,37 @@
+---
+# NOTE: something seems to be not right after
+# https://github.com/openwrt/openwrt/compare/4d653973de0eb6254d7c343de58de9b632b26ebe..37ebcb6c22ea8ef410d1dd9604ae8a77340fe32c
+# Include removed packages.
+# NOTE: Since https://github.com/openwrt/openwrt/pull/22151, we changed
+# way to run the system. Now it would be using chainload.
+# To bootstrap the router, see: https://github.com/hurrian/w1700k-ubi-installer
+# then in the system, push the firmware and just do: sysupgrade --force firmware.bin
+name: Quantum Fiber W1700k - kernel 7.4 - dumb AP
+
+on:
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: false
+
+jobs:
+  build:
+    uses: ./.github/workflows/_build-openwrt.yml
+    permissions:
+      contents: write
+    with:
+      repository: danpawlik/openwrt
+      branch: devel-7.4
+      device_config: airoha/an7581/gemtek_w1700k
+      role_config: common/dumb_ap
+      extra_configs: |
+        common/snapshot-short
+        common/mlo
+        common/optimize
+        common/mbedtls
+      target_path: bin/targets/airoha/an7581
+      release_prefix: airoha
+      title: OpenWrt Quantum Fiber W1700k - kernel 7.4
+      description: Updated prebuilt images based on kernel 7.4, configured as dumb AP
+      enable_ccache: true
